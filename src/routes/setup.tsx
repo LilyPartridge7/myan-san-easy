@@ -90,7 +90,7 @@ function SetupPage() {
   const rail =
     stage === "recommendation"
       ? "Consultation"
-      : stage === "summary" || stage === "payment" || stage === "success"
+      : stage === "summary" || stage === "payment" || stage === "success" || stage === "saved"
         ? "Review"
         : "Your Setup";
 
@@ -639,7 +639,7 @@ function SetupPage() {
                 Go to My Restaurant
               </Link>
               <button
-                onClick={() => goToStage("summary")}
+                onClick={() => goToStage("saved")}
                 className="inline-flex min-h-13 w-full max-w-xs items-center justify-center rounded-full border border-border bg-card px-6 text-[15px] font-medium"
               >
                 View My Setup
@@ -650,6 +650,72 @@ function SetupPage() {
               >
                 Contact မြန်ဆန်
               </a>
+            </div>
+          </div>
+        ) : null}
+
+        {stage === "saved" ? (
+          <div key="saved" className="fade-up mt-6 space-y-5">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
+                <Check className="h-4 w-4" /> Setup Confirmed
+              </span>
+              <span className="text-sm text-muted-foreground">
+                {state.setupStatus === "waitingForContact" ? "Waiting for Contact" : "Paid"}
+              </span>
+            </div>
+            <h2 className="text-2xl font-semibold tracking-tight">{state.restaurantName}</h2>
+            <p className="text-[15px] text-muted-foreground">
+              သိမ်းဆည်းထားတဲ့ သင့် မြန်ဆန် setup အချက်အလက်များ
+            </p>
+            <dl className="divide-y divide-border rounded-2xl border border-border bg-card">
+              <Row label="REFERENCE" value={state.reference ?? "MYN-00124"} />
+              <Row label="PACKAGE" value={getPackage(activePackage).name} />
+              <Row label="WEBSITE" value={styleLabel(state.websiteStyle)} />
+              <Row
+                label="TABLE QR"
+                value={`${state.tableCount ?? "—"} Tables · ${qrLabel(state.qrStyle)}`}
+              />
+              <Row
+                label="HELP REQUESTED"
+                value={
+                  state.helpServices.length
+                    ? state.helpServices
+                        .map((h) => HELP_OPTIONS.find((o) => o.id === h)?.label ?? h)
+                        .join(" · ")
+                    : "မလိုပါ"
+                }
+              />
+              <Row
+                label="LOCATION"
+                value={
+                  [state.address, state.township, state.city].filter(Boolean).join(", ") || "—"
+                }
+              />
+              <Row label="CONTACT" value={state.contactName || "—"} />
+              <Row label="PHONE" value={state.phone || "—"} />
+              <Row
+                label="PAYMENT"
+                value={
+                  PAYMENT_METHODS.find((m) => m.id === state.paymentMethod)?.label ?? "—"
+                }
+              />
+              <Row label="TOTAL PAID TODAY" value={formatMMK(price.totalToday)} />
+              <Row label="MONTHLY SERVICE" value={`${formatMMK(price.monthly)} / month`} />
+            </dl>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                to="/owner"
+                className="inline-flex min-h-12 items-center rounded-full bg-primary px-6 text-[15px] font-semibold text-primary-foreground"
+              >
+                Go to My Restaurant
+              </Link>
+              <button
+                onClick={() => goToStage("success")}
+                className="inline-flex min-h-12 items-center rounded-full border border-border bg-card px-6 text-[15px] font-medium"
+              >
+                Back
+              </button>
             </div>
           </div>
         ) : null}
