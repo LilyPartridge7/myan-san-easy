@@ -334,7 +334,7 @@ export function typedAck(question: Question, value: string, lang: Lang): string 
     question.id === "restaurantType"
       ? {
           mm: `ဟုတ်ကဲ့၊ ${label} ဆိုင်ပါနော်။ မှတ်ထားလိုက်ပါပြီ။`,
-          en: `Got it — you run a ${label} place.`,
+          en: `Got it — you run a ${label} restaurant.`,
         }
       : question.id === "tableCount"
         ? { mm: `ဟုတ်ကဲ့၊ Table ${label} လောက်ပါနော်။`, en: `Got it — about ${label} tables.` }
