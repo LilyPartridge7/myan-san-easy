@@ -14,6 +14,7 @@ import { Route as ConsultRouteImport } from './routes/consult'
 import { Route as OwnerRouteImport } from './routes/owner'
 import { Route as SetupRouteImport } from './routes/setup'
 import { Route as PreviewShweHotpotRouteImport } from './routes/preview.shwe-hotpot'
+import { Route as RShweHotpotTableTableRouteImport } from './routes/r.shwe-hotpot.table.$table'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +41,11 @@ const PreviewShweHotpotRoute = PreviewShweHotpotRouteImport.update({
   path: '/preview/shwe-hotpot',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RShweHotpotTableTableRoute = RShweHotpotTableTableRouteImport.update({
+  id: '/r/shwe-hotpot/table/$table',
+  path: '/r/shwe-hotpot/table/$table',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/owner': typeof OwnerRoute
   '/setup': typeof SetupRoute
   '/preview/shwe-hotpot': typeof PreviewShweHotpotRoute
+  '/r/shwe-hotpot/table/$table': typeof RShweHotpotTableTableRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/owner': typeof OwnerRoute
   '/setup': typeof SetupRoute
   '/preview/shwe-hotpot': typeof PreviewShweHotpotRoute
+  '/r/shwe-hotpot/table/$table': typeof RShweHotpotTableTableRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,14 +70,33 @@ export interface FileRoutesById {
   '/owner': typeof OwnerRoute
   '/setup': typeof SetupRoute
   '/preview/shwe-hotpot': typeof PreviewShweHotpotRoute
+  '/r/shwe-hotpot/table/$table': typeof RShweHotpotTableTableRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/consult' | '/owner' | '/setup' | '/preview/shwe-hotpot'
+  fullPaths:
+    | '/'
+    | '/consult'
+    | '/owner'
+    | '/setup'
+    | '/preview/shwe-hotpot'
+    | '/r/shwe-hotpot/table/$table'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/consult' | '/owner' | '/setup' | '/preview/shwe-hotpot'
+  to:
+    | '/'
+    | '/consult'
+    | '/owner'
+    | '/setup'
+    | '/preview/shwe-hotpot'
+    | '/r/shwe-hotpot/table/$table'
   id:
-    '__root__' | '/' | '/consult' | '/owner' | '/setup' | '/preview/shwe-hotpot'
+    | '__root__'
+    | '/'
+    | '/consult'
+    | '/owner'
+    | '/setup'
+    | '/preview/shwe-hotpot'
+    | '/r/shwe-hotpot/table/$table'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -78,6 +105,7 @@ export interface RootRouteChildren {
   OwnerRoute: typeof OwnerRoute
   SetupRoute: typeof SetupRoute
   PreviewShweHotpotRoute: typeof PreviewShweHotpotRoute
+  RShweHotpotTableTableRoute: typeof RShweHotpotTableTableRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -117,6 +145,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PreviewShweHotpotRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/r/shwe-hotpot/table/$table': {
+      id: '/r/shwe-hotpot/table/$table'
+      path: '/r/shwe-hotpot/table/$table'
+      fullPath: '/r/shwe-hotpot/table/$table'
+      preLoaderRoute: typeof RShweHotpotTableTableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -126,6 +161,7 @@ const rootRouteChildren: RootRouteChildren = {
   OwnerRoute: OwnerRoute,
   SetupRoute: SetupRoute,
   PreviewShweHotpotRoute: PreviewShweHotpotRoute,
+  RShweHotpotTableTableRoute: RShweHotpotTableTableRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
