@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { QrCode, UtensilsCrossed, ReceiptText, Globe } from "lucide-react";
 import { IMAGES } from "@/data/images";
 import { useSetup } from "@/state/setupStore";
@@ -23,7 +23,12 @@ export const Route = createFileRoute("/owner")({
 });
 
 function OwnerHome() {
-  const { state, resetDemo } = useSetup();
+  const { state, resetDemo, goToStage } = useSetup();
+  const navigate = useNavigate();
+  const openSetup = () => {
+    if (state.confirmed) goToStage("saved");
+    navigate({ to: "/setup" });
+  };
 
   return (
     <div className="min-h-screen bg-background pb-16">
@@ -72,16 +77,16 @@ function OwnerHome() {
             <Globe className="h-5 w-5 text-primary" />
             Website
           </Link>
-          <Link to="/setup" className={tileClass}>
+          <button onClick={openSetup} className={tileClass}>
             <QrCode className="h-5 w-5 text-primary" />
             QR
-          </Link>
+          </button>
         </div>
 
         <div className="mt-10 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
-          <Link to="/setup" className="underline underline-offset-4">
+          <button onClick={openSetup} className="underline underline-offset-4">
             Setup ပြန်ကြည့်မယ်
-          </Link>
+          </button>
           <Link to="/" className="underline underline-offset-4">
             Home
           </Link>

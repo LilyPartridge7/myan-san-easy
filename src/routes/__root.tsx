@@ -13,6 +13,18 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SetupProvider } from "../state/setupStore";
+import { useSetup } from "../state/setupStore";
+
+function LanguageFontMode() {
+  const { state } = useSetup();
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.toggle("lang-mm", state.language === "mm");
+    root.classList.toggle("lang-en", state.language === "en");
+    root.setAttribute("lang", state.language === "mm" ? "my" : "en");
+  }, [state.language]);
+  return null;
+}
 
 function NotFoundComponent() {
   return (
@@ -135,6 +147,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <SetupProvider>
+        <LanguageFontMode />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <div key={pathname} className="page-enter min-h-screen">
           <Outlet />
@@ -143,7 +156,7 @@ function RootComponent() {
           <Link
             to="/"
             aria-label="Go to homepage"
-            className="fixed bottom-5 left-4 z-40 flex h-11 items-center gap-2 rounded-full border border-border bg-card/90 px-4 text-sm font-semibold text-primary shadow-lg backdrop-blur transition-colors hover:bg-muted"
+            className="fixed bottom-5 left-4 z-40 hidden h-11 items-center gap-2 rounded-full border border-border bg-card/90 px-4 text-sm font-semibold text-primary shadow-lg backdrop-blur transition-colors hover:bg-muted sm:flex"
           >
             မြန်ဆန်
           </Link>

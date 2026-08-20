@@ -166,6 +166,16 @@
   html {
     -webkit-tap-highlight-color: transparent;
   }
+
+  /* Language / font modes — toggled from the top nav */
+  html.lang-mm body {
+    font-family: "Padauk", ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.7;
+  }
+
+  html.lang-en body {
+    font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+  }
 }
 
 @utility fade-up {

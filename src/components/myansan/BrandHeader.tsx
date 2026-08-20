@@ -2,6 +2,7 @@ import { Link, useRouter } from "@tanstack/react-router";
 import { ArrowLeft, Home, Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSetup } from "@/state/setupStore";
+import { LanguageToggle } from "@/components/myansan/LanguageToggle";
 
 export function BrandHeader({
   subtitle,
@@ -16,7 +17,7 @@ export function BrandHeader({
   onBack?: () => void;
   showBack?: boolean;
 }) {
-  const { state, update, resetDemo } = useSetup();
+  const { resetDemo } = useSetup();
   const router = useRouter();
   const [dark, setDark] = useState(false);
 
@@ -26,7 +27,7 @@ export function BrandHeader({
 
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
-      <div className="mx-auto flex max-w-[1100px] items-center gap-3 px-4 py-3">
+      <div className="mx-auto flex max-w-[1100px] items-center gap-3 px-4 py-3 2xl:max-w-[1400px]">
         {showBack ? (
           <button
             aria-label="Back"
@@ -43,7 +44,7 @@ export function BrandHeader({
         >
           <Home className="h-4 w-4" />
         </Link>
-        <Link to="/" className="flex min-w-0 flex-col leading-tight">
+        <Link to="/" className="hidden min-w-0 flex-col leading-tight sm:flex">
           <span className="text-lg font-semibold tracking-tight text-primary">မြန်ဆန်</span>
           {subtitle ? (
             <span className="truncate text-[11px] text-muted-foreground">{subtitle}</span>
@@ -56,12 +57,7 @@ export function BrandHeader({
           </span>
         ) : null}
         <div className="ml-auto flex items-center gap-1">
-          <button
-            onClick={() => update({ language: state.language === "mm" ? "en" : "mm" })}
-            className="min-h-9 rounded-full px-3 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted"
-          >
-            {state.language === "mm" ? "မြန်မာ" : "EN"}
-          </button>
+          <LanguageToggle />
           <button
             aria-label="Toggle theme"
             onClick={() => setDark((d) => !d)}
