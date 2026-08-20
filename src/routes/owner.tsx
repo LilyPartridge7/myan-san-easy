@@ -60,22 +60,22 @@ function OwnerHome() {
         </div>
 
         <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {[
-            { icon: UtensilsCrossed, label: "Menu", to: "/r/shwe-hotpot/table/$table" as const },
-            { icon: ReceiptText, label: "Orders", to: "/r/shwe-hotpot/table/$table" as const },
-            { icon: Globe, label: "Website", to: "/preview/shwe-hotpot" as const },
-            { icon: QrCode, label: "QR", to: "/setup" as const },
-          ].map(({ icon: Icon, label, to }) => (
-            <Link
-              key={label}
-              to={to}
-              params={to.includes("$table") ? { table: "7" } : undefined}
-              className="flex min-h-20 flex-col items-center justify-center gap-2 rounded-2xl border border-border bg-card text-[15px] font-medium transition-colors hover:bg-muted"
-            >
-              <Icon className="h-5 w-5 text-primary" />
-              {label}
-            </Link>
-          ))}
+          <Link to="/r/shwe-hotpot/table/$table" params={{ table: "7" }} className={tileClass}>
+            <UtensilsCrossed className="h-5 w-5 text-primary" />
+            Menu
+          </Link>
+          <Link to="/r/shwe-hotpot/table/$table" params={{ table: "7" }} className={tileClass}>
+            <ReceiptText className="h-5 w-5 text-primary" />
+            Orders
+          </Link>
+          <Link to="/preview/shwe-hotpot" className={tileClass}>
+            <Globe className="h-5 w-5 text-primary" />
+            Website
+          </Link>
+          <Link to="/setup" className={tileClass}>
+            <QrCode className="h-5 w-5 text-primary" />
+            QR
+          </Link>
         </div>
 
         <div className="mt-10 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
@@ -93,3 +93,6 @@ function OwnerHome() {
     </div>
   );
 }
+
+const tileClass =
+  "flex min-h-20 flex-col items-center justify-center gap-2 rounded-2xl border border-border bg-card text-[15px] font-medium transition-colors hover:bg-muted";
