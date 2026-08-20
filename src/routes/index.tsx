@@ -51,36 +51,36 @@ function Landing() {
   return (
     <main className={leaving ? "fade-out-up" : "fade-in"}>
       {/* HERO */}
-      <section className="relative h-[82vh] min-h-[560px] w-full overflow-hidden">
+      <section className="relative h-[100dvh] min-h-[580px] w-full overflow-hidden">
         <img
           src={IMAGES.heroInterior}
           alt="Warm restaurant interior with wooden tables and ambient lighting"
-          className="slow-zoom h-full w-full object-cover"
+          className="fixed inset-0 h-[100dvh] w-full object-cover slow-zoom"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,42,95,0.94)] via-[rgba(15,42,95,0.55)] to-[rgba(8,17,31,0.35)]" />
         <div className="absolute inset-0 flex flex-col px-6 pt-6 sm:px-10 lg:px-16">
-          <span className="text-xl font-semibold tracking-tight text-white">မြန်ဆန်</span>
+          <span className="text-lg font-semibold tracking-tight text-white">မြန်ဆန်</span>
           <div className="mt-auto max-w-2xl pb-12">
-            <h1 className="text-[8vw] leading-[1.25] font-semibold text-white sm:text-4xl lg:text-[44px]">
+            <h1 className="text-[clamp(1.5rem,5.2vw,2.25rem)] leading-[1.25] font-semibold text-white sm:text-4xl lg:text-[44px]">
               သင့်ဆိုင်အတွက် လိုအပ်တာကို ပြောပါ။
               <br />
               ကျန်တာကို မြန်ဆန်က ကူညီပေးပါမယ်။
             </h1>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-white/80">
+            <p className="mt-5 max-w-md text-sm leading-relaxed text-white/80 sm:text-base">
               A simpler way to bring your restaurant online — without learning complicated
               technology.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <button
                 onClick={startConsult}
-                className="min-h-13 rounded-full bg-primary px-7 py-3.5 text-[15px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+                className="min-h-12 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover sm:min-h-13 sm:px-7 sm:text-[15px]"
               >
                 အခမဲ့ အကြံပေးမှု စတင်မယ်
               </button>
               <Link
                 to="/r/shwe-hotpot/table/$table"
                 params={{ table: "7" }}
-                className="min-h-13 rounded-full border border-white/50 px-7 py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-white/10"
+                className="min-h-12 rounded-full border border-white/50 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10 sm:min-h-13 sm:px-7 sm:text-[15px]"
               >
                 Customer Experience ကြည့်မယ်
               </Link>
