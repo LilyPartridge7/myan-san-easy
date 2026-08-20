@@ -85,12 +85,13 @@ function Landing() {
   const [openService, setOpenService] = useState<string | null>(null);
 
   const startConsult = () => {
+    if (leaving) return;
     setLeaving(true);
-    setTimeout(() => navigate({ to: "/consult" }), 340);
+    void navigate({ to: "/consult" });
   };
 
   return (
-    <main className={leaving ? "fade-out-up" : "fade-in"}>
+    <main className="fade-in">
       {/* HERO */}
       <section className="relative h-[100dvh] min-h-[580px] w-full overflow-hidden">
         <img
