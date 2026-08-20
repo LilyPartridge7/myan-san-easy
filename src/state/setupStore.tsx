@@ -20,6 +20,7 @@ export type SetupStage =
   | "details"
   | "summary"
   | "payment"
+  | "saved"
   | "success";
 
 export type WebsiteStyle = "warm" | "modern" | "traditional" | "luxury";
