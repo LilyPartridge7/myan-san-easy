@@ -701,8 +701,8 @@ function Field({
   label: string;
   value: string;
   onChange: (v: string) => void;
-  placeholder?: string;
-  error?: string;
+  placeholder?: string | undefined;
+  error?: string | undefined;
 }) {
   return (
     <label className="block text-sm font-medium">
