@@ -17,13 +17,17 @@ export type SetupStage =
   | "website"
   | "qr"
   | "services"
+  | "details"
   | "summary"
+  | "payment"
   | "success";
 
 export type WebsiteStyle = "warm" | "modern" | "traditional" | "luxury";
 export type Template = "modern" | "traditional" | "luxury";
 export type QRStyle = "simple" | "traditional" | "premium";
 export type HelpService = "menuDigital" | "qrStand" | "staffTraining" | "websiteHelp" | "selfServe";
+export type PaymentMethod = "kbzpay" | "wavepay" | "bank" | "contact";
+export type SetupStatus = "draft" | "paid" | "waitingForContact";
 
 export type CartLine = { item: MenuItem; qty: number };
 
@@ -44,6 +48,17 @@ export type SetupState = {
   language: "mm" | "en";
   qrStyle: QRStyle | null;
   helpServices: HelpService[];
+  address: string;
+  township: string;
+  city: string;
+  mapLink: string;
+  contactName: string;
+  phone: string;
+  email: string;
+  preferredContact: "phone" | "viber" | "messenger" | "email";
+  paymentMethod: PaymentMethod | null;
+  setupStatus: SetupStatus;
+  reference: string | null;
   currentStage: SetupStage;
   stageHistory: SetupStage[];
   confirmed: boolean;
@@ -68,6 +83,17 @@ const INITIAL: SetupState = {
   language: "mm",
   qrStyle: null,
   helpServices: [],
+  address: "",
+  township: "",
+  city: "",
+  mapLink: "",
+  contactName: "",
+  phone: "",
+  email: "",
+  preferredContact: "phone",
+  paymentMethod: null,
+  setupStatus: "draft",
+  reference: null,
   currentStage: "recommendation",
   stageHistory: [],
   confirmed: false,
