@@ -145,3 +145,91 @@
     color: var(--color-foreground);
   }
 }
+
+/* --- Restaurant website palette (Shwe Hotpot brand, not the မြန်ဆန် palette) --- */
+@theme inline {
+  --color-rw-burgundy: var(--rw-burgundy);
+  --color-rw-ivory: var(--rw-ivory);
+  --color-rw-gold: var(--rw-gold);
+  --color-rw-charcoal: var(--rw-charcoal);
+  --font-serif-display: "Cormorant Garamond", Georgia, serif;
+}
+
+:root {
+  --rw-burgundy: oklch(0.34 0.115 22);
+  --rw-ivory: oklch(0.966 0.017 84);
+  --rw-gold: oklch(0.75 0.105 82);
+  --rw-charcoal: oklch(0.22 0.008 60);
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@utility fade-up {
+  animation: myan-fade-up 420ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@utility fade-in {
+  animation: myan-fade-in 350ms ease-out both;
+}
+
+@utility fade-out-up {
+  animation: myan-fade-out-up 320ms ease-in both;
+}
+
+@utility slow-zoom {
+  animation: myan-zoom 18s ease-out forwards;
+}
+
+@keyframes myan-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes myan-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes myan-fade-out-up {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes myan-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
