@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import { Send } from "lucide-react";
 
 export function AIMessage({ children, className }: { children: ReactNode; className?: string }) {
   return (

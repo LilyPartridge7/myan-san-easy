@@ -94,7 +94,7 @@ function Consult() {
         subtitle="Free Restaurant Consultation"
         status="သင့်ဆိုင်အကြောင်း သိအောင် မေးနေပါတယ်"
       />
-      <div className="flex-1 overflow-y-auto px-4 py-6">
+      <div className="flex-1 overflow-y-auto px-4 py-6 pb-4">
         <div className="mx-auto flex max-w-[820px] flex-col gap-4">
           {messages.map((m, i) =>
             m.role === "ai" ? (
@@ -118,7 +118,20 @@ function Consult() {
           <div ref={endRef} />
         </div>
       </div>
-      <ChatComposer />
+      <ChatComposer
+        onSend={(text) => {
+          setMessages((m) => [
+            ...m,
+            { role: "user", text },
+            {
+              role: "ai",
+              text: question
+                ? "ကျေးဇူးတင်ပါတယ်။ ပိုမြန်အောင် အပေါ်က ရွေးချယ်စရာလေးတွေထဲက တစ်ခုကို နှိပ်ပေးပါ။"
+                : "မှတ်ထားပါတယ်။ မြန်ဆန် team က ဒီအချက်ကို ဆက်ကြည့်ပေးပါမယ်။",
+            },
+          ]);
+        }}
+      />
     </div>
   );
 }
