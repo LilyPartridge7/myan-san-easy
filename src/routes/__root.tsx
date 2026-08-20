@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -129,12 +130,24 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
     <QueryClientProvider client={queryClient}>
       <SetupProvider>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
+        <div key={pathname} className="page-enter min-h-screen">
+          <Outlet />
+        </div>
+        {pathname !== "/" ? (
+          <Link
+            to="/"
+            aria-label="Go to homepage"
+            className="fixed bottom-5 left-4 z-40 flex h-11 items-center gap-2 rounded-full border border-border bg-card/90 px-4 text-sm font-semibold text-primary shadow-lg backdrop-blur transition-colors hover:bg-muted"
+          >
+            မြန်ဆန်
+          </Link>
+        ) : null}
       </SetupProvider>
     </QueryClientProvider>
   );
