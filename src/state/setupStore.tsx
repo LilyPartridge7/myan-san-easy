@@ -37,6 +37,8 @@ export type ConsultTurn = {
   question: string;
   value: string;
   label: string;
+  /** Exactly what the owner typed, when the answer came from free text. */
+  raw?: string;
 };
 
 export type CartLine = { item: MenuItem; qty: number };
