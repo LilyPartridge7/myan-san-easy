@@ -9,8 +9,14 @@ import { SetupNavigation, StageRail } from "@/components/myansan/SetupNavigation
 import { WebsiteStyleSelector } from "@/components/myansan/WebsiteStyleSelector";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { SERVICE_LABELS, getPackage, type ServiceKey } from "@/data/packages";
+import { formatMMK, quote } from "@/data/pricing";
 import { recommend } from "@/services/mockConsultant";
-import { useSetup, type HelpService, type QRStyle } from "@/state/setupStore";
+import {
+  useSetup,
+  type HelpService,
+  type PaymentMethod,
+  type QRStyle,
+} from "@/state/setupStore";
 import { useState } from "react";
 
 export const Route = createFileRoute("/setup")({
@@ -46,6 +52,13 @@ const QR_STYLES: { id: QRStyle; label: string }[] = [
   { id: "premium", label: "Premium" },
 ];
 
+const PAYMENT_METHODS: { id: PaymentMethod; label: string; note: string }[] = [
+  { id: "kbzpay", label: "KBZPay", note: "မိုဘိုင်းနဲ့ ငွေပေးချေမယ်" },
+  { id: "wavepay", label: "WavePay", note: "မိုဘိုင်းနဲ့ ငွေပေးချေမယ်" },
+  { id: "bank", label: "Bank Transfer", note: "ဘဏ်ကနေ လွှဲမယ်" },
+  { id: "contact", label: "Pay Later / Contact မြန်ဆန် Team", note: "အရင် စကားပြောချင်ပါတယ်" },
+];
+
 function SetupPage() {
   const navigate = useNavigate();
   const {
@@ -60,6 +73,8 @@ function SetupPage() {
   } = useSetup();
   const [compareOpen, setCompareOpen] = useState(false);
   const [whyOpen, setWhyOpen] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [processing, setProcessing] = useState(false);
 
   const rec = recommend(state);
   const recommendedId = state.recommendedPackage ?? rec.packageId;
@@ -72,7 +87,41 @@ function SetupPage() {
   }, []);
 
   const stage = state.currentStage;
-  const rail = stage === "recommendation" ? "Consultation" : stage === "summary" || stage === "success" ? "Review" : "Your Setup";
+  const rail =
+    stage === "recommendation"
+      ? "Consultation"
+      : stage === "summary" || stage === "payment" || stage === "success"
+        ? "Review"
+        : "Your Setup";
+
+  const activePackage = state.selectedPackage ?? recommendedId;
+  const price = quote(activePackage, state.helpServices);
+
+  const submitDetails = () => {
+    const e: Record<string, string> = {};
+    if (!state.restaurantName.trim()) e['restaurantName'] = "ဆိုင်နာမည် ထည့်ပေးပါ။";
+    if (!state.address.trim()) e['address'] = "ဆိုင်လိပ်စာ ထည့်ပေးပါ။";
+    if (!state.township.trim()) e['township'] = "မြို့နယ် ထည့်ပေးပါ။";
+    if (!state.city.trim()) e['city'] = "မြို့ / တိုင်းဒေသကြီး ထည့်ပေးပါ။";
+    if (!state.contactName.trim()) e['contactName'] = "ဆက်သွယ်ရမယ့် သူရဲ့ နာမည် ထည့်ပေးပါ။";
+    if (!state.phone.trim()) e['phone'] = "ဆက်သွယ်နိုင်ဖို့ ဖုန်းနံပါတ်ထည့်ပေးပါ။";
+    setErrors(e);
+    if (Object.keys(e).length === 0) goToStage("summary");
+  };
+
+  const payNow = () => {
+    setProcessing(true);
+    // DEMO PAYMENT FLOW — replace with real payment provider later
+    setTimeout(() => {
+      setProcessing(false);
+      update({
+        confirmed: true,
+        setupStatus: state.paymentMethod === "contact" ? "waitingForContact" : "paid",
+        reference: state.reference ?? `MYN-${String(124 + Math.floor(Math.random() * 60))}`,
+      });
+      goToStage("success");
+    }, 1400);
+  };
 
   const back = () => (canGoBack ? goBack() : navigate({ to: "/consult" }));
 
@@ -306,9 +355,116 @@ function SetupPage() {
             </div>
             <SetupNavigation
               onBack={back}
-              onContinue={() => goToStage("summary")}
+              onContinue={() => goToStage("details")}
               continueLabel="Continue"
             />
+          </div>
+        ) : null}
+
+        {stage === "details" ? (
+          <div key="details" className="fade-up mt-6 space-y-6">
+            <div>
+              <h2 className="text-2xl font-semibold tracking-tight">Almost Done</h2>
+              <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+                မြန်ဆန် team က သင့်ဆိုင် setup ကို ဆက်လက်ကူညီပေးနိုင်ဖို့ အချက်အလက်အနည်းငယ်
+                လိုပါတယ်။
+              </p>
+            </div>
+
+            <section className="space-y-4 rounded-2xl border border-border bg-card p-5">
+              <h3 className="text-lg font-semibold">ဆိုင်ဘယ်မှာရှိပါသလဲ?</h3>
+              <Field
+                label="ဆိုင်နာမည် *"
+                value={state.restaurantName}
+                onChange={(v) => update({ restaurantName: v })}
+                error={errors['restaurantName']}
+              />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Field
+                  label="ဆိုင်အမျိုးအစား"
+                  value={state.restaurantType ?? ""}
+                  onChange={(v) => update({ restaurantType: v })}
+                />
+                <Field
+                  label="Table အရေအတွက်"
+                  value={state.tableCount ?? ""}
+                  onChange={(v) => update({ tableCount: v })}
+                />
+              </div>
+              <Field
+                label="ဆိုင်လိပ်စာ *"
+                placeholder="No. 25, Pyay Road"
+                value={state.address}
+                onChange={(v) => update({ address: v })}
+                error={errors['address']}
+              />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Field
+                  label="မြို့နယ် *"
+                  placeholder="Kamayut"
+                  value={state.township}
+                  onChange={(v) => update({ township: v })}
+                  error={errors['township']}
+                />
+                <Field
+                  label="မြို့ / တိုင်းဒေသကြီး *"
+                  placeholder="Yangon"
+                  value={state.city}
+                  onChange={(v) => update({ city: v })}
+                  error={errors['city']}
+                />
+              </div>
+              <Field
+                label="Map location link (မထည့်လည်း ရပါတယ်)"
+                placeholder="Google Maps link"
+                value={state.mapLink}
+                onChange={(v) => update({ mapLink: v })}
+              />
+            </section>
+
+            <section className="space-y-4 rounded-2xl border border-border bg-card p-5">
+              <h3 className="text-lg font-semibold">ဘယ်လိုဆက်သွယ်ရမလဲ?</h3>
+              <Field
+                label="ဆက်သွယ်ရမယ့်သူ နာမည် *"
+                value={state.contactName}
+                onChange={(v) => update({ contactName: v })}
+                error={errors['contactName']}
+              />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Field
+                  label="ဖုန်းနံပါတ် *"
+                  placeholder="09xxxxxxxxx"
+                  value={state.phone}
+                  onChange={(v) => update({ phone: v })}
+                  error={errors['phone']}
+                />
+                <Field
+                  label="Email (မထည့်လည်း ရပါတယ်)"
+                  value={state.email}
+                  onChange={(v) => update({ email: v })}
+                />
+              </div>
+              <div>
+                <p className="text-sm font-medium">ဘယ်လိုဆက်သွယ်တာ ကြိုက်ပါသလဲ?</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {(["phone", "viber", "messenger", "email"] as const).map((m) => (
+                    <button
+                      key={m}
+                      onClick={() => update({ preferredContact: m })}
+                      className={`min-h-12 rounded-full border px-5 text-[15px] capitalize transition-colors ${
+                        state.preferredContact === m
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border"
+                      }`}
+                    >
+                      {m}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <SetupNavigation onBack={back} onContinue={submitDetails} continueLabel="Continue" />
           </div>
         ) : null}
 
@@ -337,15 +493,30 @@ function SetupPage() {
                     : "မလိုပါ"
                 }
               />
+              <Row
+                label="LOCATION"
+                value={[state.township, state.city].filter(Boolean).join(", ") || "—"}
+              />
+              <Row label="CONTACT" value={state.phone || "—"} />
             </dl>
+
+            <div className="rounded-2xl border border-border bg-card">
+              <p className="px-5 pt-4 text-[11px] tracking-[0.25em] text-muted-foreground">
+                PRICE SUMMARY
+              </p>
+              <dl className="mt-2 divide-y divide-border">
+                <Row label="SETUP FEE" value={formatMMK(price.setup)} />
+                <Row label="MONTHLY SERVICE" value={`${formatMMK(price.monthly)} / month`} />
+                <Row label="OPTIONAL SERVICES" value={formatMMK(price.optional)} />
+                <Row label="TOTAL TODAY" value={formatMMK(price.totalToday)} />
+              </dl>
+            </div>
+
             <SetupNavigation
               onBack={back}
-              backLabel="Edit Setup"
-              onContinue={() => {
-                update({ confirmed: true });
-                goToStage("success");
-              }}
-              continueLabel="Confirm My Setup"
+              backLabel="Edit"
+              onContinue={() => goToStage("payment")}
+              continueLabel="Continue to Payment"
               extra={
                 <Link
                   to="/owner"
@@ -358,11 +529,107 @@ function SetupPage() {
           </div>
         ) : null}
 
+        {stage === "payment" ? (
+          <div key="payment" className="fade-up mt-6 space-y-6">
+            <div>
+              <span className="rounded-full bg-secondary px-3 py-1 text-[11px] font-medium tracking-wide text-secondary-foreground">
+                Demo Checkout
+              </span>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight">Complete Your Setup</h2>
+              <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+                Package ကိုအတည်ပြုပြီး မြန်ဆန် team နဲ့ setup စတင်နိုင်ပါတယ်။
+              </p>
+            </div>
+
+            <dl className="divide-y divide-border rounded-2xl border border-border bg-card">
+              <Row label="RESTAURANT" value={state.restaurantName} />
+              <Row label="PACKAGE" value={getPackage(activePackage).name} />
+              <Row label="AMOUNT" value={formatMMK(price.totalToday)} />
+              <Row label="CONTACT" value={state.phone || "—"} />
+            </dl>
+
+            <div>
+              <h3 className="text-lg font-semibold">Payment Method</h3>
+              <div className="mt-3 space-y-3">
+                {PAYMENT_METHODS.map((m) => {
+                  const on = state.paymentMethod === m.id;
+                  return (
+                    <button
+                      key={m.id}
+                      onClick={() => update({ paymentMethod: m.id })}
+                      className={`flex min-h-16 w-full items-center gap-4 rounded-2xl border px-5 text-left transition-colors ${
+                        on ? "border-primary bg-primary/5" : "border-border bg-card"
+                      }`}
+                    >
+                      <span
+                        className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
+                          on ? "border-primary" : "border-border"
+                        }`}
+                      >
+                        {on ? <span className="h-2.5 w-2.5 rounded-full bg-primary" /> : null}
+                      </span>
+                      <span>
+                        <span className="block text-[16px] font-medium">{m.label}</span>
+                        <span className="block text-sm text-muted-foreground">{m.note}</span>
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {state.paymentMethod === "contact" ? (
+              <AIMessage>
+                ရပါတယ်။ မြန်ဆန် team က သင့်ကို ဆက်သွယ်ပြီး package နဲ့ payment အကြောင်း
+                ရှင်းပြပေးပါမယ်။
+              </AIMessage>
+            ) : null}
+
+            <p className="text-xs text-muted-foreground">
+              🔒 Secure checkout · သင့်အချက်အလက်ကို မြန်ဆန် team အတွက်သာ သုံးပါမယ်။ (Demo — real
+              transaction မလုပ်ပါ)
+            </p>
+
+            <SetupNavigation
+              onBack={back}
+              onContinue={payNow}
+              disabled={!state.paymentMethod || processing}
+              continueLabel={
+                processing
+                  ? "Processing..."
+                  : state.paymentMethod === "contact"
+                    ? "Request Setup"
+                    : `Pay ${formatMMK(price.totalToday)}`
+              }
+            />
+          </div>
+        ) : null}
+
         {stage === "success" ? (
           <div key="success" className="fade-up mt-10 space-y-6 text-center">
-            <h2 className="text-2xl font-semibold tracking-tight">အဆင်သင့်ဖြစ်ပါပြီ 🎉</h2>
-            <p className="text-[15px] text-muted-foreground">
-              {state.restaurantName} အတွက် setup ကို သိမ်းထားပါတယ်။
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+              <Check className="h-10 w-10 text-primary" />
+            </div>
+            <h2 className="text-2xl font-semibold tracking-tight">Setup Confirmed</h2>
+            <p className="mx-auto max-w-md text-[15px] leading-relaxed text-muted-foreground">
+              ကျေးဇူးတင်ပါတယ်။ {state.restaurantName} အတွက် မြန်ဆန် setup request ကို
+              လက်ခံပြီးပါပြီ။
+            </p>
+            <dl className="mx-auto max-w-md divide-y divide-border rounded-2xl border border-border bg-card text-left">
+              <Row label="PACKAGE" value={getPackage(activePackage).name} />
+              <Row label="RESTAURANT" value={state.restaurantName} />
+              <Row
+                label="LOCATION"
+                value={[state.township, state.city].filter(Boolean).join(", ") || "—"}
+              />
+              <Row label="REFERENCE" value={state.reference ?? "MYN-00124"} />
+              <Row
+                label="STATUS"
+                value={state.setupStatus === "waitingForContact" ? "Waiting for Contact" : "Paid"}
+              />
+            </dl>
+            <p className="mx-auto max-w-md text-[15px] leading-relaxed text-muted-foreground">
+              မြန်ဆန် team က သင့်ကို ဆက်သွယ်ပြီး setup အဆင့်တွေကို ဆက်လက်ကူညီပေးပါမယ်။
             </p>
             <div className="flex flex-col items-center gap-3">
               <Link
@@ -371,19 +638,18 @@ function SetupPage() {
               >
                 Go to My Restaurant
               </Link>
-              <Link
-                to="/r/shwe-hotpot/table/$table"
-                params={{ table: "7" }}
-                className="inline-flex min-h-13 w-full max-w-xs items-center justify-center rounded-full border border-border bg-card px-6 text-[15px] font-medium"
-              >
-                Preview Customer Experience
-              </Link>
               <button
                 onClick={() => goToStage("summary")}
+                className="inline-flex min-h-13 w-full max-w-xs items-center justify-center rounded-full border border-border bg-card px-6 text-[15px] font-medium"
+              >
+                View My Setup
+              </button>
+              <a
+                href="tel:+959000000000"
                 className="min-h-11 text-sm text-muted-foreground underline underline-offset-4"
               >
-                Edit Setup
-              </button>
+                Contact မြန်ဆန်
+              </a>
             </div>
           </div>
         ) : null}
