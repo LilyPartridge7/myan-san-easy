@@ -1,12 +1,34 @@
 import { IMAGES } from "@/data/images";
 import type { WebsiteStyle } from "@/state/setupStore";
 import { cn } from "@/lib/utils";
+import { useT } from "@/i18n";
+import type { L } from "@/i18n/types";
 
-const STYLES: { id: WebsiteStyle; label: string; note: string; image: string }[] = [
-  { id: "warm", label: "Warm & Friendly", note: "အိမ်လိုနွေးထွေးတဲ့ ခံစားမှု", image: IMAGES.diningWarm },
-  { id: "modern", label: "Modern & Clean", note: "ရိုးရှင်း လတ်ဆတ်တဲ့ ပုံစံ", image: IMAGES.table },
-  { id: "traditional", label: "Traditional", note: "ရိုးရာ အရသာနဲ့ ဧည့်ဝတ်", image: IMAGES.gallery2 },
-  { id: "luxury", label: "Luxury", note: "ဇိမ်ခံ ရင်သပ်ရှုမောဖွယ်", image: IMAGES.heroInterior },
+const STYLES: { id: WebsiteStyle; label: L; note: L; image: string }[] = [
+  {
+    id: "warm",
+    label: { mm: "Warm & Friendly", en: "Warm & Friendly" },
+    note: { mm: "အိမ်လိုနွေးထွေးတဲ့ ခံစားမှု", en: "A warm, homely feeling" },
+    image: IMAGES.diningWarm,
+  },
+  {
+    id: "modern",
+    label: { mm: "Modern & Clean", en: "Modern & Clean" },
+    note: { mm: "ရိုးရှင်း လတ်ဆတ်တဲ့ ပုံစံ", en: "A simple, fresh look" },
+    image: IMAGES.table,
+  },
+  {
+    id: "traditional",
+    label: { mm: "Traditional", en: "Traditional" },
+    note: { mm: "ရိုးရာ အရသာနဲ့ ဧည့်ဝတ်", en: "Traditional flavor and hospitality" },
+    image: IMAGES.gallery2,
+  },
+  {
+    id: "luxury",
+    label: { mm: "Luxury", en: "Luxury" },
+    note: { mm: "ဇိမ်ခံ ရင်သပ်ရှုမောဖွယ်", en: "Luxurious and stunning" },
+    image: IMAGES.heroInterior,
+  },
 ];
 
 export function WebsiteStyleSelector({
@@ -16,6 +38,7 @@ export function WebsiteStyleSelector({
   value: WebsiteStyle | null;
   onChange: (s: WebsiteStyle) => void;
 }) {
+  const { p } = useT();
   return (
     <div className="grid grid-cols-2 gap-3">
       {STYLES.map((s) => (
@@ -30,14 +53,14 @@ export function WebsiteStyleSelector({
           <div className="relative h-24 overflow-hidden sm:h-32">
             <img
               src={s.image}
-              alt={s.label}
+              alt={p(s.label)}
               loading="lazy"
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           </div>
           <div className="bg-card p-3">
-            <p className="text-[15px] font-semibold">{s.label}</p>
-            <p className="text-xs text-muted-foreground">{s.note}</p>
+            <p className="text-[15px] font-semibold">{p(s.label)}</p>
+            <p className="text-xs text-muted-foreground">{p(s.note)}</p>
           </div>
         </button>
       ))}

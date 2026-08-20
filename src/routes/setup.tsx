@@ -62,6 +62,7 @@ const PAYMENT_METHODS: { id: PaymentMethod; labelKey: "setup.payment.kbzpay.labe
 
 function SetupPage() {
   const navigate = useNavigate();
+  const { t } = useT();
   const {
     state,
     hydrated,
@@ -92,13 +93,13 @@ function SetupPage() {
   if (!hydrated) {
     return (
       <div className="min-h-screen bg-background">
-        <BrandHeader subtitle="Your Setup" />
+        <BrandHeader subtitle={t("setup.subtitle")} />
         <div className="mx-auto flex max-w-[820px] flex-col items-center gap-3 px-4 py-24 text-center">
           <span className="flex h-12 w-12 animate-pulse items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
-            မြန်
+            {t("setup.restoringLoud")}
           </span>
-          <p className="text-[15px] text-muted-foreground">သင့် setup ကို ပြန်ဖွင့်နေပါတယ်...</p>
-          <p className="text-sm text-muted-foreground">Restoring your setup…</p>
+          <p className="text-[15px] text-muted-foreground">{t("setup.restoring1")}</p>
+          <p className="text-sm text-muted-foreground">{t("setup.restoring2")}</p>
         </div>
       </div>
     );
@@ -117,12 +118,12 @@ function SetupPage() {
 
   const submitDetails = () => {
     const e: Record<string, string> = {};
-    if (!state.restaurantName.trim()) e['restaurantName'] = "ဆိုင်နာမည် ထည့်ပေးပါ။";
-    if (!state.address.trim()) e['address'] = "ဆိုင်လိပ်စာ ထည့်ပေးပါ။";
-    if (!state.township.trim()) e['township'] = "မြို့နယ် ထည့်ပေးပါ။";
-    if (!state.city.trim()) e['city'] = "မြို့ / တိုင်းဒေသကြီး ထည့်ပေးပါ။";
-    if (!state.contactName.trim()) e['contactName'] = "ဆက်သွယ်ရမယ့် သူရဲ့ နာမည် ထည့်ပေးပါ။";
-    if (!state.phone.trim()) e['phone'] = "ဆက်သွယ်နိုင်ဖို့ ဖုန်းနံပါတ်ထည့်ပေးပါ။";
+    if (!state.restaurantName.trim()) e['restaurantName'] = t("setup.error.restaurantName");
+    if (!state.address.trim()) e['address'] = t("setup.error.address");
+    if (!state.township.trim()) e['township'] = t("setup.error.township");
+    if (!state.city.trim()) e['city'] = t("setup.error.city");
+    if (!state.contactName.trim()) e['contactName'] = t("setup.error.contactName");
+    if (!state.phone.trim()) e['phone'] = t("setup.error.phone");
     setErrors(e);
     if (Object.keys(e).length === 0) goToStage("summary");
   };
@@ -145,14 +146,14 @@ function SetupPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <BrandHeader subtitle="Your Setup" />
+      <BrandHeader subtitle={t("setup.subtitle")} />
       <div className="mx-auto max-w-[820px] px-4 py-6 pb-24">
         <StageRail active={rail as "Consultation" | "Your Setup" | "Review"} />
 
         {stage === "recommendation" ? (
           <div key="recommendation" className="fade-up mt-6 space-y-5">
             <AIMessage>
-              အခု သင့်ဆိုင်အခြေအနေကို နားလည်ပါပြီ။ {rec.reason}
+              {t("setup.rec.intro", { reason: rec.reason })}
             </AIMessage>
             <PackageCard id={recommendedId} recommendedFor={state.restaurantName} />
             <div className="flex flex-wrap gap-3">
@@ -163,7 +164,7 @@ function SetupPage() {
                 }}
                 className="min-h-12 rounded-full bg-primary px-6 text-[15px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
               >
-                ဒီ Setup ကိုယူမယ်
+                {t("setup.rec.take")}
               </button>
               <button
                 onClick={() => {
@@ -172,24 +173,24 @@ function SetupPage() {
                 }}
                 className="min-h-12 rounded-full border border-border bg-card px-6 text-[15px] font-medium transition-colors hover:bg-muted"
               >
-                ကိုယ်တိုင်ပြင်မယ်
+                {t("setup.rec.customize")}
               </button>
               <button
                 onClick={() => setCompareOpen(true)}
                 className="min-h-12 rounded-full px-4 text-sm text-muted-foreground underline underline-offset-4"
               >
-                Compare Plans
+                {t("setup.rec.compare")}
               </button>
             </div>
             <button
               onClick={() => setWhyOpen(true)}
               className="text-sm text-muted-foreground underline underline-offset-4"
             >
-              ဘာကြောင့် ဒီလိုအကြံပြုတာလဲ?
+              {t("setup.rec.why")}
             </button>
             <div className="pt-2">
               <Link to="/consult" className="text-sm text-muted-foreground underline underline-offset-4">
-                ← Consultation ဆီ ပြန်သွားမယ်
+                {t("setup.rec.backToConsult")}
               </Link>
             </div>
           </div>
@@ -197,11 +198,11 @@ function SetupPage() {
 
         {stage === "package" ? (
           <div key="package" className="fade-up mt-6 space-y-5">
-            <AIMessage>ဒီထဲက မလိုတာရှိရင် ဖြုတ်လို့ရပါတယ်။ လိုတာရှိရင်လည်း ထည့်လို့ရပါတယ်။</AIMessage>
+            <AIMessage>{t("setup.package.intro")}</AIMessage>
             <h2 className="text-xl font-semibold tracking-tight">
-              Your Setup · {getPackage(state.selectedPackage ?? recommendedId).name}
+              {t("setup.package.heading", { name: getPackage(state.selectedPackage ?? recommendedId).name })}
             </h2>
-            {(["CUSTOMER", "YOUR RESTAURANT", "HELP FROM မြန်ဆန်"] as const).map((group) => (
+            {([t("setup.package.group.customer"), t("setup.package.group.restaurant"), t("setup.package.group.help")] as const).map((group) => (
               <div key={group}>
                 <p className="mt-4 text-[11px] tracking-[0.25em] text-muted-foreground">{group}</p>
                 <div className="mt-2 space-y-2">
@@ -234,7 +235,7 @@ function SetupPage() {
             <SetupNavigation
               onBack={back}
               onContinue={() => goToStage("website")}
-              continueLabel="Save & Continue"
+              continueLabel={t("setup.saveContinue")}
             />
           </div>
         ) : null}

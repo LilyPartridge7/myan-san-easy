@@ -58,4 +58,7 @@ export const customer = {
   "preview.backToSetup": { mm: "Setup သို့ ပြန်သွားမည်", en: "Back to Setup" },
   "preview.edit": { mm: "ပြင်မည်", en: "Edit" },
   "preview.continueSetup": { mm: "Setup ဆက်လုပ်မည် →", en: "Continue Setup →" },
+  "qr.scanToOrder": { mm: "စကင်ဖတ်ပြီး မှာယူပါ", en: "SCAN TO ORDER" },
+  "qr.table": { mm: "စားပွဲ {table}", en: "TABLE {table}" },
+  "qr.poweredBy": { mm: "Powered by မြန်ဆန်", en: "Powered by မြန်ဆန်" },
 } satisfies Record<string, L>;
