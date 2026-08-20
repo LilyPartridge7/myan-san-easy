@@ -1,7 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { IMAGES } from "@/data/images";
 import { PackageCard } from "@/components/myansan/PackageCard";
+import { LanguageToggle } from "@/components/myansan/LanguageToggle";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -39,9 +41,48 @@ const STEPS = [
   { n: "03", t: "Choose Your Setup", d: "ကြိုက်သလို နည်းနည်းပြင်ပြီး စလို့ရပါပြီ။" },
 ];
 
+const SERVICES = [
+  {
+    id: "qr",
+    title: "QR Table Ordering",
+    summary: "Customer တွေ စားပွဲမှာတင် order တင်နိုင်တဲ့ စနစ်",
+    details:
+      "စားပွဲတိုင်းအတွက် QR code ပြင်ဆင်ပေးပါတယ်။ Customer က scan လုပ်ပြီး menu ကြည့်၊ order တင်လိုက်တာနဲ့ order က ဆိုင်ဘက်ကို ချက်ချင်းရောက်ပါတယ်။ App download လုပ်စရာ မလိုပါဘူး။",
+  },
+  {
+    id: "menu",
+    title: "Digital Menu",
+    summary: "Menu ကို ဓာတ်ပုံ၊ စျေးနှုန်းနဲ့အတူ အွန်လိုင်းတင်ပေးခြင်း",
+    details:
+      "လက်ရှိ menu ကို မြန်ဆန် team က digital ပြောင်းပေးပါတယ်။ စျေးနှုန်းပြောင်းချင်ရင်၊ ကုန်သွားတဲ့ ဟင်းကို sold out ပြချင်ရင် ဖုန်းကနေတင် အလွယ်တကူ ပြင်နိုင်ပါတယ်။",
+  },
+  {
+    id: "website",
+    title: "Restaurant Website",
+    summary: "ဆိုင်အတွက် လှပပြီး professional ဖြစ်တဲ့ website",
+    details:
+      "Template ၃ မျိုး (Modern, Traditional, Luxury) ထဲက ရွေးလို့ရပါတယ်။ ဆိုင်နာမည်၊ အရောင်၊ ဓာတ်ပုံနဲ့ တည်နေရာကို ထည့်ပေးရုံနဲ့ website အဆင်သင့် ဖြစ်သွားပါမယ်။",
+  },
+  {
+    id: "training",
+    title: "Staff Training & Setup Help",
+    summary: "ဆိုင်ဝန်ထမ်းတွေကို အသုံးပြုနည်း သင်ပေးခြင်း",
+    details:
+      "မြန်ဆန် team က ဆိုင်ကိုလာပြီး QR stand ချထားပေးတာ၊ staff ကို လက်တွေ့သင်ပေးတာတွေ လုပ်ပေးပါတယ်။ နည်းပညာ မကျွမ်းကျင်လည်း ရပါတယ်။",
+  },
+  {
+    id: "support",
+    title: "Ongoing Support",
+    summary: "လစဉ် ဆက်လက်ကူညီပေးမှု",
+    details:
+      "အသုံးပြုရင်း မေးစရာရှိရင် ဖုန်း၊ Viber ကနေ ဆက်သွယ်လို့ရပါတယ်။ Menu ပြင်ပေးတာ၊ QR အသစ်ထုတ်ပေးတာတွေကိုလည်း ကူညီပေးပါတယ်။",
+  },
+];
+
 function Landing() {
   const navigate = useNavigate();
   const [leaving, setLeaving] = useState(false);
+  const [openService, setOpenService] = useState<string | null>(null);
 
   const startConsult = () => {
     setLeaving(true);
@@ -58,9 +99,12 @@ function Landing() {
           className="fixed inset-0 z-[-1] h-[100dvh] w-full object-cover slow-zoom"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,42,95,0.94)] via-[rgba(15,42,95,0.55)] to-[rgba(8,17,31,0.35)]" />
-        <div className="absolute inset-0 flex flex-col px-6 pt-6 sm:px-10 lg:px-16">
-          <span className="text-lg font-semibold tracking-tight text-white">မြန်ဆန်</span>
-          <div className="mt-auto max-w-2xl pb-12">
+        <div className="absolute inset-0 flex flex-col px-5 pt-5 sm:px-10 lg:px-16">
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-lg font-semibold tracking-tight text-white">မြန်ဆန်</span>
+            <LanguageToggle tone="dark" />
+          </div>
+          <div className="mt-auto max-w-2xl pb-12 2xl:max-w-3xl">
             <h1 className="text-[clamp(1.5rem,5.2vw,2.25rem)] leading-[1.25] font-semibold text-white sm:text-4xl lg:text-[44px]">
               သင့်ဆိုင်အတွက် လိုအပ်တာကို ပြောပါ။
               <br />
