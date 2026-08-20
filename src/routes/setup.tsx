@@ -62,7 +62,7 @@ const PAYMENT_METHODS: { id: PaymentMethod; labelKey: "setup.payment.kbzpay.labe
 
 function SetupPage() {
   const navigate = useNavigate();
-  const { t } = useT();
+  const { t, p } = useT();
   const {
     state,
     hydrated,
@@ -202,12 +202,16 @@ function SetupPage() {
             <h2 className="text-xl font-semibold tracking-tight">
               {t("setup.package.heading", { name: getPackage(state.selectedPackage ?? recommendedId).name })}
             </h2>
-            {([t("setup.package.group.customer"), t("setup.package.group.restaurant"), t("setup.package.group.help")] as const).map((group) => (
-              <div key={group}>
+            {[
+              { key: "customer", label: t("setup.package.group.customer") },
+              { key: "restaurant", label: t("setup.package.group.restaurant") },
+              { key: "help", label: t("setup.package.group.help") },
+            ].map(({ key: groupKey, label: group }) => (
+              <div key={groupKey}>
                 <p className="mt-4 text-[11px] tracking-[0.25em] text-muted-foreground">{group}</p>
                 <div className="mt-2 space-y-2">
                   {(Object.keys(SERVICE_LABELS) as ServiceKey[])
-                    .filter((k) => SERVICE_LABELS[k].group === group)
+                    .filter((k) => p(SERVICE_LABELS[k].group) === group)
                     .map((k) => {
                       const on = state.selectedServices.includes(k);
                       return (
@@ -225,7 +229,7 @@ function SetupPage() {
                           >
                             {on ? <Check className="h-4 w-4" /> : null}
                           </span>
-                          {SERVICE_LABELS[k].label}
+                          {p(SERVICE_LABELS[k].label)}
                         </button>
                       );
                     })}
@@ -242,16 +246,14 @@ function SetupPage() {
 
         {stage === "website" ? (
           <div key="website" className="fade-up mt-6 space-y-5">
-            <AIMessage>
-              Customer တွေ သင့်ဆိုင် website ကို ဝင်တဲ့အခါ ဘယ်လိုခံစားစေချင်ပါသလဲ?
-            </AIMessage>
+<AIMessage>{t("setup.website.intro")}</AIMessage>
             <WebsiteStyleSelector
               value={state.websiteStyle}
               onChange={(s) => update({ websiteStyle: s })}
             />
             <div className="space-y-3 rounded-2xl border border-border bg-card p-4">
               <label className="block text-sm font-medium">
-                ဆိုင်နာမည်
+                {t("setup.website.name")}
                 <input
                   value={state.restaurantName}
                   onChange={(e) => update({ restaurantName: e.target.value })}
@@ -259,7 +261,7 @@ function SetupPage() {
                 />
               </label>
               <label className="block text-sm font-medium">
-                Tagline
+                {t("setup.website.tagline")}
                 <input
                   value={state.tagline}
                   onChange={(e) => update({ tagline: e.target.value })}
@@ -267,7 +269,7 @@ function SetupPage() {
                 />
               </label>
               <label className="flex items-center justify-between text-sm font-medium">
-                အဓိက အရောင်
+                {t("setup.website.mainColor")}
                 <input
                   type="color"
                   value={state.restaurantColor}
@@ -276,7 +278,7 @@ function SetupPage() {
                 />
               </label>
               <div className="flex items-center justify-between text-sm font-medium">
-                ဘာသာစကား
+                {t("setup.website.language")}
                 <div className="flex gap-2">
                   {(["mm", "en"] as const).map((l) => (
                     <button
@@ -286,19 +288,17 @@ function SetupPage() {
                         state.language === l ? "border-primary bg-primary/5" : "border-border"
                       }`}
                     >
-                      {l === "mm" ? "မြန်မာ" : "English"}
+                      {l === "mm" ? t("setup.website.lang.mm") : t("setup.website.lang.en")}
                     </button>
                   ))}
                 </div>
               </div>
             </div>
-            <AIMessage>
-              Website preview အဆင်သင့်ဖြစ်ပါပြီ။ အခုကြည့်မလား၊ setup ကိုဆက်လုပ်မလား?
-            </AIMessage>
+<AIMessage>{t("setup.website.previewReady")}</AIMessage>
             <SetupNavigation
               onBack={back}
               onContinue={() => goToStage("qr")}
-              continueLabel="Continue Setup"
+              continueLabel={t("setup.continueSetup")}
               disabled={!state.websiteStyle}
               extra={
                 <Link
@@ -310,7 +310,7 @@ function SetupPage() {
                   }}
                   className="inline-flex min-h-12 items-center rounded-full border border-border bg-card px-6 text-[15px] font-medium transition-colors hover:bg-muted"
                 >
-                  {openingPreview ? "Preparing..." : "Preview Website"}
+                  {openingPreview ? t("setup.preparing") : t("setup.previewWebsite")}
                 </Link>
               }
             />
@@ -319,7 +319,7 @@ function SetupPage() {
 
         {stage === "qr" ? (
           <div key="qr" className="fade-up mt-6 space-y-5">
-            <AIMessage>Table မှာ customer scan လုပ်ဖို့ QR ပုံစံရွေးရအောင်။</AIMessage>
+            <AIMessage>{t("setup.qr.intro")}</AIMessage>
             <div className="grid grid-cols-3 gap-3">
               {QR_STYLES.map((q) => (
                 <button
@@ -330,7 +330,7 @@ function SetupPage() {
                   }`}
                 >
                   <QRPreview style={q.id} restaurantName={state.restaurantName} small />
-                  <p className="py-2 text-sm font-medium">{q.label}</p>
+                  <p className="py-2 text-sm font-medium">{t(q.key)}</p>
                 </button>
               ))}
             </div>
@@ -338,12 +338,12 @@ function SetupPage() {
               onClick={() => update({ qrStyle: rec.qrStyle })}
               className="min-h-11 rounded-full border border-border bg-card px-5 text-sm font-medium"
             >
-              မြန်ဆန်က ရွေးပေးပါ
+              {t("setup.qr.pickForMe")}
             </button>
             <SetupNavigation
               onBack={back}
               onContinue={() => goToStage("services")}
-              continueLabel="Continue"
+              continueLabel={t("setup.continue")}
               disabled={!state.qrStyle}
             />
           </div>
@@ -351,9 +351,7 @@ function SetupPage() {
 
         {stage === "services" ? (
           <div key="services" className="fade-up mt-6 space-y-5">
-            <AIMessage>
-              နောက်ဆုံးအနေနဲ့ ဘယ်အပိုင်းတွေကို မြန်ဆန် team က ကူညီပေးရမလဲ?
-            </AIMessage>
+<AIMessage>{t("setup.services.intro")}</AIMessage>
             <div className="space-y-3">
               {HELP_OPTIONS.map((h) => {
                 const on = state.helpServices.includes(h.id);
@@ -372,7 +370,7 @@ function SetupPage() {
                     >
                       {on ? <Check className="h-4 w-4" /> : null}
                     </span>
-                    {h.label}
+                    {t(h.key)}
                   </button>
                 );
               })}
@@ -380,7 +378,7 @@ function SetupPage() {
             <SetupNavigation
               onBack={back}
               onContinue={() => goToStage("details")}
-              continueLabel="Continue"
+              continueLabel={t("setup.continue")}
             />
           </div>
         ) : null}
@@ -388,88 +386,87 @@ function SetupPage() {
         {stage === "details" ? (
           <div key="details" className="fade-up mt-6 space-y-6">
             <div>
-              <h2 className="text-2xl font-semibold tracking-tight">Almost Done</h2>
+              <h2 className="text-2xl font-semibold tracking-tight">{t("setup.details.heading")}</h2>
               <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
-                မြန်ဆန် team က သင့်ဆိုင် setup ကို ဆက်လက်ကူညီပေးနိုင်ဖို့ အချက်အလက်အနည်းငယ်
-                လိုပါတယ်။
+                {t("setup.details.subtitle")}
               </p>
             </div>
 
             <section className="space-y-4 rounded-2xl border border-border bg-card p-5">
-              <h3 className="text-lg font-semibold">ဆိုင်ဘယ်မှာရှိပါသလဲ?</h3>
+              <h3 className="text-lg font-semibold">{t("setup.details.locationTitle")}</h3>
               <Field
-                label="ဆိုင်နာမည် *"
+                label={t("setup.field.restaurantName")}
                 value={state.restaurantName}
                 onChange={(v) => update({ restaurantName: v })}
                 error={errors['restaurantName']}
               />
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field
-                  label="ဆိုင်အမျိုးအစား"
+                  label={t("setup.field.restaurantType")}
                   value={state.restaurantType ?? ""}
                   onChange={(v) => update({ restaurantType: v })}
                 />
                 <Field
-                  label="Table အရေအတွက်"
+                  label={t("setup.field.tableCount")}
                   value={state.tableCount ?? ""}
                   onChange={(v) => update({ tableCount: v })}
                 />
               </div>
               <Field
-                label="ဆိုင်လိပ်စာ *"
-                placeholder="No. 25, Pyay Road"
+                label={t("setup.field.address")}
+                placeholder={t("setup.field.addressPlaceholder")}
                 value={state.address}
                 onChange={(v) => update({ address: v })}
                 error={errors['address']}
               />
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field
-                  label="မြို့နယ် *"
-                  placeholder="Kamayut"
+                  label={t("setup.field.township")}
+                  placeholder={t("setup.field.townshipPlaceholder")}
                   value={state.township}
                   onChange={(v) => update({ township: v })}
                   error={errors['township']}
                 />
                 <Field
-                  label="မြို့ / တိုင်းဒေသကြီး *"
-                  placeholder="Yangon"
+                  label={t("setup.field.city")}
+                  placeholder={t("setup.field.cityPlaceholder")}
                   value={state.city}
                   onChange={(v) => update({ city: v })}
                   error={errors['city']}
                 />
               </div>
               <Field
-                label="Map location link (မထည့်လည်း ရပါတယ်)"
-                placeholder="Google Maps link"
+                label={t("setup.field.mapLink")}
+                placeholder={t("setup.field.mapLinkPlaceholder")}
                 value={state.mapLink}
                 onChange={(v) => update({ mapLink: v })}
               />
             </section>
 
             <section className="space-y-4 rounded-2xl border border-border bg-card p-5">
-              <h3 className="text-lg font-semibold">ဘယ်လိုဆက်သွယ်ရမလဲ?</h3>
+              <h3 className="text-lg font-semibold">{t("setup.details.contactTitle")}</h3>
               <Field
-                label="ဆက်သွယ်ရမယ့်သူ နာမည် *"
+                label={t("setup.field.contactName")}
                 value={state.contactName}
                 onChange={(v) => update({ contactName: v })}
                 error={errors['contactName']}
               />
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field
-                  label="ဖုန်းနံပါတ် *"
-                  placeholder="09xxxxxxxxx"
+                  label={t("setup.field.phone")}
+                  placeholder={t("setup.field.phonePlaceholder")}
                   value={state.phone}
                   onChange={(v) => update({ phone: v })}
                   error={errors['phone']}
                 />
                 <Field
-                  label="Email (မထည့်လည်း ရပါတယ်)"
+                  label={t("setup.field.email")}
                   value={state.email}
                   onChange={(v) => update({ email: v })}
                 />
               </div>
               <div>
-                <p className="text-sm font-medium">ဘယ်လိုဆက်သွယ်တာ ကြိုက်ပါသလဲ?</p>
+                <p className="text-sm font-medium">{t("setup.field.preferredContact")}</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {(["phone", "viber", "messenger", "email"] as const).map((m) => (
                     <button
@@ -481,14 +478,14 @@ function SetupPage() {
                           : "border-border"
                       }`}
                     >
-                      {m}
+                      {t(`setup.contact.${m}` as const)}
                     </button>
                   ))}
                 </div>
               </div>
             </section>
 
-            <SetupNavigation onBack={back} onContinue={submitDetails} continueLabel="Continue" />
+            <SetupNavigation onBack={back} onContinue={submitDetails} continueLabel={t("setup.continue")} />
           </div>
         ) : null}
 
@@ -502,10 +499,10 @@ function SetupPage() {
                 label="CUSTOMER ORDERING"
                 value={state.selectedServices.includes("qrOrdering") ? "QR Ordering" : "Menu only"}
               />
-              <Row label="WEBSITE" value={styleLabel(state.websiteStyle)} />
+              <Row label="WEBSITE" value={styleLabel(t, state.websiteStyle)} />
               <Row
                 label="TABLE QR"
-                value={`${state.tableCount ?? "—"} Tables · ${qrLabel(state.qrStyle)}`}
+                value={`${state.tableCount ?? "—"} Tables · ${qrLabel(t, state.qrStyle)}`}
               />
               <Row
                 label="HELP REQUESTED"
@@ -717,10 +714,10 @@ function SetupPage() {
             <dl className="divide-y divide-border rounded-2xl border border-border bg-card">
               <Row label="REFERENCE" value={state.reference ?? "MYN-00124"} />
               <Row label="PACKAGE" value={getPackage(activePackage).name} />
-              <Row label="WEBSITE" value={styleLabel(state.websiteStyle)} />
+              <Row label="WEBSITE" value={styleLabel(t, state.websiteStyle)} />
               <Row
                 label="TABLE QR"
-                value={`${state.tableCount ?? "—"} Tables · ${qrLabel(state.qrStyle)}`}
+                value={`${state.tableCount ?? "—"} Tables · ${qrLabel(t, state.qrStyle)}`}
               />
               <Row
                 label="HELP REQUESTED"
@@ -833,16 +830,16 @@ function Field({
   );
 }
 
-const styleLabel = (s: string | null) =>
+const styleLabel = (t: (k: any, v?: any) => string, s: string | null) =>
   s === "luxury"
-    ? "Luxury"
+    ? t("setup.style.luxury")
     : s === "modern"
-      ? "Modern & Clean"
+      ? t("setup.style.modern")
       : s === "traditional"
-        ? "Traditional"
+        ? t("setup.style.traditional")
         : s === "warm"
-          ? "Warm & Friendly"
-          : "—";
+          ? t("setup.style.warm")
+          : t("setup.style.none");
 
-const qrLabel = (s: string | null) =>
-  s ? `${s.charAt(0).toUpperCase()}${s.slice(1)} Style` : "—";
+const qrLabel = (t: (k: any, v?: any) => string, s: string | null) =>
+  s ? t("setup.qrLabel", { style: `${s.charAt(0).toUpperCase()}${s.slice(1)}` }) : t("setup.style.none");
