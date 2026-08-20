@@ -1,6 +1,7 @@
 import { Check } from "lucide-react";
 import type { PackageId } from "@/data/packages";
 import { PACKAGES, getPackage } from "@/data/packages";
+import { monthlyLabel, setupLabel } from "@/data/pricing";
 import { cn } from "@/lib/utils";
 
 export function PackageCard({
@@ -38,6 +39,12 @@ export function PackageCard({
       {recommendedFor ? (
         <p className="mt-2 text-sm font-medium text-primary">Recommended for {recommendedFor}</p>
       ) : null}
+      <div className="mt-4 rounded-xl bg-secondary/60 px-4 py-3">
+        <p className="text-[17px] font-semibold tracking-tight">{monthlyLabel(id)}</p>
+        <p className="mt-0.5 text-sm text-muted-foreground">
+          {id === "partner" ? "Custom Setup" : "One-Time Setup"}: {setupLabel(id)}
+        </p>
+      </div>
       <ul className={cn("mt-4 space-y-2", compact && "text-sm")}>
         {pkg.benefits.map((b) => (
           <li key={b} className="flex gap-2 text-[15px] leading-relaxed">
