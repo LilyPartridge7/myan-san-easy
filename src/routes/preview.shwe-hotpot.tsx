@@ -1,6 +1,5 @@
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
-import { useEffect, useState } from "react";
 import { RestaurantPreview } from "@/components/myansan/RestaurantPreview";
 import { IMAGES } from "@/data/images";
 import { templateFor } from "@/services/mockConsultant";
@@ -92,16 +91,9 @@ function PreviewError() {
 function PreviewPage() {
   const { state, hydrated, goToStage } = useSetup();
   const template = templateFor(state.websiteStyle ?? "luxury");
-  const [ready, setReady] = useState(false);
   const returnStage = state.previewReturnStage ?? "website";
 
-  useEffect(() => {
-    if (!hydrated) return;
-    const t = window.setTimeout(() => setReady(true), 250);
-    return () => window.clearTimeout(t);
-  }, [hydrated]);
-
-  if (!hydrated || !ready) return <PreviewLoading />;
+  if (!hydrated) return <PreviewLoading />;
 
   return (
     <div className="page-enter min-h-screen">
