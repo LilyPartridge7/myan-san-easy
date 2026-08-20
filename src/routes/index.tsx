@@ -57,7 +57,7 @@ function Landing() {
           alt="Warm restaurant interior with wooden tables and ambient lighting"
           className="slow-zoom h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(20,12,10,0.92)] via-[rgba(20,12,10,0.45)] to-[rgba(20,12,10,0.35)]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,42,95,0.94)] via-[rgba(15,42,95,0.55)] to-[rgba(8,17,31,0.35)]" />
         <div className="absolute inset-0 flex flex-col px-6 pt-6 sm:px-10 lg:px-16">
           <span className="text-xl font-semibold tracking-tight text-white">မြန်ဆန်</span>
           <div className="mt-auto max-w-2xl pb-12">
@@ -142,7 +142,7 @@ function Landing() {
           loading="lazy"
           className="h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(20,12,10,0.9)] to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,42,95,0.9)] to-transparent" />
         <div className="absolute bottom-10 left-6 max-w-lg sm:left-12 lg:left-16">
           <p className="text-[11px] tracking-[0.35em] text-white/70">YOUR RESTAURANT WEBSITE</p>
           <h2 className="mt-3 text-3xl font-semibold text-white">
