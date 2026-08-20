@@ -138,7 +138,7 @@ function Landing() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="relative mx-auto max-w-[1100px] bg-background px-6 py-20">
+      <section className="relative mx-auto max-w-[1100px] bg-background px-5 py-16 sm:px-6 sm:py-20 2xl:max-w-[1400px]">
         <p className="text-[11px] tracking-[0.35em] text-muted-foreground">HOW IT WORKS</p>
         <div className="mt-10">
           {STEPS.map((s) => (
@@ -157,7 +157,7 @@ function Landing() {
       </section>
 
       {/* WHAT WE HELP WITH */}
-      <section className="relative grid items-center gap-10 bg-background px-6 py-10 lg:grid-cols-2 lg:px-16">
+      <section className="relative grid items-center gap-10 bg-background px-5 py-10 sm:px-6 lg:grid-cols-2 lg:px-16">
         <img
           src={IMAGES.diningWarm}
           alt="Guests sharing a meal"
@@ -175,6 +175,47 @@ function Landing() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* OUR SERVICES — tap a service to reveal details */}
+      <section className="relative mx-auto max-w-[1100px] bg-background px-5 py-16 sm:px-6 sm:py-20 2xl:max-w-[1400px]">
+        <p className="text-[11px] tracking-[0.35em] text-muted-foreground">OUR SERVICES</p>
+        <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+          ဝန်ဆောင်မှုတစ်ခုချင်းစီကို နှိပ်ပြီး အသေးစိတ်ကြည့်ပါ
+        </h2>
+        <div className="mt-8 divide-y divide-border border-y border-border">
+          {SERVICES.map((s) => {
+            const open = openService === s.id;
+            return (
+              <div key={s.id}>
+                <button
+                  type="button"
+                  aria-expanded={open}
+                  aria-controls={`service-${s.id}`}
+                  onClick={() => setOpenService(open ? null : s.id)}
+                  className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 py-5 text-left transition-colors hover:bg-muted/40"
+                >
+                  <span className="min-w-0">
+                    <span className="block text-lg font-semibold tracking-tight">{s.title}</span>
+                    <span className="mt-1 block text-sm text-muted-foreground">{s.summary}</span>
+                  </span>
+                  <ChevronDown
+                    className={`h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-300 ${
+                      open ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                <div
+                  id={`service-${s.id}`}
+                  hidden={!open}
+                  className="fade-up pb-6 text-[15px] leading-relaxed text-muted-foreground sm:max-w-2xl"
+                >
+                  {s.details}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -202,7 +243,7 @@ function Landing() {
       </section>
 
       {/* PACKAGE PREVIEW */}
-      <section className="relative mx-auto max-w-[1100px] bg-background px-6 py-20">
+      <section className="relative mx-auto max-w-[1100px] bg-background px-5 py-16 sm:px-6 sm:py-20 2xl:max-w-[1400px]">
         <p className="text-[11px] tracking-[0.35em] text-muted-foreground">PACKAGES</p>
         <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">ရိုးရှင်းတဲ့ ရွေးချယ်မှု ၃ မျိုး</h2>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
@@ -213,7 +254,7 @@ function Landing() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="relative mx-auto max-w-[1100px] bg-background px-6 pb-24">
+      <section className="relative mx-auto max-w-[1100px] bg-background px-5 pb-24 sm:px-6 2xl:max-w-[1400px]">
         <div className="rounded-3xl bg-card p-8 text-center ring-1 ring-border sm:p-10">
           <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
             သင့်ဆိုင်အတွက် ဘာလိုအပ်လဲ ပြောပါ။

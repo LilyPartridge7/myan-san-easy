@@ -46,16 +46,48 @@ export function QuickChoices({
   );
 }
 
-export function ChatComposer({ hint }: { hint?: string }) {
+export function ChatComposer({
+  hint,
+  onSend,
+}: {
+  hint?: string;
+  onSend?: (text: string) => void;
+}) {
+  const [value, setValue] = useState("");
+
+  const send = () => {
+    const text = value.trim();
+    if (!text) return;
+    onSend?.(text);
+    setValue("");
+  };
+
   return (
-    <div className="border-t border-border bg-background/90 px-4 py-3 backdrop-blur">
-      <div className="mx-auto flex max-w-[820px] items-center gap-2 rounded-full border border-border bg-card px-4 py-2">
+    <div className="sticky bottom-0 z-20 border-t border-border bg-background/95 px-4 py-3 backdrop-blur">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          send();
+        }}
+        className="mx-auto flex max-w-[820px] items-center gap-2 rounded-full border border-border bg-card px-2 py-1.5 shadow-sm focus-within:border-primary"
+      >
         <input
-          readOnly
-          placeholder={hint ?? "အပေါ်က ရွေးချယ်စရာလေးတွေထဲက နှိပ်ပေးပါ"}
-          className="min-h-9 w-full bg-transparent text-[15px] outline-none placeholder:text-muted-foreground"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          maxLength={200}
+          aria-label="Message မြန်ဆန်"
+          placeholder={hint ?? "စာရိုက်ပြီး ပြောလို့လည်း ရပါတယ်..."}
+          className="min-h-11 w-full bg-transparent px-3 text-[16px] outline-none placeholder:text-muted-foreground"
         />
-      </div>
+        <button
+          type="submit"
+          aria-label="Send message"
+          disabled={!value.trim()}
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
+        >
+          <Send className="h-4 w-4" />
+        </button>
+      </form>
     </div>
   );
 }
