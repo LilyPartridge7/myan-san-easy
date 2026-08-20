@@ -1,5 +1,5 @@
-import { Link } from "@tanstack/react-router";
-import { Moon, Sun } from "lucide-react";
+import { Link, useRouter } from "@tanstack/react-router";
+import { ArrowLeft, Home, Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSetup } from "@/state/setupStore";
 
@@ -7,12 +7,17 @@ export function BrandHeader({
   subtitle,
   status,
   exitTo = "/",
+  onBack,
+  showBack = true,
 }: {
   subtitle?: string;
   status?: string;
   exitTo?: string;
+  onBack?: () => void;
+  showBack?: boolean;
 }) {
   const { state, update, resetDemo } = useSetup();
+  const router = useRouter();
   const [dark, setDark] = useState(false);
 
   useEffect(() => {
@@ -22,10 +27,26 @@ export function BrandHeader({
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
       <div className="mx-auto flex max-w-[1100px] items-center gap-3 px-4 py-3">
-        <Link to="/" className="flex flex-col leading-tight">
+        {showBack ? (
+          <button
+            aria-label="Back"
+            onClick={() => (onBack ? onBack() : router.history.back())}
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:bg-muted"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </button>
+        ) : null}
+        <Link
+          to="/"
+          aria-label="Home"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:bg-muted"
+        >
+          <Home className="h-4 w-4" />
+        </Link>
+        <Link to="/" className="flex min-w-0 flex-col leading-tight">
           <span className="text-lg font-semibold tracking-tight text-primary">မြန်ဆန်</span>
           {subtitle ? (
-            <span className="text-[11px] text-muted-foreground">{subtitle}</span>
+            <span className="truncate text-[11px] text-muted-foreground">{subtitle}</span>
           ) : null}
         </Link>
         {status ? (
