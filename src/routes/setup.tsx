@@ -153,7 +153,7 @@ function SetupPage() {
         {stage === "recommendation" ? (
           <div key="recommendation" className="fade-up mt-6 space-y-5">
             <AIMessage>
-              {t("setup.rec.intro", { reason: rec.reason })}
+              {t("setup.rec.intro", { reason: p(rec.reason) })}
             </AIMessage>
             <PackageCard id={recommendedId} recommendedFor={state.restaurantName} />
             <div className="flex flex-wrap gap-3">
@@ -200,7 +200,7 @@ function SetupPage() {
           <div key="package" className="fade-up mt-6 space-y-5">
             <AIMessage>{t("setup.package.intro")}</AIMessage>
             <h2 className="text-xl font-semibold tracking-tight">
-              {t("setup.package.heading", { name: getPackage(state.selectedPackage ?? recommendedId).name })}
+              {t("setup.package.heading", { name: p(getPackage(state.selectedPackage ?? recommendedId).name) })}
             </h2>
             {[
               { key: "customer", label: t("setup.package.group.customer") },
@@ -492,74 +492,76 @@ function SetupPage() {
         {stage === "summary" ? (
           <div key="summary" className="fade-up mt-6 space-y-5">
             <h2 className="text-2xl font-semibold tracking-tight">{state.restaurantName}</h2>
-            <p className="text-[15px] text-muted-foreground">Your မြန်ဆန် Setup</p>
+            <p className="text-[15px] text-muted-foreground">{t("setup.summary.subtitle")}</p>
             <dl className="divide-y divide-border rounded-2xl border border-border bg-card">
-              <Row label="PACKAGE" value={getPackage(state.selectedPackage ?? recommendedId).name} />
+              <Row label={t("setup.row.package")} value={p(getPackage(state.selectedPackage ?? recommendedId).name)} />
               <Row
-                label="CUSTOMER ORDERING"
-                value={state.selectedServices.includes("qrOrdering") ? "QR Ordering" : "Menu only"}
+                label={t("setup.row.customerOrdering")}
+                value={state.selectedServices.includes("qrOrdering") ? t("setup.row.qrOrdering") : t("setup.row.menuOnly")}
               />
-              <Row label="WEBSITE" value={styleLabel(t, state.websiteStyle)} />
+              <Row label={t("setup.row.website")} value={styleLabel(t, state.websiteStyle)} />
               <Row
-                label="TABLE QR"
-                value={`${state.tableCount ?? "—"} Tables · ${qrLabel(t, state.qrStyle)}`}
+                label={t("setup.row.tableQr")}
+                value={t("setup.row.tables", { count: state.tableCount ?? "—", style: qrLabel(t, state.qrStyle) })}
               />
               <Row
-                label="HELP REQUESTED"
+                label={t("setup.row.helpRequested")}
                 value={
                   state.helpServices.length
                     ? state.helpServices
-                        .map((h) => HELP_OPTIONS.find((o) => o.id === h)?.label ?? h)
+                        .map((h) => {
+                          const opt = HELP_OPTIONS.find((o) => o.id === h);
+                          return opt ? t(opt.key) : h;
+                        })
                         .join(" · ")
-                    : "မလိုပါ"
+                    : t("setup.help.none")
                 }
               />
               <Row
-                label="LOCATION"
+                label={t("setup.row.location")}
                 value={[state.township, state.city].filter(Boolean).join(", ") || "—"}
               />
-              <Row label="CONTACT" value={state.phone || "—"} />
+              <Row label={t("setup.row.contact")} value={state.phone || "—"} />
             </dl>
 
             <div className="rounded-2xl border border-border bg-card">
               <p className="px-5 pt-4 text-[11px] tracking-[0.25em] text-muted-foreground">
-                PRICE SUMMARY
+                {t("setup.row.priceSummary")}
               </p>
               <dl className="mt-2 divide-y divide-border">
                 <Row
-                  label="ONE-TIME SETUP"
-                  value={`${price.isQuote ? "From " : ""}${formatMMK(price.setup)}`}
+                  label={t("setup.row.oneTimeSetup")}
+                  value={`${price.isQuote ? t("setup.from") : ""}${formatMMK(price.setup)}`}
                 />
                 <Row
-                  label="FIRST MONTH"
-                  value={`${price.isQuote ? "From " : ""}${formatMMK(price.monthly)}`}
+                  label={t("setup.row.firstMonth")}
+                  value={`${price.isQuote ? t("setup.from") : ""}${formatMMK(price.monthly)}`}
                 />
-                <Row label="MONTHLY SERVICE" value={`${formatMMK(price.monthly)} / month`} />
-                <Row label="ADD-ONS" value={formatMMK(price.optional)} />
+                <Row label={t("setup.row.monthlyService")} value={t("setup.row.perMonth", { amount: formatMMK(price.monthly) })} />
+                <Row label={t("setup.row.addOns")} value={formatMMK(price.optional)} />
                 <Row
-                  label="AMOUNT DUE TODAY"
-                  value={`${price.isQuote ? "From " : ""}${formatMMK(price.totalToday)}`}
+                  label={t("setup.row.amountDueToday")}
+                  value={`${price.isQuote ? t("setup.from") : ""}${formatMMK(price.totalToday)}`}
                 />
               </dl>
               {price.isQuote ? (
                 <p className="px-5 pb-4 text-xs text-muted-foreground">
-                  PARTNER setup ကို ဆိုင်အလိုက် ပြင်ဆင်ပေးတာဖြစ်လို့ နောက်ဆုံးစျေးနှုန်းကို မြန်ဆန်
-                  team က quotation နဲ့ အတည်ပြုပေးပါမယ်။
+                  {t("setup.quoteNote")}
                 </p>
               ) : null}
             </div>
 
             <SetupNavigation
               onBack={back}
-              backLabel="Edit"
+              backLabel={t("setup.edit")}
               onContinue={() => goToStage("payment")}
-              continueLabel="Continue to Payment"
+              continueLabel={t("setup.continueToPayment")}
               extra={
                 <Link
                   to="/owner"
                   className="inline-flex min-h-12 items-center rounded-full px-4 text-sm text-muted-foreground underline underline-offset-4"
                 >
-                  Save for Later
+                  {t("setup.saveForLater")}
                 </Link>
               }
             />
@@ -570,29 +572,29 @@ function SetupPage() {
           <div key="payment" className="fade-up mt-6 space-y-6">
             <div>
               <span className="rounded-full bg-secondary px-3 py-1 text-[11px] font-medium tracking-wide text-secondary-foreground">
-                Demo Checkout
+                {t("setup.payment.demoCheckout")}
               </span>
-              <h2 className="mt-3 text-2xl font-semibold tracking-tight">Complete Your Setup</h2>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight">{t("setup.payment.heading")}</h2>
               <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
-                Package ကိုအတည်ပြုပြီး မြန်ဆန် team နဲ့ setup စတင်နိုင်ပါတယ်။
+                {t("setup.payment.subtitle")}
               </p>
             </div>
 
             <dl className="divide-y divide-border rounded-2xl border border-border bg-card">
-              <Row label="RESTAURANT" value={state.restaurantName} />
-              <Row label="PACKAGE" value={getPackage(activePackage).name} />
-              <Row label="ONE-TIME SETUP" value={formatMMK(price.setup)} />
-              <Row label="FIRST MONTH" value={formatMMK(price.monthly)} />
-              {price.optional ? <Row label="ADD-ONS" value={formatMMK(price.optional)} /> : null}
+              <Row label={t("setup.row.restaurant")} value={state.restaurantName} />
+              <Row label={t("setup.row.package")} value={p(getPackage(activePackage).name)} />
+              <Row label={t("setup.row.oneTimeSetup")} value={formatMMK(price.setup)} />
+              <Row label={t("setup.row.firstMonth")} value={formatMMK(price.monthly)} />
+              {price.optional ? <Row label={t("setup.row.addOns")} value={formatMMK(price.optional)} /> : null}
               <Row
-                label="AMOUNT DUE TODAY"
-                value={`${price.isQuote ? "From " : ""}${formatMMK(price.totalToday)}`}
+                label={t("setup.row.amountDueToday")}
+                value={`${price.isQuote ? t("setup.from") : ""}${formatMMK(price.totalToday)}`}
               />
-              <Row label="CONTACT" value={state.phone || "—"} />
+              <Row label={t("setup.row.contact")} value={state.phone || "—"} />
             </dl>
 
             <div>
-              <h3 className="text-lg font-semibold">Payment Method</h3>
+              <h3 className="text-lg font-semibold">{t("setup.payment.methodTitle")}</h3>
               <div className="mt-3 space-y-3">
                 {PAYMENT_METHODS.map((m) => {
                   const on = state.paymentMethod === m.id;
@@ -612,8 +614,8 @@ function SetupPage() {
                         {on ? <span className="h-2.5 w-2.5 rounded-full bg-primary" /> : null}
                       </span>
                       <span>
-                        <span className="block text-[16px] font-medium">{m.label}</span>
-                        <span className="block text-sm text-muted-foreground">{m.note}</span>
+                        <span className="block text-[16px] font-medium">{t(m.labelKey)}</span>
+                        <span className="block text-sm text-muted-foreground">{t(m.noteKey)}</span>
                       </span>
                     </button>
                   );
@@ -623,14 +625,12 @@ function SetupPage() {
 
             {state.paymentMethod === "contact" ? (
               <AIMessage>
-                ရပါတယ်။ မြန်ဆန် team က သင့်ကို ဆက်သွယ်ပြီး package နဲ့ payment အကြောင်း
-                ရှင်းပြပေးပါမယ်။
+                {t("setup.payment.contactMessage")}
               </AIMessage>
             ) : null}
 
             <p className="text-xs text-muted-foreground">
-              🔒 Secure checkout · သင့်အချက်အလက်ကို မြန်ဆန် team အတွက်သာ သုံးပါမယ်။ (Demo — real
-              transaction မလုပ်ပါ)
+              {t("setup.payment.secureNote")}
             </p>
 
             <SetupNavigation
@@ -639,10 +639,10 @@ function SetupPage() {
               disabled={!state.paymentMethod || processing}
               continueLabel={
                 processing
-                  ? "Processing..."
+                  ? t("setup.processing")
                   : state.paymentMethod === "contact"
-                    ? "Request Setup"
-                    : `Pay ${formatMMK(price.totalToday)}`
+                    ? t("setup.requestSetup")
+                    : t("setup.pay", { amount: formatMMK(price.totalToday) })
               }
             />
           </div>
@@ -653,45 +653,44 @@ function SetupPage() {
             <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
               <Check className="h-10 w-10 text-primary" />
             </div>
-            <h2 className="text-2xl font-semibold tracking-tight">Setup Confirmed</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">{t("setup.success.heading")}</h2>
             <p className="mx-auto max-w-md text-[15px] leading-relaxed text-muted-foreground">
-              ကျေးဇူးတင်ပါတယ်။ {state.restaurantName} အတွက် မြန်ဆန် setup request ကို
-              လက်ခံပြီးပါပြီ။
+              {t("setup.success.thanks", { name: state.restaurantName })}
             </p>
             <dl className="mx-auto max-w-md divide-y divide-border rounded-2xl border border-border bg-card text-left">
-              <Row label="PACKAGE" value={getPackage(activePackage).name} />
-              <Row label="RESTAURANT" value={state.restaurantName} />
+              <Row label={t("setup.row.package")} value={p(getPackage(activePackage).name)} />
+              <Row label={t("setup.row.restaurant")} value={state.restaurantName} />
               <Row
-                label="LOCATION"
+                label={t("setup.row.location")}
                 value={[state.township, state.city].filter(Boolean).join(", ") || "—"}
               />
-              <Row label="REFERENCE" value={state.reference ?? "MYN-00124"} />
+              <Row label={t("setup.row.reference")} value={state.reference ?? "MYN-00124"} />
               <Row
-                label="STATUS"
-                value={state.setupStatus === "waitingForContact" ? "Waiting for Contact" : "Paid"}
+                label={t("setup.row.status")}
+                value={state.setupStatus === "waitingForContact" ? t("setup.status.waitingForContact") : t("setup.status.paid")}
               />
             </dl>
             <p className="mx-auto max-w-md text-[15px] leading-relaxed text-muted-foreground">
-              မြန်ဆန် team က သင့်ကို ဆက်သွယ်ပြီး setup အဆင့်တွေကို ဆက်လက်ကူညီပေးပါမယ်။
+              {t("setup.success.followUp")}
             </p>
             <div className="flex flex-col items-center gap-3">
               <Link
                 to="/owner"
                 className="inline-flex min-h-13 w-full max-w-xs items-center justify-center rounded-full bg-primary px-6 text-[15px] font-semibold text-primary-foreground"
               >
-                Go to My Restaurant
+                {t("setup.goToRestaurant")}
               </Link>
               <button
                 onClick={() => goToStage("saved")}
                 className="inline-flex min-h-13 w-full max-w-xs items-center justify-center rounded-full border border-border bg-card px-6 text-[15px] font-medium"
               >
-                View My Setup
+                {t("setup.viewMySetup")}
               </button>
               <a
                 href="tel:+959000000000"
                 className="min-h-11 text-sm text-muted-foreground underline underline-offset-4"
               >
-                Contact မြန်ဆန်
+                {t("setup.contactBrand")}
               </a>
             </div>
           </div>
@@ -701,63 +700,69 @@ function SetupPage() {
           <div key="saved" className="fade-up mt-6 space-y-5">
             <div className="flex flex-wrap items-center gap-3">
               <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
-                <Check className="h-4 w-4" /> Setup Confirmed
+                <Check className="h-4 w-4" /> {t("setup.saved.badge")}
               </span>
               <span className="text-sm text-muted-foreground">
-                {state.setupStatus === "waitingForContact" ? "Waiting for Contact" : "Paid"}
+                {state.setupStatus === "waitingForContact" ? t("setup.status.waitingForContact") : t("setup.status.paid")}
               </span>
             </div>
             <h2 className="text-2xl font-semibold tracking-tight">{state.restaurantName}</h2>
             <p className="text-[15px] text-muted-foreground">
-              သိမ်းဆည်းထားတဲ့ သင့် မြန်ဆန် setup အချက်အလက်များ
+              {t("setup.saved.subtitle")}
             </p>
             <dl className="divide-y divide-border rounded-2xl border border-border bg-card">
-              <Row label="REFERENCE" value={state.reference ?? "MYN-00124"} />
-              <Row label="PACKAGE" value={getPackage(activePackage).name} />
-              <Row label="WEBSITE" value={styleLabel(t, state.websiteStyle)} />
+              <Row label={t("setup.row.reference")} value={state.reference ?? "MYN-00124"} />
+              <Row label={t("setup.row.package")} value={p(getPackage(activePackage).name)} />
+              <Row label={t("setup.row.website")} value={styleLabel(t, state.websiteStyle)} />
               <Row
-                label="TABLE QR"
-                value={`${state.tableCount ?? "—"} Tables · ${qrLabel(t, state.qrStyle)}`}
+                label={t("setup.row.tableQr")}
+                value={t("setup.row.tables", { count: state.tableCount ?? "—", style: qrLabel(t, state.qrStyle) })}
               />
               <Row
-                label="HELP REQUESTED"
+                label={t("setup.row.helpRequested")}
                 value={
                   state.helpServices.length
                     ? state.helpServices
-                        .map((h) => HELP_OPTIONS.find((o) => o.id === h)?.label ?? h)
+                        .map((h) => {
+                          const opt = HELP_OPTIONS.find((o) => o.id === h);
+                          return opt ? t(opt.key) : h;
+                        })
                         .join(" · ")
-                    : "မလိုပါ"
+                    : t("setup.help.none")
                 }
               />
               <Row
-                label="LOCATION"
+                label={t("setup.row.location")}
                 value={
                   [state.address, state.township, state.city].filter(Boolean).join(", ") || "—"
                 }
               />
-              <Row label="CONTACT" value={state.contactName || "—"} />
-              <Row label="PHONE" value={state.phone || "—"} />
+              <Row label={t("setup.row.contact")} value={state.contactName || "—"} />
+              <Row label={t("setup.row.phone")} value={state.phone || "—"} />
               <Row
-                label="PAYMENT"
+                label={t("setup.row.payment")}
                 value={
-                  PAYMENT_METHODS.find((m) => m.id === state.paymentMethod)?.label ?? "—"
+                  (() => {
+                    const m = PAYMENT_METHODS.find((m) => m.id === state.paymentMethod);
+                    return m ? t(m.labelKey) : "—";
+                  })()
                 }
               />
-              <Row label="TOTAL PAID TODAY" value={formatMMK(price.totalToday)} />
-              <Row label="MONTHLY SERVICE" value={`${formatMMK(price.monthly)} / month`} />
+              <Row label={t("setup.row.totalPaidToday")} value={formatMMK(price.totalToday)} />
+              <Row label={t("setup.row.monthlyService")} value={t("setup.row.perMonth", { amount: formatMMK(price.monthly) })} />
             </dl>
             <div className="flex flex-wrap gap-3">
               <Link
                 to="/owner"
                 className="inline-flex min-h-12 items-center rounded-full bg-primary px-6 text-[15px] font-semibold text-primary-foreground"
               >
-                Go to My Restaurant
+                {t("setup.goToRestaurant")}
               </Link>
               <button
                 onClick={() => goToStage("success")}
                 className="inline-flex min-h-12 items-center rounded-full border border-border bg-card px-6 text-[15px] font-medium"
               >
-                Back
+                {t("setup.back")}
               </button>
             </div>
           </div>
@@ -767,7 +772,7 @@ function SetupPage() {
       <Dialog open={compareOpen} onOpenChange={setCompareOpen}>
         <DialogContent className="max-h-[85vh] max-w-3xl overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Compare Plans</DialogTitle>
+            <DialogTitle>{t("setup.comparePlans")}</DialogTitle>
           </DialogHeader>
           <ComparePackages
             onChoose={(id) => {
@@ -782,9 +787,9 @@ function SetupPage() {
       <Dialog open={whyOpen} onOpenChange={setWhyOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>ဘာကြောင့် ဒီလိုအကြံပြုတာလဲ?</DialogTitle>
+            <DialogTitle>{t("setup.rec.whyDialogTitle")}</DialogTitle>
           </DialogHeader>
-          <p className="text-[15px] leading-relaxed text-muted-foreground">{rec.why}</p>
+          <p className="text-[15px] leading-relaxed text-muted-foreground">{p(rec.why)}</p>
         </DialogContent>
       </Dialog>
     </div>

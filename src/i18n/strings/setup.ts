@@ -157,6 +157,7 @@ export const setup = {
 
   // Dialogs
   "setup.comparePlans": { mm: "Compare Plans", en: "Compare Plans" },
+  "setup.rec.whyDialogTitle": { mm: "ဘာကြောင့် ဒီလိုအကြံပြုတာလဲ?", en: "Why this recommendation?" },
 
   // Website style labels
   "setup.style.luxury": { mm: "Luxury", en: "Luxury" },
