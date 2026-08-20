@@ -55,7 +55,7 @@ function Landing() {
         <img
           src={IMAGES.heroInterior}
           alt="Warm restaurant interior with wooden tables and ambient lighting"
-          className="fixed inset-0 h-[100dvh] w-full object-cover slow-zoom"
+          className="fixed inset-0 z-[-1] h-[100dvh] w-full object-cover slow-zoom"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,42,95,0.94)] via-[rgba(15,42,95,0.55)] to-[rgba(8,17,31,0.35)]" />
         <div className="absolute inset-0 flex flex-col px-6 pt-6 sm:px-10 lg:px-16">
