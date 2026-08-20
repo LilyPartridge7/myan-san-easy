@@ -51,36 +51,36 @@ function Landing() {
   return (
     <main className={leaving ? "fade-out-up" : "fade-in"}>
       {/* HERO */}
-      <section className="relative h-[82vh] min-h-[560px] w-full overflow-hidden">
+      <section className="relative h-[100dvh] min-h-[580px] w-full overflow-hidden">
         <img
           src={IMAGES.heroInterior}
           alt="Warm restaurant interior with wooden tables and ambient lighting"
-          className="slow-zoom h-full w-full object-cover"
+          className="fixed inset-0 z-[-1] h-[100dvh] w-full object-cover slow-zoom"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,42,95,0.94)] via-[rgba(15,42,95,0.55)] to-[rgba(8,17,31,0.35)]" />
         <div className="absolute inset-0 flex flex-col px-6 pt-6 sm:px-10 lg:px-16">
-          <span className="text-xl font-semibold tracking-tight text-white">မြန်ဆန်</span>
+          <span className="text-lg font-semibold tracking-tight text-white">မြန်ဆန်</span>
           <div className="mt-auto max-w-2xl pb-12">
-            <h1 className="text-[8vw] leading-[1.25] font-semibold text-white sm:text-4xl lg:text-[44px]">
+            <h1 className="text-[clamp(1.5rem,5.2vw,2.25rem)] leading-[1.25] font-semibold text-white sm:text-4xl lg:text-[44px]">
               သင့်ဆိုင်အတွက် လိုအပ်တာကို ပြောပါ။
               <br />
               ကျန်တာကို မြန်ဆန်က ကူညီပေးပါမယ်။
             </h1>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-white/80">
+            <p className="mt-5 max-w-md text-sm leading-relaxed text-white/80 sm:text-base">
               A simpler way to bring your restaurant online — without learning complicated
               technology.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <button
                 onClick={startConsult}
-                className="min-h-13 rounded-full bg-primary px-7 py-3.5 text-[15px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+                className="min-h-12 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover sm:min-h-13 sm:px-7 sm:text-[15px]"
               >
                 အခမဲ့ အကြံပေးမှု စတင်မယ်
               </button>
               <Link
                 to="/r/shwe-hotpot/table/$table"
                 params={{ table: "7" }}
-                className="min-h-13 rounded-full border border-white/50 px-7 py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-white/10"
+                className="min-h-12 rounded-full border border-white/50 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10 sm:min-h-13 sm:px-7 sm:text-[15px]"
               >
                 Customer Experience ကြည့်မယ်
               </Link>
@@ -94,7 +94,7 @@ function Landing() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="mx-auto max-w-[1100px] px-6 py-20">
+      <section className="relative mx-auto max-w-[1100px] bg-background px-6 py-20">
         <p className="text-[11px] tracking-[0.35em] text-muted-foreground">HOW IT WORKS</p>
         <div className="mt-10">
           {STEPS.map((s) => (
@@ -102,9 +102,9 @@ function Landing() {
               key={s.n}
               className="flex flex-col gap-2 border-t border-border py-8 sm:flex-row sm:gap-10"
             >
-              <span className="text-4xl font-light text-primary/40 sm:w-24">{s.n}</span>
+              <span className="text-3xl font-light text-primary/40 sm:text-4xl sm:w-24">{s.n}</span>
               <div>
-                <h3 className="text-xl font-semibold tracking-tight">{s.t}</h3>
+                <h3 className="text-lg font-semibold tracking-tight sm:text-xl">{s.t}</h3>
                 <p className="mt-1.5 text-[15px] text-muted-foreground">{s.d}</p>
               </div>
             </div>
@@ -113,15 +113,15 @@ function Landing() {
       </section>
 
       {/* WHAT WE HELP WITH */}
-      <section className="grid items-center gap-10 px-6 py-10 lg:grid-cols-2 lg:px-16">
+      <section className="relative grid items-center gap-10 bg-background px-6 py-10 lg:grid-cols-2 lg:px-16">
         <img
           src={IMAGES.diningWarm}
           alt="Guests sharing a meal"
           loading="lazy"
-          className="h-[420px] w-full rounded-3xl object-cover"
+          className="h-[320px] w-full rounded-3xl object-cover sm:h-[420px]"
         />
         <div className="max-w-md">
-          <h2 className="text-3xl font-semibold tracking-tight">
+          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
             မြန်ဆန်က ဘာတွေ ကူညီပေးနိုင်လဲ
           </h2>
           <ul className="mt-6 space-y-3">
@@ -135,7 +135,7 @@ function Landing() {
       </section>
 
       {/* WEBSITE PREVIEW */}
-      <section className="relative mt-16 h-[60vh] min-h-[380px] overflow-hidden">
+      <section className="relative h-[55vh] min-h-[320px] overflow-hidden sm:h-[60vh] sm:min-h-[380px]">
         <img
           src={IMAGES.hotpot}
           alt="Restaurant website preview"
@@ -145,12 +145,12 @@ function Landing() {
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,42,95,0.9)] to-transparent" />
         <div className="absolute bottom-10 left-6 max-w-lg sm:left-12 lg:left-16">
           <p className="text-[11px] tracking-[0.35em] text-white/70">YOUR RESTAURANT WEBSITE</p>
-          <h2 className="mt-3 text-3xl font-semibold text-white">
+          <h2 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">
             ဆိုင်အတွက် လှပတဲ့ website တစ်ခု ရပါမယ်
           </h2>
           <Link
             to="/preview/shwe-hotpot"
-            className="mt-6 inline-flex min-h-12 items-center rounded-full border border-white/60 px-6 text-[15px] font-medium text-white transition-colors hover:bg-white/10"
+            className="mt-6 inline-flex min-h-12 items-center rounded-full border border-white/60 px-6 text-sm font-medium text-white transition-colors hover:bg-white/10 sm:text-[15px]"
           >
             နမူနာ website ကြည့်မယ်
           </Link>
@@ -158,9 +158,9 @@ function Landing() {
       </section>
 
       {/* PACKAGE PREVIEW */}
-      <section className="mx-auto max-w-[1100px] px-6 py-20">
+      <section className="relative mx-auto max-w-[1100px] bg-background px-6 py-20">
         <p className="text-[11px] tracking-[0.35em] text-muted-foreground">PACKAGES</p>
-        <h2 className="mt-3 text-3xl font-semibold tracking-tight">ရိုးရှင်းတဲ့ ရွေးချယ်မှု ၃ မျိုး</h2>
+        <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">ရိုးရှင်းတဲ့ ရွေးချယ်မှု ၃ မျိုး</h2>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           <PackageCard id="start" compact />
           <PackageCard id="growth" compact />
@@ -169,17 +169,17 @@ function Landing() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="mx-auto max-w-[1100px] px-6 pb-24">
-        <div className="rounded-3xl bg-card p-10 text-center ring-1 ring-border">
-          <h2 className="text-2xl font-semibold tracking-tight">
+      <section className="relative mx-auto max-w-[1100px] bg-background px-6 pb-24">
+        <div className="rounded-3xl bg-card p-8 text-center ring-1 ring-border sm:p-10">
+          <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
             သင့်ဆိုင်အတွက် ဘာလိုအပ်လဲ ပြောပါ။
           </h2>
-          <p className="mt-2 text-[15px] text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground sm:text-[15px]">
             နည်းပညာပိုင်းကို မြန်ဆန်က ကူညီပေးပါမယ်။
           </p>
           <button
             onClick={startConsult}
-            className="mt-7 min-h-13 rounded-full bg-primary px-8 py-3.5 text-[15px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+            className="mt-7 min-h-12 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover sm:min-h-13 sm:text-[15px]"
           >
             အခမဲ့ အကြံပေးမှု စတင်မယ်
           </button>
