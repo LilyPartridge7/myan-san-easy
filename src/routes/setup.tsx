@@ -691,6 +691,36 @@ function Row({ label, value }: { label: string; value: string }) {
   );
 }
 
+function Field({
+  label,
+  value,
+  onChange,
+  placeholder,
+  error,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+  error?: string;
+}) {
+  return (
+    <label className="block text-sm font-medium">
+      {label}
+      <input
+        value={value}
+        placeholder={placeholder}
+        maxLength={200}
+        onChange={(e) => onChange(e.target.value)}
+        className={`mt-1.5 min-h-13 w-full rounded-xl border bg-background px-4 text-[16px] outline-none focus:border-primary ${
+          error ? "border-destructive" : "border-border"
+        }`}
+      />
+      {error ? <span className="mt-1 block text-sm text-destructive">{error}</span> : null}
+    </label>
+  );
+}
+
 const styleLabel = (s: string | null) =>
   s === "luxury"
     ? "Luxury"
