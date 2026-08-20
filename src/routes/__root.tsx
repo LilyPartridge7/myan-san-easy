@@ -26,6 +26,28 @@ function LanguageFontMode() {
   return null;
 }
 
+/** Global theme: light / dark / system. Appearance only — never touches app state. */
+function ThemeMode() {
+  const { state, hydrated } = useSetup();
+  useEffect(() => {
+    if (!hydrated) return;
+    const root = document.documentElement;
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const apply = () =>
+      root.classList.toggle(
+        "dark",
+        state.theme === "dark" || (state.theme === "system" && media.matches),
+      );
+    apply();
+    media.addEventListener("change", apply);
+    return () => media.removeEventListener("change", apply);
+  }, [state.theme, hydrated]);
+  return null;
+}
+
+/** Applies the saved theme before first paint so dark mode never flashes light. */
+const THEME_BOOTSTRAP = `(function(){try{var s=JSON.parse(localStorage.getItem("myansan-demo-state")||"{}");var t=s.theme||"system";var d=t==="dark"||(t==="system"&&window.matchMedia("(prefers-color-scheme: dark)").matches);if(d)document.documentElement.classList.add("dark");if(s.language==="en"){document.documentElement.classList.add("lang-en")}else{document.documentElement.classList.add("lang-mm")}}catch(e){}})();`;
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -131,6 +153,7 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
       </head>
       <body>
         {children}
@@ -148,6 +171,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <SetupProvider>
         <LanguageFontMode />
+        <ThemeMode />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <div key={pathname} className="page-enter min-h-screen">
           <Outlet />
