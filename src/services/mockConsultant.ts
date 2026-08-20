@@ -187,3 +187,164 @@ export function ackFor(questionId: Question["id"], lang: Lang = "mm"): string {
   })();
   return pick(lang, ack);
 }
+
+/* ------------------------------------------------------------------ */
+/* Free-text understanding                                             */
+/* ------------------------------------------------------------------ */
+
+const MM_DIGITS = "၀၁၂၃၄၅၆၇၈၉";
+
+/** Lowercase, strip punctuation, convert Myanmar digits to ASCII. */
+export function normalizeText(input: string): string {
+  return input
+    .toLowerCase()
+    .replace(/[၀-၉]/g, (d) => String(MM_DIGITS.indexOf(d)))
+    .replace(/[.,!?;:"'`~()\[\]{}/\\|]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+type Rule = { value: string; keys: string[] };
+
+const RULES: Record<Question["id"], Rule[]> = {
+  restaurantType: [
+    { value: "hotpot", keys: ["hotpot", "hot pot", "bbq", "b b q", "barbecue", "grill", "ဟော့ပေါ့", "ဘာဘီကျူး", "အကင်"] },
+    { value: "cafe", keys: ["cafe", "café", "coffee", "tea shop", "bakery", "ကော်ဖီ", "လက်ဖက်ရည်", "ကိတ်"] },
+    { value: "myanmar", keys: ["myanmar", "burmese", "traditional", "rice shop", "rice", "curry", "မြန်မာ", "ထမင်း", "ဟင်း", "ရိုးရာ"] },
+    { value: "casual", keys: ["casual", "family restaurant", "restaurant", "dining", "စားသောက်ဆိုင်", "မိသားစု"] },
+    { value: "other", keys: ["other", "အခြား", "တခြား"] },
+  ],
+  tableCount: [
+    { value: "1-10", keys: ["small", "နည်းနည်း", "သေးသေး"] },
+    { value: "40+", keys: ["many", "big", "large", "အများကြီး", "ကြီး"] },
+  ],
+  orderingMethod: [
+    { value: "waiter", keys: ["waiter", "waitress", "staff", "server", "call", "ဝန်ထမ်း", "စားပွဲထိုး", "ခေါ်"] },
+    { value: "paper", keys: ["paper", "ticket", "note", "pen", "write", "စာရွက်", "ရေး", "ဘောပင်"] },
+    { value: "pos", keys: ["pos", "tablet", "phone", "app", "digital", "system", "machine", "ဖုန်း", "တက်ဘလက်", "စက်"] },
+    { value: "other", keys: ["other", "အခြား", "တခြား"] },
+  ],
+  mainProblem: [
+    { value: "waiting", keys: ["wait", "waiting", "slow service", "queue", "စောင့်", "ကြာ"] },
+    { value: "wrongOrder", keys: ["wrong", "mistake", "mixed", "mix up", "error", "မှား", "လွဲ"] },
+    { value: "menuChange", keys: ["menu", "price", "update", "change", "print", "မီနူး", "ဈေးနှုန်း", "ပြောင်း", "ပုံနှိပ်"] },
+    { value: "kitchenSlow", keys: ["kitchen", "chef", "cook", "late", "delay", "မီးဖိုချောင်", "နောက်ကျ", "နှေး"] },
+  ],
+  mainGoal: [
+    { value: "fastOrder", keys: ["fast", "faster", "quick", "speed", "မြန်"] },
+    { value: "staffEase", keys: ["staff", "worker", "easier for staff", "ဝန်ထမ်း", "အလုပ်လွယ်"] },
+    { value: "website", keys: ["website", "web site", "online", "page", "ဝဘ်ဆိုက်", "website"] },
+    { value: "menuUpdate", keys: ["menu", "update", "မီနူး", "ပြောင်း"] },
+    { value: "letMyansan", keys: ["recommend", "you decide", "မသိ", "အကြံပြု", "မြန်ဆန်"] },
+  ],
+};
+
+const bucketForTables = (n: number): string =>
+  n <= 10 ? "1-10" : n <= 20 ? "11-20" : n <= 40 ? "21-40" : "40+";
+
+export type Interpretation =
+  | { kind: "match"; value: string; label: L; raw: string }
+  | { kind: "unclear"; message: L };
+
+const CLARIFY: Record<Question["id"], L> = {
+  restaurantType: {
+    mm: "နည်းနည်းမသေချာလို့ပါ။ Hotpot / BBQ ဆိုင်လား၊ Cafe လား၊ မြန်မာစားသောက်ဆိုင်လား? အောက်ကထဲက ရွေးလိုက်လည်း ရပါတယ်။",
+    en: "I'm not quite sure yet — is it a Hotpot / BBQ place, a Cafe, or a Myanmar restaurant? You can also tap one of the choices below.",
+  },
+  tableCount: {
+    mm: "Table အရေအတွက်လေး ဂဏန်းနဲ့ပြောပေးပါ (ဥပမာ ၁၈)။ ဒါမှမဟုတ် အောက်ကထဲက ရွေးပေးပါ။",
+    en: "Could you tell me the number of tables (e.g. 18)? Or just tap one of the ranges below.",
+  },
+  orderingMethod: {
+    mm: "အခု order တင်ပုံလေး နည်းနည်းရှင်းပြပေးပါ — waiter ခေါ်တာလား၊ စာရွက်နဲ့လား၊ POS သုံးတာလား?",
+    en: "Could you tell me a bit more — do customers call a waiter, use paper, or do you use a phone/POS?",
+  },
+  mainProblem: {
+    mm: "ဘယ်အပိုင်းက အခက်ဆုံးလဲ ပြောပြပေးပါ — စောင့်ရတာလား၊ order မှားတာလား၊ menu ပြောင်းရတာလား၊ kitchen နှေးတာလား?",
+    en: "Which part is hardest — waiting, wrong orders, updating the menu, or slow kitchen orders?",
+  },
+  mainGoal: {
+    mm: "ဘာကို အရင်လိုချင်လဲ ပြောပြပေးပါ — order မြန်တာလား၊ staff အလုပ်လွယ်တာလား၊ website လား?",
+    en: "What would you like first — faster ordering, easier work for staff, or a website?",
+  },
+};
+
+const WRONG_STAGE: L = {
+  mm: "Table အရေအတွက်ကို ပြောတာလား? ဆိုင်အမျိုးအစားကို အရင်သိချင်ပါတယ် 😊",
+  en: "Did you mean the number of tables? I'd like to know your restaurant type first 😊",
+};
+
+/**
+ * Interpret a typed answer in the context of the CURRENT question only.
+ * Returns a normalized choice value identical to the quick-reply value,
+ * or a friendly clarification message when confidence is too low.
+ */
+export function interpretAnswer(question: Question, raw: string): Interpretation {
+  const text = normalizeText(raw);
+  if (!text) return { kind: "unclear", message: CLARIFY[question.id] };
+
+  const labelFor = (value: string): L => {
+    const c = question.choices.find((ch) => ch.value === value);
+    return (c?.label as L) ?? { mm: value, en: value };
+  };
+
+  // Exact choice label / value match (covers quick replies routed through here).
+  for (const c of question.choices) {
+    const l = c.label as L;
+    if (
+      text === normalizeText(c.value) ||
+      text === normalizeText(l.mm) ||
+      text === normalizeText(l.en)
+    ) {
+      return { kind: "match", value: c.value, label: l, raw };
+    }
+  }
+
+  // Numbers: only meaningful for the table-count question.
+  const num = text.match(/\d+/);
+  if (question.id === "tableCount") {
+    if (num) {
+      const value = bucketForTables(parseInt(num[0], 10));
+      return { kind: "match", value, label: labelFor(value), raw };
+    }
+  } else if (num && text.replace(/[^a-z\u1000-\u109f]/g, "").length === 0) {
+    // Bare number on a non-numeric question — ask kindly instead of storing it.
+    return { kind: "unclear", message: question.id === "restaurantType" ? WRONG_STAGE : CLARIFY[question.id] };
+  }
+
+  // Keyword rules, longest keyword wins.
+  let best: { value: string; len: number } | null = null;
+  for (const rule of RULES[question.id]) {
+    for (const k of rule.keys) {
+      const key = normalizeText(k);
+      if (key && text.includes(key) && (!best || key.length > best.len)) {
+        best = { value: rule.value, len: key.length };
+      }
+    }
+  }
+  if (best) return { kind: "match", value: best.value, label: labelFor(best.value), raw };
+
+  return { kind: "unclear", message: CLARIFY[question.id] };
+}
+
+/** Warm, human acknowledgement of a understood typed answer. */
+export function typedAck(question: Question, value: string, lang: Lang): string {
+  const label = pick(lang, (question.choices.find((c) => c.value === value)?.label ?? value) as L | string);
+  const line: L =
+    question.id === "restaurantType"
+      ? {
+          mm: `ဟုတ်ကဲ့၊ ${label} ဆိုင်ပါနော်။ မှတ်ထားလိုက်ပါပြီ။`,
+          en: `Got it — you run a ${label} restaurant.`,
+        }
+      : question.id === "tableCount"
+        ? { mm: `ဟုတ်ကဲ့၊ Table ${label} လောက်ပါနော်။`, en: `Got it — about ${label} tables.` }
+        : question.id === "orderingMethod"
+          ? { mm: `ဟုတ်ကဲ့၊ ${label} နဲ့ပါနော်။ နားလည်ပါပြီ။`, en: `Understood — ${label}.` }
+          : question.id === "mainProblem"
+            ? {
+                mm: `ဟုတ်ကဲ့၊ ${label} ကို အဓိကအခက်အခဲအဖြစ် မှတ်ထားပါပြီ။ ဖြေရှင်းလို့ရပါတယ်။`,
+                en: `Noted — ${label}. That's fixable.`,
+              }
+            : { mm: `ဟုတ်ကဲ့၊ ${label} ကို ဦးစားပေးပါမယ်။`, en: `Noted — ${label} first.` };
+  return pick(lang, line);
+}

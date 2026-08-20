@@ -4,7 +4,7 @@ import { ChevronLeft } from "lucide-react";
 import { BrandHeader } from "@/components/myansan/BrandHeader";
 import { AIMessage, ChatComposer, QuickChoices, UserMessage } from "@/components/myansan/Chat";
 import { PackageCard } from "@/components/myansan/PackageCard";
-import { QUESTIONS, ackFor, recommend } from "@/services/mockConsultant";
+import { QUESTIONS, ackFor, interpretAnswer, recommend, typedAck } from "@/services/mockConsultant";
 import { useSetup, type ConsultTurn } from "@/state/setupStore";
 import { useT } from "@/i18n";
 import { pick, type Lang } from "@/i18n/types";
@@ -39,8 +39,9 @@ function buildTranscript(turns: ConsultTurn[], lang: Lang, welcome: string): Msg
     const choice = q?.choices.find((c) => c.value === t.value);
     const labelText = choice ? pick(lang, choice.label) : t.label;
     msgs.push({ role: "ai", text: questionText });
-    msgs.push({ role: "user", text: labelText });
-    const ack = ackFor(t.stage as never, lang);
+    // Typed answers keep the owner's own words in the bubble.
+    msgs.push({ role: "user", text: t.raw?.trim() || labelText });
+    const ack = q && t.raw ? typedAck(q, t.value, lang) : ackFor(t.stage as never, lang);
     if (ack && i < QUESTIONS.length - 1) msgs.push({ role: "ai", text: ack });
   });
   const next = QUESTIONS[turns.length];
@@ -96,14 +97,48 @@ function Consult() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hydrated, finished, rec.packageId]);
 
-  const answer = (value: string, label: string) => {
+  /** The single pipeline every answer goes through — tapped or typed. */
+  const processAnswer = (value: string, label: string, raw?: string) => {
     const q = QUESTIONS[step];
     if (!q || typing) return;
     setExtraMsgs([]);
-    answerConsult({ stage: q.id, question: pick(lang, q.text), value, label });
+    answerConsult({
+      stage: q.id,
+      question: pick(lang, q.text),
+      value,
+      label,
+      ...(raw ? { raw } : null),
+    });
     update({ [q.id]: value } as never);
     setTyping(true);
     window.setTimeout(() => setTyping(false), 550);
+  };
+
+  const answer = (value: string, label: string) => processAnswer(value, label);
+
+  /** Free text is normalized against the CURRENT question, then reuses the same pipeline. */
+  const handleTyped = (text: string) => {
+    if (typing) return;
+    const q = QUESTIONS[step];
+    if (!q) {
+      setExtraMsgs((m) => [
+        ...m,
+        { role: "user", text },
+        { role: "ai", text: t("consult.fallbackNoQuestion") },
+      ]);
+      return;
+    }
+    const result = interpretAnswer(q, text);
+    if (result.kind === "match") {
+      processAnswer(result.value, pick(lang, result.label), text);
+      return;
+    }
+    setExtraMsgs((m) => [...m, { role: "user", text }]);
+    setTyping(true);
+    window.setTimeout(() => {
+      setTyping(false);
+      setExtraMsgs((m) => [...m, { role: "ai", text: pick(lang, result.message) }]);
+    }, 450);
   };
 
   const back = () => {
@@ -213,18 +248,7 @@ function Consult() {
           <div ref={endRef} />
         </div>
       </div>
-      <ChatComposer
-        onSend={(text) => {
-          setExtraMsgs((m) => [
-            ...m,
-            { role: "user", text },
-            {
-              role: "ai",
-              text: question ? t("consult.fallbackWithQuestion") : t("consult.fallbackNoQuestion"),
-            },
-          ]);
-        }}
-      />
+      <ChatComposer onSend={handleTyped} disabled={typing} />
     </div>
   );
 }

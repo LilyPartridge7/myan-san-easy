@@ -51,14 +51,17 @@ export function QuickChoices({
 export function ChatComposer({
   hint,
   onSend,
+  disabled,
 }: {
   hint?: string;
   onSend?: (text: string) => void;
+  disabled?: boolean;
 }) {
   const [value, setValue] = useState("");
   const { t } = useT();
 
   const send = () => {
+    if (disabled) return;
     const text = value.trim();
     if (!text) return;
     onSend?.(text);
@@ -85,7 +88,7 @@ export function ChatComposer({
         <button
           type="submit"
           aria-label={t("chatSendLabel")}
-          disabled={!value.trim()}
+          disabled={disabled || !value.trim()}
           className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
         >
           <Send className="h-4 w-4" />
