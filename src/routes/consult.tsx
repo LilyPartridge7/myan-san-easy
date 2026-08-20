@@ -35,7 +35,7 @@ function Consult() {
       role: "ai",
       text: "မင်္ဂလာပါ။ မြန်ဆန်ပါ။ သင့်ဆိုင်အတွက် ဘာလိုအပ်လဲ သိရအောင် မေးခွန်းလေး ၅ ခုလောက် မေးပါရစေ။ မသေချာသေးလည်း ရပါတယ်။",
     },
-    { role: "ai", text: QUESTIONS[0].text },
+    { role: "ai", text: QUESTIONS[0]!.text },
   ]);
   const endRef = useRef<HTMLDivElement>(null);
 
@@ -46,7 +46,7 @@ function Consult() {
   const question = QUESTIONS[step];
 
   const answer = (value: string, label: string) => {
-    const q = QUESTIONS[step];
+    const q = QUESTIONS[step]!;
     update({ [q.id]: value } as never);
     const next = step + 1;
     setMessages((m) => [...m, { role: "user", text: label }, { role: "ai", text: ackFor(q.id) }]);
@@ -54,7 +54,7 @@ function Consult() {
 
     if (next < QUESTIONS.length) {
       setTimeout(
-        () => setMessages((m) => [...m, { role: "ai", text: QUESTIONS[next].text }]),
+        () => setMessages((m) => [...m, { role: "ai", text: QUESTIONS[next]!.text }]),
         420,
       );
     } else {
