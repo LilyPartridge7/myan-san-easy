@@ -118,9 +118,10 @@ function Landing() {
             <div className="mt-8 flex flex-wrap gap-3">
               <button
                 onClick={startConsult}
+                disabled={leaving}
                 className="min-h-12 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover sm:min-h-13 sm:px-7 sm:text-[15px]"
               >
-                အခမဲ့ အကြံပေးမှု စတင်မယ်
+                {leaving ? "Starting..." : "အခမဲ့ အကြံပေးမှု စတင်မယ်"}
               </button>
               <Link
                 to="/r/shwe-hotpot/table/$table"
@@ -265,9 +266,10 @@ function Landing() {
           </p>
           <button
             onClick={startConsult}
+            disabled={leaving}
             className="mt-7 min-h-12 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover sm:min-h-13 sm:text-[15px]"
           >
-            အခမဲ့ အကြံပေးမှု စတင်မယ်
+            {leaving ? "Starting..." : "အခမဲ့ အကြံပေးမှု စတင်မယ်"}
           </button>
         </div>
         <p className="mt-8 text-center text-xs text-muted-foreground">
