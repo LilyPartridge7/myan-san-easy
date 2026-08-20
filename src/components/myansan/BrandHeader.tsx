@@ -44,7 +44,7 @@ export function BrandHeader({
         >
           <Home className="h-4 w-4" />
         </Link>
-        <Link to="/" className="flex min-w-0 flex-col leading-tight">
+        <Link to="/" className="hidden min-w-0 flex-col leading-tight sm:flex">
           <span className="text-lg font-semibold tracking-tight text-primary">မြန်ဆန်</span>
           {subtitle ? (
             <span className="truncate text-[11px] text-muted-foreground">{subtitle}</span>

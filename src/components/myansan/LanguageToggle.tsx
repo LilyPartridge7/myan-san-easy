@@ -5,8 +5,8 @@ import { cn } from "@/lib/utils";
 export function LanguageToggle({ tone = "light" }: { tone?: "light" | "dark" }) {
   const { state, update } = useSetup();
   const options = [
-    { id: "mm" as const, label: "မြန်မာ" },
-    { id: "en" as const, label: "English" },
+    { id: "mm" as const, label: "မြန်မာ", short: "မြန်" },
+    { id: "en" as const, label: "English", short: "EN" },
   ];
 
   return (
@@ -37,7 +37,8 @@ export function LanguageToggle({ tone = "light" }: { tone?: "light" | "dark" }) 
                   : "text-muted-foreground hover:bg-muted",
             )}
           >
-            {o.label}
+            <span className="hidden sm:inline">{o.label}</span>
+            <span className="sm:hidden">{o.short}</span>
           </button>
         );
       })}
