@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { QrCode, UtensilsCrossed, ReceiptText, Globe } from "lucide-react";
 import { IMAGES } from "@/data/images";
 import { useSetup } from "@/state/setupStore";
+import { useT } from "@/i18n";
 
 export const Route = createFileRoute("/owner")({
   head: () => ({
@@ -24,6 +25,7 @@ export const Route = createFileRoute("/owner")({
 
 function OwnerHome() {
   const { state, resetDemo, goToStage } = useSetup();
+  const { t } = useT();
   const navigate = useNavigate();
   const openSetup = () => {
     if (state.confirmed) goToStage("saved");
@@ -36,18 +38,18 @@ function OwnerHome() {
         <img src={IMAGES.table} alt="" className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(20,12,10,0.9)] to-[rgba(20,12,10,0.25)]" />
         <div className="absolute bottom-6 left-6 sm:left-10">
-          <p className="text-sm text-white/75">Good afternoon, Daw Mya</p>
+          <p className="text-sm text-white/75">{t("owner.greeting")}</p>
           <h1 className="mt-1 text-2xl font-semibold text-white">{state.restaurantName}</h1>
         </div>
       </section>
 
       <div className="mx-auto max-w-[820px] px-5">
-        <p className="mt-8 text-[11px] tracking-[0.3em] text-muted-foreground">TODAY</p>
+        <p className="mt-8 text-[11px] tracking-[0.3em] text-muted-foreground">{t("owner.today")}</p>
         <div className="mt-3 grid grid-cols-3 gap-3">
           {[
-            { v: "4", l: "Active Orders" },
-            { v: "320,000", l: "MMK Sales" },
-            { v: "2", l: "Sold Out" },
+            { v: "4", l: t("owner.activeOrders") },
+            { v: "320,000", l: t("owner.mmkSales") },
+            { v: "2", l: t("owner.soldOut") },
           ].map((s) => (
             <div key={s.l} className="rounded-2xl border border-border bg-card p-4">
               <p className="text-xl font-semibold">{s.v}</p>
@@ -67,31 +69,31 @@ function OwnerHome() {
         <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <Link to="/r/shwe-hotpot/table/$table" params={{ table: "7" }} className={tileClass}>
             <UtensilsCrossed className="h-5 w-5 text-primary" />
-            Menu
+            {t("owner.menu")}
           </Link>
           <Link to="/r/shwe-hotpot/table/$table" params={{ table: "7" }} className={tileClass}>
             <ReceiptText className="h-5 w-5 text-primary" />
-            Orders
+            {t("owner.orders")}
           </Link>
           <Link to="/preview/shwe-hotpot" className={tileClass}>
             <Globe className="h-5 w-5 text-primary" />
-            Website
+            {t("owner.website")}
           </Link>
           <button onClick={openSetup} className={tileClass}>
             <QrCode className="h-5 w-5 text-primary" />
-            QR
+            {t("owner.qr")}
           </button>
         </div>
 
         <div className="mt-10 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
           <button onClick={openSetup} className="underline underline-offset-4">
-            Setup ပြန်ကြည့်မယ်
+            {t("owner.reviewSetup")}
           </button>
           <Link to="/" className="underline underline-offset-4">
-            Home
+            {t("owner.home")}
           </Link>
           <button onClick={resetDemo} className="underline underline-offset-4">
-            Reset Demo
+            {t("owner.resetDemo")}
           </button>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { CATEGORIES, MENU, formatMMK } from "@/data/menu";
 import { IMAGES } from "@/data/images";
 import { useSetup } from "@/state/setupStore";
+import { useT } from "@/i18n";
 
 export const Route = createFileRoute("/r/shwe-hotpot/table/$table")({
   head: () => ({
@@ -30,6 +31,7 @@ export const Route = createFileRoute("/r/shwe-hotpot/table/$table")({
 function CustomerOrdering() {
   const { table } = Route.useParams();
   const { state, addToCart, setQty, cartCount, cartTotal, update } = useSetup();
+  const { t } = useT();
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState<string>("Popular");
   const [notes, setNotes] = useState("");
@@ -49,7 +51,7 @@ function CustomerOrdering() {
         <div className="absolute bottom-5 left-5">
           <h1 className="text-2xl font-semibold text-white">{state.restaurantName}</h1>
           <p className="mt-1 text-sm tracking-[0.2em] text-white/75">
-            TABLE {table.padStart(2, "0")}
+            {t("customer.table", { table: table.padStart(2, "0") })}
           </p>
         </div>
       </section>
@@ -86,12 +88,12 @@ function CustomerOrdering() {
               </div>
               {m.soldOut ? (
                 <span className="rounded-full bg-muted px-3 py-1.5 text-xs font-semibold text-muted-foreground">
-                  SOLD OUT
+                  {t("customer.soldOut")}
                 </span>
               ) : line ? (
                 <div className="flex items-center gap-2">
                   <button
-                    aria-label="Decrease"
+                    aria-label={t("customer.decrease")}
                     onClick={() => setQty(m.id, line.qty - 1)}
                     className="flex h-11 w-11 items-center justify-center rounded-full border border-border"
                   >
@@ -99,7 +101,7 @@ function CustomerOrdering() {
                   </button>
                   <span className="w-5 text-center text-[16px] font-semibold">{line.qty}</span>
                   <button
-                    aria-label="Increase"
+                    aria-label={t("customer.increase")}
                     onClick={() => setQty(m.id, line.qty + 1)}
                     className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground"
                   >
@@ -111,7 +113,7 @@ function CustomerOrdering() {
                   onClick={() => addToCart(m)}
                   className="min-h-11 rounded-full bg-primary px-5 text-[15px] font-semibold text-primary-foreground"
                 >
-                  Add
+                  {t("customer.add")}
                 </button>
               )}
             </li>
@@ -125,29 +127,29 @@ function CustomerOrdering() {
           className="fixed inset-x-4 bottom-5 z-30 mx-auto flex max-w-[560px] min-h-14 items-center justify-between rounded-full bg-primary px-6 text-[15px] font-semibold text-primary-foreground shadow-lg"
         >
           <span>
-            {cartCount} Items · {formatMMK(cartTotal)}
+            {t("customer.itemsAndTotal", { count: cartCount, total: formatMMK(cartTotal) })}
           </span>
-          <span>View Order</span>
+          <span>{t("customer.viewOrder")}</span>
         </button>
       ) : null}
 
       {state.orderPlaced ? (
         <div className="fixed inset-x-4 bottom-5 z-30 mx-auto max-w-[560px] rounded-2xl border border-border bg-card p-5 shadow-lg">
-          <p className="text-[15px] font-semibold">Order #{state.orderPlaced}</p>
+          <p className="text-[15px] font-semibold">{t("customer.orderNumber", { id: state.orderPlaced })}</p>
           <ul className="mt-3 space-y-1.5 text-[15px]">
-            <li className="text-primary">✓ Received</li>
-            <li className="text-accent-foreground">● Preparing</li>
-            <li className="text-muted-foreground">○ Ready</li>
+            <li className="text-primary">{t("customer.received")}</li>
+            <li className="text-accent-foreground">{t("customer.preparing")}</li>
+            <li className="text-muted-foreground">{t("customer.ready")}</li>
           </ul>
           <div className="mt-4 flex gap-3 text-sm">
             <button
               onClick={() => update({ orderPlaced: null, cart: [] })}
               className="underline underline-offset-4"
             >
-              အသစ် order တင်မယ်
+              {t("customer.newOrder")}
             </button>
             <Link to="/owner" className="underline underline-offset-4">
-              Owner view
+              {t("customer.ownerView")}
             </Link>
           </div>
         </div>
@@ -156,7 +158,7 @@ function CustomerOrdering() {
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent side="bottom" className="rounded-t-3xl">
           <SheetHeader>
-            <SheetTitle>Your Order · Table {table.padStart(2, "0")}</SheetTitle>
+            <SheetTitle>{t("customer.yourOrderAtTable", { table: table.padStart(2, "0") })}</SheetTitle>
           </SheetHeader>
           <div className="space-y-3 px-4 pb-4">
             {state.cart.map((l) => (
@@ -164,7 +166,7 @@ function CustomerOrdering() {
                 <span className="flex-1 text-[15px]">{l.item.name}</span>
                 <div className="flex items-center gap-2">
                   <button
-                    aria-label="Decrease"
+                    aria-label={t("customer.decrease")}
                     onClick={() => setQty(l.item.id, l.qty - 1)}
                     className="flex h-10 w-10 items-center justify-center rounded-full border border-border"
                   >
@@ -172,7 +174,7 @@ function CustomerOrdering() {
                   </button>
                   <span className="w-4 text-center">{l.qty}</span>
                   <button
-                    aria-label="Increase"
+                    aria-label={t("customer.increase")}
                     onClick={() => setQty(l.item.id, l.qty + 1)}
                     className="flex h-10 w-10 items-center justify-center rounded-full border border-border"
                   >
@@ -187,11 +189,11 @@ function CustomerOrdering() {
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="မှာကြားချက် (ဥပမာ — အစပ် နည်းနည်း)"
+              placeholder={t("customer.notesPlaceholder")}
               className="min-h-20 w-full rounded-xl border border-border bg-background p-3 text-[15px] outline-none focus:border-primary"
             />
             <div className="flex items-center justify-between text-[16px] font-semibold">
-              <span>Total</span>
+              <span>{t("customer.total")}</span>
               <span>{formatMMK(cartTotal)}</span>
             </div>
             <button
@@ -201,7 +203,7 @@ function CustomerOrdering() {
               }}
               className="min-h-14 w-full rounded-full bg-primary text-[16px] font-semibold text-primary-foreground"
             >
-              Place Order
+              {t("customer.placeOrder")}
             </button>
           </div>
         </SheetContent>

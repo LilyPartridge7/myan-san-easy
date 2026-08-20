@@ -1,6 +1,7 @@
 import { QrCode } from "lucide-react";
 import type { QRStyle } from "@/state/setupStore";
 import { cn } from "@/lib/utils";
+import { useT } from "@/i18n";
 
 const STYLE_CLASS: Record<QRStyle, string> = {
   simple: "bg-white text-zinc-900 border-zinc-200",
@@ -19,6 +20,7 @@ export function QRPreview({
   table?: string;
   small?: boolean;
 }) {
+  const { t } = useT();
   return (
     <div
       className={cn(
@@ -31,7 +33,7 @@ export function QRPreview({
         {restaurantName}
       </p>
       <p className={cn("tracking-[0.22em] opacity-70", small ? "text-[9px]" : "text-[11px]")}>
-        SCAN TO ORDER
+        {t("qr.scanToOrder")}
       </p>
       <div
         className={cn(
@@ -42,9 +44,9 @@ export function QRPreview({
         <QrCode className={small ? "h-10 w-10" : "h-16 w-16"} />
       </div>
       <p className={cn("font-semibold tracking-[0.2em]", small ? "text-[10px]" : "text-sm")}>
-        TABLE {table}
+        {t("qr.table", { table })}
       </p>
-      <p className={cn("opacity-60", small ? "text-[8px]" : "text-[10px]")}>Powered by မြန်ဆန်</p>
+      <p className={cn("opacity-60", small ? "text-[8px]" : "text-[10px]")}>{t("qr.poweredBy")}</p>
     </div>
   );
 }

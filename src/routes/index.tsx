@@ -4,6 +4,8 @@ import { ChevronDown } from "lucide-react";
 import { IMAGES } from "@/data/images";
 import { PackageCard } from "@/components/myansan/PackageCard";
 import { LanguageToggle } from "@/components/myansan/LanguageToggle";
+import { useT } from "@/i18n";
+import type { StringKey } from "@/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,61 +28,57 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
-const HELP_ITEMS = [
-  "Customer order တင်တာ ပိုလွယ်အောင်",
-  "Menu update လုပ်တာ ပိုလွယ်အောင်",
-  "ဆိုင်အတွက် professional website ရအောင်",
-  "Table QR ပြင်ဆင်ပေးတာ",
-  "Kitchen မှာ order တွေ မြင်ရလွယ်အောင်",
-  "Staff အသုံးပြုရလွယ်အောင်",
+const HELP_ITEM_KEYS: StringKey[] = [
+  "landing.help1",
+  "landing.help2",
+  "landing.help3",
+  "landing.help4",
+  "landing.help5",
+  "landing.help6",
 ];
 
-const STEPS = [
-  { n: "01", t: "Tell Us About Your Restaurant", d: "ဆိုင်အခြေအနေကို ရိုးရိုးလေး ပြောပြပါ။" },
-  { n: "02", t: "We Recommend What You Need", d: "မြန်ဆန်က သင့်ဆိုင်နဲ့ကိုက်တာ ရွေးပေးပါမယ်။" },
-  { n: "03", t: "Choose Your Setup", d: "ကြိုက်သလို နည်းနည်းပြင်ပြီး စလို့ရပါပြီ။" },
+const STEPS: { n: string; tKey: StringKey; dKey: StringKey }[] = [
+  { n: "01", tKey: "landing.step1Title", dKey: "landing.step1Desc" },
+  { n: "02", tKey: "landing.step2Title", dKey: "landing.step2Desc" },
+  { n: "03", tKey: "landing.step3Title", dKey: "landing.step3Desc" },
 ];
 
-const SERVICES = [
+const SERVICES: { id: string; titleKey: StringKey; summaryKey: StringKey; detailsKey: StringKey }[] = [
   {
     id: "qr",
-    title: "QR Table Ordering",
-    summary: "Customer တွေ စားပွဲမှာတင် order တင်နိုင်တဲ့ စနစ်",
-    details:
-      "စားပွဲတိုင်းအတွက် QR code ပြင်ဆင်ပေးပါတယ်။ Customer က scan လုပ်ပြီး menu ကြည့်၊ order တင်လိုက်တာနဲ့ order က ဆိုင်ဘက်ကို ချက်ချင်းရောက်ပါတယ်။ App download လုပ်စရာ မလိုပါဘူး။",
+    titleKey: "landing.svcQrTitle",
+    summaryKey: "landing.svcQrSummary",
+    detailsKey: "landing.svcQrDetails",
   },
   {
     id: "menu",
-    title: "Digital Menu",
-    summary: "Menu ကို ဓာတ်ပုံ၊ စျေးနှုန်းနဲ့အတူ အွန်လိုင်းတင်ပေးခြင်း",
-    details:
-      "လက်ရှိ menu ကို မြန်ဆန် team က digital ပြောင်းပေးပါတယ်။ စျေးနှုန်းပြောင်းချင်ရင်၊ ကုန်သွားတဲ့ ဟင်းကို sold out ပြချင်ရင် ဖုန်းကနေတင် အလွယ်တကူ ပြင်နိုင်ပါတယ်။",
+    titleKey: "landing.svcMenuTitle",
+    summaryKey: "landing.svcMenuSummary",
+    detailsKey: "landing.svcMenuDetails",
   },
   {
     id: "website",
-    title: "Restaurant Website",
-    summary: "ဆိုင်အတွက် လှပပြီး professional ဖြစ်တဲ့ website",
-    details:
-      "Template ၃ မျိုး (Modern, Traditional, Luxury) ထဲက ရွေးလို့ရပါတယ်။ ဆိုင်နာမည်၊ အရောင်၊ ဓာတ်ပုံနဲ့ တည်နေရာကို ထည့်ပေးရုံနဲ့ website အဆင်သင့် ဖြစ်သွားပါမယ်။",
+    titleKey: "landing.svcWebsiteTitle",
+    summaryKey: "landing.svcWebsiteSummary",
+    detailsKey: "landing.svcWebsiteDetails",
   },
   {
     id: "training",
-    title: "Staff Training & Setup Help",
-    summary: "ဆိုင်ဝန်ထမ်းတွေကို အသုံးပြုနည်း သင်ပေးခြင်း",
-    details:
-      "မြန်ဆန် team က ဆိုင်ကိုလာပြီး QR stand ချထားပေးတာ၊ staff ကို လက်တွေ့သင်ပေးတာတွေ လုပ်ပေးပါတယ်။ နည်းပညာ မကျွမ်းကျင်လည်း ရပါတယ်။",
+    titleKey: "landing.svcTrainingTitle",
+    summaryKey: "landing.svcTrainingSummary",
+    detailsKey: "landing.svcTrainingDetails",
   },
   {
     id: "support",
-    title: "Ongoing Support",
-    summary: "လစဉ် ဆက်လက်ကူညီပေးမှု",
-    details:
-      "အသုံးပြုရင်း မေးစရာရှိရင် ဖုန်း၊ Viber ကနေ ဆက်သွယ်လို့ရပါတယ်။ Menu ပြင်ပေးတာ၊ QR အသစ်ထုတ်ပေးတာတွေကိုလည်း ကူညီပေးပါတယ်။",
+    titleKey: "landing.svcSupportTitle",
+    summaryKey: "landing.svcSupportSummary",
+    detailsKey: "landing.svcSupportDetails",
   },
 ];
 
 function Landing() {
   const navigate = useNavigate();
+  const { t } = useT();
   const [leaving, setLeaving] = useState(false);
   const [openService, setOpenService] = useState<string | null>(null);
 
@@ -107,13 +105,12 @@ function Landing() {
           </div>
           <div className="mt-auto max-w-2xl pb-12 2xl:max-w-3xl">
             <h1 className="text-[clamp(1.5rem,5.2vw,2.25rem)] leading-[1.25] font-semibold text-white sm:text-4xl lg:text-[44px]">
-              သင့်ဆိုင်အတွက် လိုအပ်တာကို ပြောပါ။
+              {t("landing.heroTitleLine1")}
               <br />
-              ကျန်တာကို မြန်ဆန်က ကူညီပေးပါမယ်။
+              {t("landing.heroTitleLine2")}
             </h1>
             <p className="mt-5 max-w-md text-sm leading-relaxed text-white/80 sm:text-base">
-              A simpler way to bring your restaurant online — without learning complicated
-              technology.
+              {t("landing.heroDescription")}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <button
@@ -121,27 +118,24 @@ function Landing() {
                 disabled={leaving}
                 className="min-h-12 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover sm:min-h-13 sm:px-7 sm:text-[15px]"
               >
-                {leaving ? "Starting..." : "အခမဲ့ အကြံပေးမှု စတင်မယ်"}
+                {leaving ? t("landing.starting") : t("landing.startConsult")}
               </button>
               <Link
                 to="/r/shwe-hotpot/table/$table"
                 params={{ table: "7" }}
                 className="min-h-12 rounded-full border border-white/50 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10 sm:min-h-13 sm:px-7 sm:text-[15px]"
               >
-                Customer Experience ကြည့်မယ်
+                {t("landing.exploreExperience")}
               </Link>
             </div>
-            <p className="mt-6 text-xs text-white/70">
-              ✓ Easy to understand&nbsp;&nbsp; ✓ Burmese + English&nbsp;&nbsp; ✓ No technical
-              knowledge needed
-            </p>
+            <p className="mt-6 text-xs text-white/70">{t("landing.trustLine")}</p>
           </div>
         </div>
       </section>
 
       {/* HOW IT WORKS */}
       <section className="relative mx-auto max-w-[1100px] bg-background px-5 py-16 sm:px-6 sm:py-20 2xl:max-w-[1400px]">
-        <p className="text-[11px] tracking-[0.35em] text-muted-foreground">HOW IT WORKS</p>
+        <p className="text-[11px] tracking-[0.35em] text-muted-foreground">{t("landing.howItWorks")}</p>
         <div className="mt-10">
           {STEPS.map((s) => (
             <div
@@ -150,8 +144,8 @@ function Landing() {
             >
               <span className="text-3xl font-light text-primary/40 sm:text-4xl sm:w-24">{s.n}</span>
               <div>
-                <h3 className="text-lg font-semibold tracking-tight sm:text-xl">{s.t}</h3>
-                <p className="mt-1.5 text-[15px] text-muted-foreground">{s.d}</p>
+                <h3 className="text-lg font-semibold tracking-tight sm:text-xl">{t(s.tKey)}</h3>
+                <p className="mt-1.5 text-[15px] text-muted-foreground">{t(s.dKey)}</p>
               </div>
             </div>
           ))}
@@ -167,13 +161,11 @@ function Landing() {
           className="h-[320px] w-full rounded-3xl object-cover sm:h-[420px]"
         />
         <div className="max-w-md">
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            မြန်ဆန်က ဘာတွေ ကူညီပေးနိုင်လဲ
-          </h2>
+          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">{t("landing.helpTitle")}</h2>
           <ul className="mt-6 space-y-3">
-            {HELP_ITEMS.map((h) => (
+            {HELP_ITEM_KEYS.map((h) => (
               <li key={h} className="border-b border-border pb-3 text-[15px] leading-relaxed">
-                {h}
+                {t(h)}
               </li>
             ))}
           </ul>
@@ -182,9 +174,9 @@ function Landing() {
 
       {/* OUR SERVICES — tap a service to reveal details */}
       <section className="relative mx-auto max-w-[1100px] bg-background px-5 py-16 sm:px-6 sm:py-20 2xl:max-w-[1400px]">
-        <p className="text-[11px] tracking-[0.35em] text-muted-foreground">OUR SERVICES</p>
+        <p className="text-[11px] tracking-[0.35em] text-muted-foreground">{t("landing.ourServices")}</p>
         <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-          ဝန်ဆောင်မှုတစ်ခုချင်းစီကို နှိပ်ပြီး အသေးစိတ်ကြည့်ပါ
+          {t("landing.servicesHeading")}
         </h2>
         <div className="mt-8 divide-y divide-border border-y border-border">
           {SERVICES.map((s) => {
@@ -199,8 +191,8 @@ function Landing() {
                   className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 py-5 text-left transition-colors hover:bg-muted/40"
                 >
                   <span className="min-w-0">
-                    <span className="block text-lg font-semibold tracking-tight">{s.title}</span>
-                    <span className="mt-1 block text-sm text-muted-foreground">{s.summary}</span>
+                    <span className="block text-lg font-semibold tracking-tight">{t(s.titleKey)}</span>
+                    <span className="mt-1 block text-sm text-muted-foreground">{t(s.summaryKey)}</span>
                   </span>
                   <ChevronDown
                     className={`h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-300 ${
@@ -213,7 +205,7 @@ function Landing() {
                   hidden={!open}
                   className="fade-up pb-6 text-[15px] leading-relaxed text-muted-foreground sm:max-w-2xl"
                 >
-                  {s.details}
+                  {t(s.detailsKey)}
                 </div>
               </div>
             );
@@ -231,23 +223,23 @@ function Landing() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,42,95,0.9)] to-transparent" />
         <div className="absolute bottom-10 left-6 max-w-lg sm:left-12 lg:left-16">
-          <p className="text-[11px] tracking-[0.35em] text-white/70">YOUR RESTAURANT WEBSITE</p>
+          <p className="text-[11px] tracking-[0.35em] text-white/70">{t("landing.yourWebsite")}</p>
           <h2 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">
-            ဆိုင်အတွက် လှပတဲ့ website တစ်ခု ရပါမယ်
+            {t("landing.websiteHeading")}
           </h2>
           <Link
             to="/preview/shwe-hotpot"
             className="mt-6 inline-flex min-h-12 items-center rounded-full border border-white/60 px-6 text-sm font-medium text-white transition-colors hover:bg-white/10 sm:text-[15px]"
           >
-            နမူနာ website ကြည့်မယ်
+            {t("landing.viewSampleWebsite")}
           </Link>
         </div>
       </section>
 
       {/* PACKAGE PREVIEW */}
       <section className="relative mx-auto max-w-[1100px] bg-background px-5 py-16 sm:px-6 sm:py-20 2xl:max-w-[1400px]">
-        <p className="text-[11px] tracking-[0.35em] text-muted-foreground">PACKAGES</p>
-        <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">ရိုးရှင်းတဲ့ ရွေးချယ်မှု ၃ မျိုး</h2>
+        <p className="text-[11px] tracking-[0.35em] text-muted-foreground">{t("landing.packages")}</p>
+        <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">{t("landing.packagesHeading")}</h2>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           <PackageCard id="start" compact />
           <PackageCard id="growth" compact />
@@ -259,23 +251,23 @@ function Landing() {
       <section className="relative mx-auto max-w-[1100px] bg-background px-5 pb-24 sm:px-6 2xl:max-w-[1400px]">
         <div className="rounded-3xl bg-card p-8 text-center ring-1 ring-border sm:p-10">
           <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
-            သင့်ဆိုင်အတွက် ဘာလိုအပ်လဲ ပြောပါ။
+            {t("landing.finalCtaHeading")}
           </h2>
           <p className="mt-2 text-sm text-muted-foreground sm:text-[15px]">
-            နည်းပညာပိုင်းကို မြန်ဆန်က ကူညီပေးပါမယ်။
+            {t("landing.finalCtaSubheading")}
           </p>
           <button
             onClick={startConsult}
             disabled={leaving}
             className="mt-7 min-h-12 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover sm:min-h-13 sm:text-[15px]"
           >
-            {leaving ? "Starting..." : "အခမဲ့ အကြံပေးမှု စတင်မယ်"}
+            {leaving ? t("landing.starting") : t("landing.startConsult")}
           </button>
         </div>
         <p className="mt-8 text-center text-xs text-muted-foreground">
           © မြန်ဆန် ·{" "}
           <Link to="/owner" className="underline underline-offset-4">
-            Owner Home
+            {t("landing.footerOwnerHome")}
           </Link>
         </p>
       </section>

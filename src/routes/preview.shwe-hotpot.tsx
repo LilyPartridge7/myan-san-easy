@@ -4,6 +4,7 @@ import { RestaurantPreview } from "@/components/myansan/RestaurantPreview";
 import { IMAGES } from "@/data/images";
 import { templateFor } from "@/services/mockConsultant";
 import { useSetup } from "@/state/setupStore";
+import { useT } from "@/i18n";
 
 export const Route = createFileRoute("/preview/shwe-hotpot")({
   head: () => ({
@@ -31,6 +32,7 @@ export const Route = createFileRoute("/preview/shwe-hotpot")({
 
 /** Elegant, theme-aware loading composition — never the home page. */
 function PreviewLoading() {
+  const { t } = useT();
   return (
     <div className="min-h-screen bg-background px-4 py-10">
       <div className="mx-auto max-w-[900px] space-y-6 text-center">
@@ -38,9 +40,9 @@ function PreviewLoading() {
           မြန်
         </div>
         <div>
-          <p className="text-[16px] font-medium">သင့်ဆိုင် Website Preview ကို ပြင်ဆင်နေပါတယ်...</p>
-          <p className="mt-1 text-sm text-muted-foreground">Preparing your restaurant preview...</p>
-          <p className="mt-1 text-xs text-muted-foreground">This should only take a moment.</p>
+          <p className="text-[16px] font-medium">{t("preview.loadingTitleMm")}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{t("preview.loadingSubtitle")}</p>
+          <p className="mt-1 text-xs text-muted-foreground">{t("preview.loadingHint")}</p>
         </div>
         <div className="space-y-4 text-left">
           <div className="h-56 w-full animate-pulse rounded-3xl bg-muted" />
@@ -60,27 +62,28 @@ function PreviewLoading() {
 /** Recoverable error — retry or go back to setup. Never redirects Home. */
 function PreviewError() {
   const router = useRouter();
+  const { t } = useT();
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md space-y-4 text-center">
         <h1 className="text-xl font-semibold tracking-tight">
-          Website preview ကို ဖွင့်ရာမှာ အခက်အခဲရှိပါတယ်။
+          {t("preview.errorTitle")}
         </h1>
         <p className="text-sm text-muted-foreground">
-          သင့် setup အချက်အလက်တွေ အားလုံး သိမ်းထားပြီးပါပြီ။ ထပ်ကြိုးစားကြည့်လို့ရပါတယ်။
+          {t("preview.errorBody")}
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <button
             onClick={() => router.invalidate()}
             className="min-h-12 rounded-full bg-primary px-6 text-[15px] font-semibold text-primary-foreground"
           >
-            Try Again
+            {t("preview.tryAgain")}
           </button>
           <Link
             to="/setup"
             className="inline-flex min-h-12 items-center rounded-full border border-border bg-card px-6 text-[15px] font-medium"
           >
-            Back to Setup
+            {t("preview.backToSetup")}
           </Link>
         </div>
       </div>
@@ -90,6 +93,7 @@ function PreviewError() {
 
 function PreviewPage() {
   const { state, hydrated, goToStage } = useSetup();
+  const { t } = useT();
   const template = templateFor(state.websiteStyle ?? "luxury");
   const returnStage = state.previewReturnStage ?? "website";
 
@@ -103,21 +107,21 @@ function PreviewPage() {
           onClick={() => goToStage(returnStage)}
           className="inline-flex min-h-11 items-center gap-1 rounded-full border border-border bg-card px-4 text-sm font-medium"
         >
-          <ChevronLeft className="h-4 w-4" /> Back to Setup
+          <ChevronLeft className="h-4 w-4" /> {t("preview.backToSetup")}
         </Link>
         <Link
           to="/setup"
           onClick={() => goToStage("website")}
           className="inline-flex min-h-11 items-center rounded-full border border-border bg-card px-4 text-sm font-medium"
         >
-          Edit
+          {t("preview.edit")}
         </Link>
         <Link
           to="/setup"
           onClick={() => goToStage("qr")}
           className="ml-auto inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground"
         >
-          Continue Setup →
+          {t("preview.continueSetup")}
         </Link>
       </div>
       <RestaurantPreview

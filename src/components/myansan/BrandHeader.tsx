@@ -2,6 +2,7 @@ import { Link, useRouter } from "@tanstack/react-router";
 import { ArrowLeft, Home, Laptop, Moon, Sun } from "lucide-react";
 import { useSetup } from "@/state/setupStore";
 import { LanguageToggle } from "@/components/myansan/LanguageToggle";
+import { useT } from "@/i18n";
 
 export function BrandHeader({
   subtitle,
@@ -18,6 +19,7 @@ export function BrandHeader({
 }) {
   const { resetDemo, state, update } = useSetup();
   const router = useRouter();
+  const { t } = useT();
   const theme = state.theme;
   const nextTheme = theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
 
@@ -26,7 +28,7 @@ export function BrandHeader({
       <div className="mx-auto flex max-w-[1100px] items-center gap-3 px-4 py-3 2xl:max-w-[1400px]">
         {showBack ? (
           <button
-            aria-label="Back"
+            aria-label={t("back")}
             onClick={() => (onBack ? onBack() : router.history.back())}
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:bg-muted"
           >
@@ -35,13 +37,13 @@ export function BrandHeader({
         ) : null}
         <Link
           to="/"
-          aria-label="Home"
+          aria-label={t("home")}
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:bg-muted"
         >
           <Home className="h-4 w-4" />
         </Link>
         <Link to="/" className="hidden min-w-0 flex-col leading-tight sm:flex">
-          <span className="text-lg font-semibold tracking-tight text-primary">မြန်ဆန်</span>
+          <span className="text-lg font-semibold tracking-tight text-primary">{t("brand")}</span>
           {subtitle ? (
             <span className="truncate text-[11px] text-muted-foreground">{subtitle}</span>
           ) : null}
@@ -55,8 +57,8 @@ export function BrandHeader({
         <div className="ml-auto flex items-center gap-1">
           <LanguageToggle />
           <button
-            aria-label={`Theme: ${theme}. Switch to ${nextTheme}`}
-            title={`Theme: ${theme}`}
+            aria-label={t("themeSwitchTo", { theme, next: nextTheme })}
+            title={t("themeSwitchTo", { theme, next: nextTheme })}
             onClick={() => update({ theme: nextTheme })}
             className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted"
           >
@@ -72,13 +74,13 @@ export function BrandHeader({
             onClick={resetDemo}
             className="hidden min-h-9 rounded-full px-3 text-[11px] text-muted-foreground/70 transition-colors hover:bg-muted sm:block"
           >
-            Reset Demo
+            {t("resetDemo")}
           </button>
           <Link
             to={exitTo}
             className="min-h-9 rounded-full border border-border px-4 py-2 text-xs font-medium transition-colors hover:bg-muted"
           >
-            Exit
+            {t("exit")}
           </Link>
         </div>
       </div>

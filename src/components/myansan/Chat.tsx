@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useState, type ReactNode } from "react";
 import { Send } from "lucide-react";
+import { useT } from "@/i18n";
 
 export function AIMessage({ children, className }: { children: ReactNode; className?: string }) {
   return (
@@ -55,6 +56,7 @@ export function ChatComposer({
   onSend?: (text: string) => void;
 }) {
   const [value, setValue] = useState("");
+  const { t } = useT();
 
   const send = () => {
     const text = value.trim();
@@ -76,13 +78,13 @@ export function ChatComposer({
           value={value}
           onChange={(e) => setValue(e.target.value)}
           maxLength={200}
-          aria-label="Message မြန်ဆန်"
-          placeholder={hint ?? "စာရိုက်ပြီး ပြောလို့လည်း ရပါတယ်..."}
+          aria-label={t("chatMessageLabel")}
+          placeholder={hint ?? t("chatPlaceholder")}
           className="min-h-11 w-full bg-transparent px-3 text-[16px] outline-none placeholder:text-muted-foreground"
         />
         <button
           type="submit"
-          aria-label="Send message"
+          aria-label={t("chatSendLabel")}
           disabled={!value.trim()}
           className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
         >

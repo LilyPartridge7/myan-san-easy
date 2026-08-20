@@ -1,6 +1,7 @@
 import { IMAGES } from "@/data/images";
 import { MENU, formatMMK } from "@/data/menu";
 import type { Template } from "@/state/setupStore";
+import { useT } from "@/i18n";
 
 type Theme = {
   bg: string;
@@ -53,25 +54,26 @@ export function RestaurantPreview({
   color: string;
   heroImage: string;
 }) {
-  const t = themeFor(template, color);
+  const th = themeFor(template, color);
   const dishes = MENU.filter((m) => !m.soldOut).slice(0, 3);
+  const { t } = useT();
 
   return (
-    <div style={{ background: t.bg, color: t.text }}>
+    <div style={{ background: th.bg, color: th.text }}>
       {/* Hero */}
       <section className="relative h-[78vh] min-h-[460px] w-full overflow-hidden">
         <img src={heroImage} alt={name} className="slow-zoom h-full w-full object-cover" />
-        <div className="absolute inset-0" style={{ background: t.overlay }} />
+        <div className="absolute inset-0" style={{ background: th.overlay }} />
         <div className="absolute inset-0 flex flex-col justify-end px-6 pb-14 sm:px-12 lg:px-20">
           <p
             className="text-[11px] tracking-[0.4em]"
-            style={{ color: t.accent }}
+            style={{ color: th.accent }}
           >
             {name.toUpperCase()}
           </p>
           <h1
             className="mt-4 max-w-3xl text-[13vw] leading-[0.95] font-light text-white sm:text-6xl lg:text-7xl"
-            style={{ fontFamily: t.heading }}
+            style={{ fontFamily: th.heading }}
           >
             Gather. Share. Enjoy.
           </h1>
@@ -79,7 +81,7 @@ export function RestaurantPreview({
           <div className="mt-7 flex flex-wrap gap-3">
             <span
               className="inline-flex min-h-12 items-center rounded-full px-7 text-sm font-semibold"
-              style={{ background: t.accent, color: template === "luxury" ? "#14100F" : "#fff" }}
+              style={{ background: th.accent, color: template === "luxury" ? "#14100F" : "#fff" }}
             >
               Order Now
             </span>
@@ -92,7 +94,7 @@ export function RestaurantPreview({
 
       {/* Signature dishes */}
       <section className="px-6 py-16 sm:px-12 lg:px-20">
-        <p className="text-[11px] tracking-[0.35em]" style={{ color: t.accent }}>
+        <p className="text-[11px] tracking-[0.35em]" style={{ color: th.accent }}>
           SIGNATURE
         </p>
         <div className="mt-8 grid gap-8 md:grid-cols-3">
@@ -107,10 +109,10 @@ export function RestaurantPreview({
                 />
               </div>
               <figcaption className="mt-4">
-                <h3 className="text-xl" style={{ fontFamily: t.heading }}>
+                <h3 className="text-xl" style={{ fontFamily: th.heading }}>
                   {d.name}
                 </h3>
-                <p className="mt-1 text-sm" style={{ color: t.muted }}>
+                <p className="mt-1 text-sm" style={{ color: th.muted }}>
                   {formatMMK(d.price)}
                 </p>
               </figcaption>
@@ -128,10 +130,10 @@ export function RestaurantPreview({
           className="h-[420px] w-full object-cover"
         />
         <div className="max-w-md">
-          <h2 className="text-4xl leading-tight" style={{ fontFamily: t.heading }}>
+          <h2 className="text-4xl leading-tight" style={{ fontFamily: th.heading }}>
             A table made for sharing
           </h2>
-          <p className="mt-5 text-base leading-relaxed" style={{ color: t.muted }}>
+          <p className="mt-5 text-base leading-relaxed" style={{ color: th.muted }}>
             Simmering broth, fresh cuts and the people you love. Every pot at {name} is prepared to
             be shared slowly, the way a good evening should be.
           </p>
@@ -140,7 +142,7 @@ export function RestaurantPreview({
 
       {/* Menu preview */}
       <section className="px-6 py-16 sm:px-12 lg:px-20">
-        <h2 className="text-3xl" style={{ fontFamily: t.heading }}>
+        <h2 className="text-3xl" style={{ fontFamily: th.heading }}>
           Menu
         </h2>
         <ul className="mt-8 max-w-2xl">
@@ -151,7 +153,7 @@ export function RestaurantPreview({
               style={{ borderColor: "rgba(128,128,128,0.25)" }}
             >
               <span className="text-lg">{m.name}</span>
-              <span className="text-sm" style={{ color: t.muted }}>
+              <span className="text-sm" style={{ color: th.muted }}>
                 {formatMMK(m.price)}
               </span>
             </li>
@@ -162,10 +164,10 @@ export function RestaurantPreview({
       {/* Atmosphere */}
       <section className="relative h-[52vh] min-h-[320px] overflow-hidden">
         <img src={IMAGES.hotpot} alt="Atmosphere" loading="lazy" className="h-full w-full object-cover" />
-        <div className="absolute inset-0" style={{ background: t.overlay }} />
+        <div className="absolute inset-0" style={{ background: th.overlay }} />
         <p
           className="absolute bottom-10 left-6 max-w-lg text-3xl text-white sm:left-12 lg:left-20"
-          style={{ fontFamily: t.heading }}
+          style={{ fontFamily: th.heading }}
         >
           Warm light, slow evenings.
         </p>
@@ -174,26 +176,26 @@ export function RestaurantPreview({
       {/* Hours + location */}
       <section className="grid gap-8 px-6 py-16 sm:px-12 lg:grid-cols-3 lg:px-20">
         <div>
-          <p className="text-[11px] tracking-[0.3em]" style={{ color: t.accent }}>
+          <p className="text-[11px] tracking-[0.3em]" style={{ color: th.accent }}>
             HOURS
           </p>
-          <p className="mt-3 text-base" style={{ color: t.muted }}>
+          <p className="mt-3 text-base" style={{ color: th.muted }}>
             Mon – Sun · 11:00 – 22:30
           </p>
         </div>
         <div>
-          <p className="text-[11px] tracking-[0.3em]" style={{ color: t.accent }}>
+          <p className="text-[11px] tracking-[0.3em]" style={{ color: th.accent }}>
             LOCATION
           </p>
-          <p className="mt-3 text-base" style={{ color: t.muted }}>
+          <p className="mt-3 text-base" style={{ color: th.muted }}>
             No. 42, Bogyoke Road, Yangon
           </p>
         </div>
         <div>
-          <p className="text-[11px] tracking-[0.3em]" style={{ color: t.accent }}>
+          <p className="text-[11px] tracking-[0.3em]" style={{ color: th.accent }}>
             RESERVATIONS
           </p>
-          <p className="mt-3 text-base" style={{ color: t.muted }}>
+          <p className="mt-3 text-base" style={{ color: th.muted }}>
             09 45 000 1234
           </p>
         </div>
@@ -207,10 +209,10 @@ export function RestaurantPreview({
       </section>
 
       <footer className="px-6 py-10 text-center sm:px-12 lg:px-20">
-        <p className="text-lg tracking-[0.2em]" style={{ fontFamily: t.heading }}>
+        <p className="text-lg tracking-[0.2em]" style={{ fontFamily: th.heading }}>
           {name.toUpperCase()}
         </p>
-        <p className="mt-3 text-xs" style={{ color: t.muted }}>
+        <p className="mt-3 text-xs" style={{ color: th.muted }}>
           Powered by မြန်ဆန်
         </p>
       </footer>

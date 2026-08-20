@@ -6,6 +6,8 @@ import { AIMessage, ChatComposer, QuickChoices, UserMessage } from "@/components
 import { PackageCard } from "@/components/myansan/PackageCard";
 import { QUESTIONS, ackFor, recommend } from "@/services/mockConsultant";
 import { useSetup, type ConsultTurn } from "@/state/setupStore";
+import { useT } from "@/i18n";
+import { pick, type Lang } from "@/i18n/types";
 
 export const Route = createFileRoute("/consult")({
   head: () => ({
@@ -28,20 +30,21 @@ export const Route = createFileRoute("/consult")({
 
 type Msg = { role: "ai" | "user"; text: string };
 
-const WELCOME =
-  "မင်္ဂလာပါ။ မြန်ဆန်ပါ။ သင့်ဆိုင်အတွက် ဘာလိုအပ်လဲ သိရအောင် မေးခွန်းလေး ၅ ခုလောက် မေးပါရစေ။ မသေချာသေးလည်း ရပါတယ်။";
-
-/** Rebuild the whole conversation from the saved answer history. */
-function buildTranscript(turns: ConsultTurn[]): Msg[] {
-  const msgs: Msg[] = [{ role: "ai", text: WELCOME }];
+/** Rebuild the whole conversation from the saved answer history, in the current language. */
+function buildTranscript(turns: ConsultTurn[], lang: Lang, welcome: string): Msg[] {
+  const msgs: Msg[] = [{ role: "ai", text: welcome }];
   turns.forEach((t, i) => {
-    msgs.push({ role: "ai", text: t.question });
-    msgs.push({ role: "user", text: t.label });
-    const ack = ackFor(t.stage as never);
+    const q = QUESTIONS.find((qq) => qq.id === t.stage);
+    const questionText = q ? pick(lang, q.text) : t.question;
+    const choice = q?.choices.find((c) => c.value === t.value);
+    const labelText = choice ? pick(lang, choice.label) : t.label;
+    msgs.push({ role: "ai", text: questionText });
+    msgs.push({ role: "user", text: labelText });
+    const ack = ackFor(t.stage as never, lang);
     if (ack && i < QUESTIONS.length - 1) msgs.push({ role: "ai", text: ack });
   });
   const next = QUESTIONS[turns.length];
-  if (next) msgs.push({ role: "ai", text: next.text });
+  if (next) msgs.push({ role: "ai", text: pick(lang, next.text) });
   return msgs;
 }
 
@@ -49,6 +52,7 @@ function Consult() {
   const navigate = useNavigate();
   const { state, hydrated, update, answerConsult, undoConsult, goToStage, applyPackage } =
     useSetup();
+  const { t, lang, p } = useT();
   const [typing, setTyping] = useState(false);
   const [extraMsgs, setExtraMsgs] = useState<Msg[]>([]);
   const endRef = useRef<HTMLDivElement>(null);
@@ -70,7 +74,10 @@ function Consult() {
   );
   const rec = useMemo(() => recommend(answers), [answers]);
 
-  const messages = useMemo(() => [...buildTranscript(turns), ...extraMsgs], [turns, extraMsgs]);
+  const messages = useMemo(
+    () => [...buildTranscript(turns, lang, t("consult.welcome")), ...extraMsgs],
+    [turns, extraMsgs, lang, t],
+  );
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -93,7 +100,7 @@ function Consult() {
     const q = QUESTIONS[step];
     if (!q || typing) return;
     setExtraMsgs([]);
-    answerConsult({ stage: q.id, question: q.text, value, label });
+    answerConsult({ stage: q.id, question: pick(lang, q.text), value, label });
     update({ [q.id]: value } as never);
     setTyping(true);
     window.setTimeout(() => setTyping(false), 550);
@@ -112,14 +119,12 @@ function Consult() {
   if (!hydrated) {
     return (
       <div className="flex min-h-screen flex-col bg-background">
-        <BrandHeader subtitle="Free Restaurant Consultation" />
+        <BrandHeader subtitle={t("consult.headerSubtitle")} />
         <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
           <span className="flex h-12 w-12 animate-pulse items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
             မြန်
           </span>
-          <p className="text-[15px] text-muted-foreground">
-            သင့် consultation ကို ပြန်ဖွင့်နေပါတယ်...
-          </p>
+          <p className="text-[15px] text-muted-foreground">{t("consult.restoring")}</p>
         </div>
       </div>
     );
@@ -128,8 +133,8 @@ function Consult() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <BrandHeader
-        subtitle="Free Restaurant Consultation"
-        status="သင့်ဆိုင်အကြောင်း သိအောင် မေးနေပါတယ်"
+        subtitle={t("consult.headerSubtitle")}
+        status={t("consult.headerStatus")}
         onBack={back}
       />
       <div className="flex-1 overflow-y-auto px-4 py-6 pb-4">
@@ -146,18 +151,21 @@ function Consult() {
               <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary [animation-delay:-0.2s]" />
               <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary [animation-delay:-0.1s]" />
               <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-primary" />
-              <span className="ml-1">မြန်ဆန် is thinking...</span>
+              <span className="ml-1">{t("consult.thinking")}</span>
             </div>
           ) : null}
 
           {!typing && question ? (
-            <QuickChoices choices={question.choices} onSelect={answer} />
+            <QuickChoices
+              choices={question.choices.map((c) => ({ value: c.value, label: p(c.label) }))}
+              onSelect={answer}
+            />
           ) : null}
 
           {!typing && finished ? (
             <div className="fade-up space-y-4">
               <AIMessage>
-                အခု သင့်ဆိုင်အခြေအနေကို နားလည်ပါပြီ။ {rec.reason}
+                {t("consult.recIntro")} {p(rec.reason)}
               </AIMessage>
               <div className="pl-0 sm:pl-11">
                 <PackageCard id={rec.packageId} recommendedFor={state.restaurantName} />
@@ -170,7 +178,7 @@ function Consult() {
                     }}
                     className="min-h-12 rounded-full bg-primary px-6 text-[15px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
                   >
-                    ဒီ Setup ကိုယူမယ်
+                    {t("consult.takeSetup")}
                   </button>
                   <button
                     onClick={() => {
@@ -180,14 +188,14 @@ function Consult() {
                     }}
                     className="min-h-12 rounded-full border border-border bg-card px-6 text-[15px] font-medium transition-colors hover:bg-muted"
                   >
-                    Customize
+                    {t("consult.customize")}
                   </button>
                   <Link
                     to="/setup"
                     onClick={() => goToStage("recommendation")}
                     className="inline-flex min-h-12 items-center rounded-full px-4 text-sm text-muted-foreground underline underline-offset-4"
                   >
-                    Compare Plans
+                    {t("consult.comparePlans")}
                   </Link>
                 </div>
               </div>
@@ -199,7 +207,7 @@ function Consult() {
               onClick={back}
               className="mr-auto inline-flex min-h-11 items-center gap-1 rounded-full border border-border bg-card px-4 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
             >
-              <ChevronLeft className="h-4 w-4" /> အရင်မေးခွန်းကို ပြင်မယ်
+              <ChevronLeft className="h-4 w-4" /> {t("consult.editPrevious")}
             </button>
           ) : null}
           <div ref={endRef} />
@@ -212,9 +220,7 @@ function Consult() {
             { role: "user", text },
             {
               role: "ai",
-              text: question
-                ? "ကျေးဇူးတင်ပါတယ်။ ပိုမြန်အောင် အပေါ်က ရွေးချယ်စရာလေးတွေထဲက တစ်ခုကို နှိပ်ပေးပါ။"
-                : "မှတ်ထားပါတယ်။ မြန်ဆန် team က ဒီအချက်ကို ဆက်ကြည့်ပေးပါမယ်။",
+              text: question ? t("consult.fallbackWithQuestion") : t("consult.fallbackNoQuestion"),
             },
           ]);
         }}
