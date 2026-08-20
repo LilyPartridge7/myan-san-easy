@@ -39,8 +39,9 @@ function buildTranscript(turns: ConsultTurn[], lang: Lang, welcome: string): Msg
     const choice = q?.choices.find((c) => c.value === t.value);
     const labelText = choice ? pick(lang, choice.label) : t.label;
     msgs.push({ role: "ai", text: questionText });
-    msgs.push({ role: "user", text: labelText });
-    const ack = ackFor(t.stage as never, lang);
+    // Typed answers keep the owner's own words in the bubble.
+    msgs.push({ role: "user", text: t.raw?.trim() || labelText });
+    const ack = q && t.raw ? typedAck(q, t.value, lang) : ackFor(t.stage as never, lang);
     if (ack && i < QUESTIONS.length - 1) msgs.push({ role: "ai", text: ack });
   });
   const next = QUESTIONS[turns.length];
