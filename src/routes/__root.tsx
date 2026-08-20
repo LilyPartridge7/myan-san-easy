@@ -12,8 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { SetupProvider } from "../state/setupStore";
-import { useSetup } from "../state/setupStore";
+import { SetupProvider, useSetup } from "@/state/setupStore";
 
 function LanguageFontMode() {
   const { state } = useSetup();
