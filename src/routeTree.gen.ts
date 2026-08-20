@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ConsultRouteImport } from './routes/consult'
 import { Route as SetupRouteImport } from './routes/setup'
+import { Route as PreviewShweHotpotRouteImport } from './routes/preview.shwe-hotpot'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const SetupRoute = SetupRouteImport.update({
   path: '/setup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PreviewShweHotpotRoute = PreviewShweHotpotRouteImport.update({
+  id: '/preview/shwe-hotpot',
+  path: '/preview/shwe-hotpot',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/consult': typeof ConsultRoute
   '/setup': typeof SetupRoute
+  '/preview/shwe-hotpot': typeof PreviewShweHotpotRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/consult': typeof ConsultRoute
   '/setup': typeof SetupRoute
+  '/preview/shwe-hotpot': typeof PreviewShweHotpotRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/consult': typeof ConsultRoute
   '/setup': typeof SetupRoute
+  '/preview/shwe-hotpot': typeof PreviewShweHotpotRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/consult' | '/setup'
+  fullPaths: '/' | '/consult' | '/setup' | '/preview/shwe-hotpot'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/consult' | '/setup'
-  id: '__root__' | '/' | '/consult' | '/setup'
+  to: '/' | '/consult' | '/setup' | '/preview/shwe-hotpot'
+  id: '__root__' | '/' | '/consult' | '/setup' | '/preview/shwe-hotpot'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ConsultRoute: typeof ConsultRoute
   SetupRoute: typeof SetupRoute
+  PreviewShweHotpotRoute: typeof PreviewShweHotpotRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SetupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/preview/shwe-hotpot': {
+      id: '/preview/shwe-hotpot'
+      path: '/preview/shwe-hotpot'
+      fullPath: '/preview/shwe-hotpot'
+      preLoaderRoute: typeof PreviewShweHotpotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConsultRoute: ConsultRoute,
   SetupRoute: SetupRoute,
+  PreviewShweHotpotRoute: PreviewShweHotpotRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
