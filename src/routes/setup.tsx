@@ -527,11 +527,27 @@ function SetupPage() {
                 PRICE SUMMARY
               </p>
               <dl className="mt-2 divide-y divide-border">
-                <Row label="SETUP FEE" value={formatMMK(price.setup)} />
+                <Row
+                  label="ONE-TIME SETUP"
+                  value={`${price.isQuote ? "From " : ""}${formatMMK(price.setup)}`}
+                />
+                <Row
+                  label="FIRST MONTH"
+                  value={`${price.isQuote ? "From " : ""}${formatMMK(price.monthly)}`}
+                />
                 <Row label="MONTHLY SERVICE" value={`${formatMMK(price.monthly)} / month`} />
-                <Row label="OPTIONAL SERVICES" value={formatMMK(price.optional)} />
-                <Row label="TOTAL TODAY" value={formatMMK(price.totalToday)} />
+                <Row label="ADD-ONS" value={formatMMK(price.optional)} />
+                <Row
+                  label="AMOUNT DUE TODAY"
+                  value={`${price.isQuote ? "From " : ""}${formatMMK(price.totalToday)}`}
+                />
               </dl>
+              {price.isQuote ? (
+                <p className="px-5 pb-4 text-xs text-muted-foreground">
+                  PARTNER setup ကို ဆိုင်အလိုက် ပြင်ဆင်ပေးတာဖြစ်လို့ နောက်ဆုံးစျေးနှုန်းကို မြန်ဆန်
+                  team က quotation နဲ့ အတည်ပြုပေးပါမယ်။
+                </p>
+              ) : null}
             </div>
 
             <SetupNavigation
@@ -566,7 +582,13 @@ function SetupPage() {
             <dl className="divide-y divide-border rounded-2xl border border-border bg-card">
               <Row label="RESTAURANT" value={state.restaurantName} />
               <Row label="PACKAGE" value={getPackage(activePackage).name} />
-              <Row label="AMOUNT" value={formatMMK(price.totalToday)} />
+              <Row label="ONE-TIME SETUP" value={formatMMK(price.setup)} />
+              <Row label="FIRST MONTH" value={formatMMK(price.monthly)} />
+              {price.optional ? <Row label="ADD-ONS" value={formatMMK(price.optional)} /> : null}
+              <Row
+                label="AMOUNT DUE TODAY"
+                value={`${price.isQuote ? "From " : ""}${formatMMK(price.totalToday)}`}
+              />
               <Row label="CONTACT" value={state.phone || "—"} />
             </dl>
 
