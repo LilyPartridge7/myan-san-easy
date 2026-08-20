@@ -13,6 +13,18 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SetupProvider } from "../state/setupStore";
+import { useSetup } from "../state/setupStore";
+
+function LanguageFontMode() {
+  const { state } = useSetup();
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.toggle("lang-mm", state.language === "mm");
+    root.classList.toggle("lang-en", state.language === "en");
+    root.setAttribute("lang", state.language === "mm" ? "my" : "en");
+  }, [state.language]);
+  return null;
+}
 
 function NotFoundComponent() {
   return (
@@ -135,6 +147,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <SetupProvider>
+        <LanguageFontMode />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <div key={pathname} className="page-enter min-h-screen">
           <Outlet />
