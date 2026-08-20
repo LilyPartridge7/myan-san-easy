@@ -63,6 +63,7 @@ function SetupPage() {
   const navigate = useNavigate();
   const {
     state,
+    hydrated,
     update,
     goToStage,
     goBack,
@@ -78,13 +79,29 @@ function SetupPage() {
 
   const rec = recommend(state);
   const recommendedId = state.recommendedPackage ?? rec.packageId;
+  const [openingPreview, setOpeningPreview] = useState(false);
 
   useEffect(() => {
-    if (!state.recommendedPackage) {
+    if (hydrated && !state.recommendedPackage) {
       update({ recommendedPackage: rec.packageId });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [hydrated]);
+
+  if (!hydrated) {
+    return (
+      <div className="min-h-screen bg-background">
+        <BrandHeader subtitle="Your Setup" />
+        <div className="mx-auto flex max-w-[820px] flex-col items-center gap-3 px-4 py-24 text-center">
+          <span className="flex h-12 w-12 animate-pulse items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+            မြန်
+          </span>
+          <p className="text-[15px] text-muted-foreground">သင့် setup ကို ပြန်ဖွင့်နေပါတယ်...</p>
+          <p className="text-sm text-muted-foreground">Restoring your setup…</p>
+        </div>
+      </div>
+    );
+  }
 
   const stage = state.currentStage;
   const rail =
@@ -284,9 +301,14 @@ function SetupPage() {
               extra={
                 <Link
                   to="/preview/shwe-hotpot"
+                  preload="intent"
+                  onClick={() => {
+                    setOpeningPreview(true);
+                    update({ previewReturnStage: "website" });
+                  }}
                   className="inline-flex min-h-12 items-center rounded-full border border-border bg-card px-6 text-[15px] font-medium transition-colors hover:bg-muted"
                 >
-                  Preview Website
+                  {openingPreview ? "Preparing..." : "Preview Website"}
                 </Link>
               }
             />
@@ -505,11 +527,27 @@ function SetupPage() {
                 PRICE SUMMARY
               </p>
               <dl className="mt-2 divide-y divide-border">
-                <Row label="SETUP FEE" value={formatMMK(price.setup)} />
+                <Row
+                  label="ONE-TIME SETUP"
+                  value={`${price.isQuote ? "From " : ""}${formatMMK(price.setup)}`}
+                />
+                <Row
+                  label="FIRST MONTH"
+                  value={`${price.isQuote ? "From " : ""}${formatMMK(price.monthly)}`}
+                />
                 <Row label="MONTHLY SERVICE" value={`${formatMMK(price.monthly)} / month`} />
-                <Row label="OPTIONAL SERVICES" value={formatMMK(price.optional)} />
-                <Row label="TOTAL TODAY" value={formatMMK(price.totalToday)} />
+                <Row label="ADD-ONS" value={formatMMK(price.optional)} />
+                <Row
+                  label="AMOUNT DUE TODAY"
+                  value={`${price.isQuote ? "From " : ""}${formatMMK(price.totalToday)}`}
+                />
               </dl>
+              {price.isQuote ? (
+                <p className="px-5 pb-4 text-xs text-muted-foreground">
+                  PARTNER setup ကို ဆိုင်အလိုက် ပြင်ဆင်ပေးတာဖြစ်လို့ နောက်ဆုံးစျေးနှုန်းကို မြန်ဆန်
+                  team က quotation နဲ့ အတည်ပြုပေးပါမယ်။
+                </p>
+              ) : null}
             </div>
 
             <SetupNavigation
@@ -544,7 +582,13 @@ function SetupPage() {
             <dl className="divide-y divide-border rounded-2xl border border-border bg-card">
               <Row label="RESTAURANT" value={state.restaurantName} />
               <Row label="PACKAGE" value={getPackage(activePackage).name} />
-              <Row label="AMOUNT" value={formatMMK(price.totalToday)} />
+              <Row label="ONE-TIME SETUP" value={formatMMK(price.setup)} />
+              <Row label="FIRST MONTH" value={formatMMK(price.monthly)} />
+              {price.optional ? <Row label="ADD-ONS" value={formatMMK(price.optional)} /> : null}
+              <Row
+                label="AMOUNT DUE TODAY"
+                value={`${price.isQuote ? "From " : ""}${formatMMK(price.totalToday)}`}
+              />
               <Row label="CONTACT" value={state.phone || "—"} />
             </dl>
 

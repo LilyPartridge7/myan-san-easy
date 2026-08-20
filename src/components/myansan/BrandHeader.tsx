@@ -1,6 +1,5 @@
 import { Link, useRouter } from "@tanstack/react-router";
-import { ArrowLeft, Home, Moon, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowLeft, Home, Laptop, Moon, Sun } from "lucide-react";
 import { useSetup } from "@/state/setupStore";
 import { LanguageToggle } from "@/components/myansan/LanguageToggle";
 
@@ -17,13 +16,10 @@ export function BrandHeader({
   onBack?: () => void;
   showBack?: boolean;
 }) {
-  const { resetDemo } = useSetup();
+  const { resetDemo, state, update } = useSetup();
   const router = useRouter();
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-  }, [dark]);
+  const theme = state.theme;
+  const nextTheme = theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
 
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
@@ -59,11 +55,18 @@ export function BrandHeader({
         <div className="ml-auto flex items-center gap-1">
           <LanguageToggle />
           <button
-            aria-label="Toggle theme"
-            onClick={() => setDark((d) => !d)}
+            aria-label={`Theme: ${theme}. Switch to ${nextTheme}`}
+            title={`Theme: ${theme}`}
+            onClick={() => update({ theme: nextTheme })}
             className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted"
           >
-            {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            {theme === "dark" ? (
+              <Sun className="h-4 w-4" />
+            ) : theme === "light" ? (
+              <Moon className="h-4 w-4" />
+            ) : (
+              <Laptop className="h-4 w-4" />
+            )}
           </button>
           <button
             onClick={resetDemo}

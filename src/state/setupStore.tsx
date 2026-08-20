@@ -29,10 +29,21 @@ export type QRStyle = "simple" | "traditional" | "premium";
 export type HelpService = "menuDigital" | "qrStand" | "staffTraining" | "websiteHelp" | "selfServe";
 export type PaymentMethod = "kbzpay" | "wavepay" | "bank" | "contact";
 export type SetupStatus = "draft" | "paid" | "waitingForContact";
+export type ThemeMode = "light" | "dark" | "system";
+
+/** One answered consultation question — the consultation is rebuilt from these. */
+export type ConsultTurn = {
+  stage: string;
+  question: string;
+  value: string;
+  label: string;
+};
 
 export type CartLine = { item: MenuItem; qty: number };
 
 export type SetupState = {
+  consultationId: string;
+  consultTurns: ConsultTurn[];
   restaurantName: string;
   restaurantType: string | null;
   tableCount: string | null;
@@ -47,6 +58,7 @@ export type SetupState = {
   tagline: string;
   heroImage: string;
   language: "mm" | "en";
+  theme: ThemeMode;
   qrStyle: QRStyle | null;
   helpServices: HelpService[];
   address: string;
@@ -62,12 +74,15 @@ export type SetupState = {
   reference: string | null;
   currentStage: SetupStage;
   stageHistory: SetupStage[];
+  previewReturnStage: SetupStage | null;
   confirmed: boolean;
   cart: CartLine[];
   orderPlaced: string | null;
 };
 
 const INITIAL: SetupState = {
+  consultationId: "",
+  consultTurns: [],
   restaurantName: "SHWE HOTPOT",
   restaurantType: null,
   tableCount: null,
@@ -82,6 +97,7 @@ const INITIAL: SetupState = {
   tagline: "A warm hotpot experience made for sharing.",
   heroImage: "heroInterior",
   language: "mm",
+  theme: "system",
   qrStyle: null,
   helpServices: [],
   address: "",
@@ -97,6 +113,7 @@ const INITIAL: SetupState = {
   reference: null,
   currentStage: "recommendation",
   stageHistory: [],
+  previewReturnStage: null,
   confirmed: false,
   cart: [],
   orderPlaced: null,
@@ -106,7 +123,11 @@ const STORAGE_KEY = "myansan-demo-state";
 
 type Ctx = {
   state: SetupState;
+  /** false until the saved session has been read back — never redirect before this is true. */
+  hydrated: boolean;
   update: (patch: Partial<SetupState>) => void;
+  answerConsult: (turn: ConsultTurn) => void;
+  undoConsult: () => void;
   goToStage: (stage: SetupStage) => void;
   goBack: () => void;
   canGoBack: boolean;
@@ -124,6 +145,7 @@ const SetupContext = createContext<Ctx | null>(null);
 
 export function SetupProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<SetupState>(INITIAL);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     try {
@@ -132,18 +154,53 @@ export function SetupProvider({ children }: { children: ReactNode }) {
     } catch {
       /* ignore */
     }
+    setState((s) =>
+      s.consultationId
+        ? s
+        : { ...s, consultationId: `cons_${Date.now().toString(36)}` },
+    );
+    setHydrated(true);
   }, []);
 
   useEffect(() => {
+    if (!hydrated) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     } catch {
       /* ignore */
     }
-  }, [state]);
+  }, [state, hydrated]);
 
   const update = useCallback((patch: Partial<SetupState>) => {
     setState((s) => ({ ...s, ...patch }));
+  }, []);
+
+  /** Record an answer. Re-answering an earlier question drops every later answer
+   *  and the recommendation derived from them. */
+  const answerConsult = useCallback((turn: ConsultTurn) => {
+    setState((s) => {
+      const existing = s.consultTurns.findIndex((t) => t.stage === turn.stage);
+      const kept = existing >= 0 ? s.consultTurns.slice(0, existing) : s.consultTurns;
+      const stale = existing >= 0;
+      return {
+        ...s,
+        consultTurns: [...kept, turn],
+        ...(stale ? { recommendedPackage: null, selectedPackage: null } : null),
+      };
+    });
+  }, []);
+
+  /** Step back exactly one consultation question, keeping earlier answers. */
+  const undoConsult = useCallback(() => {
+    setState((s) =>
+      s.consultTurns.length === 0
+        ? s
+        : {
+            ...s,
+            consultTurns: s.consultTurns.slice(0, -1),
+            recommendedPackage: null,
+          },
+    );
   }, []);
 
   const goToStage = useCallback((stage: SetupStage) => {
@@ -226,7 +283,10 @@ export function SetupProvider({ children }: { children: ReactNode }) {
   const value = useMemo<Ctx>(
     () => ({
       state,
+      hydrated,
       update,
+      answerConsult,
+      undoConsult,
       goToStage,
       goBack,
       canGoBack: state.stageHistory.length > 0,
@@ -241,7 +301,10 @@ export function SetupProvider({ children }: { children: ReactNode }) {
     }),
     [
       state,
+      hydrated,
       update,
+      answerConsult,
+      undoConsult,
       goToStage,
       goBack,
       toggleService,
