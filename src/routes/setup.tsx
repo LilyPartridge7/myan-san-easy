@@ -18,6 +18,7 @@ import {
   type QRStyle,
 } from "@/state/setupStore";
 import { useState } from "react";
+import { useT } from "@/i18n";
 
 export const Route = createFileRoute("/setup")({
   head: () => ({
@@ -38,25 +39,25 @@ export const Route = createFileRoute("/setup")({
   component: SetupPage,
 });
 
-const HELP_OPTIONS: { id: HelpService; label: string }[] = [
-  { id: "menuDigital", label: "Menu ကို digital ပြောင်းပေးပါ" },
-  { id: "qrStand", label: "QR stand ပြင်ဆင်ပေးပါ" },
-  { id: "staffTraining", label: "Staff ကို အသုံးပြုနည်း သင်ပေးပါ" },
-  { id: "websiteHelp", label: "Website setup ကူညီပေးပါ" },
-  { id: "selfServe", label: "ကိုယ်တိုင်လုပ်မယ်" },
+const HELP_OPTIONS: { id: HelpService; key: "setup.help.menuDigital" | "setup.help.qrStand" | "setup.help.staffTraining" | "setup.help.websiteHelp" | "setup.help.selfServe" }[] = [
+  { id: "menuDigital", key: "setup.help.menuDigital" },
+  { id: "qrStand", key: "setup.help.qrStand" },
+  { id: "staffTraining", key: "setup.help.staffTraining" },
+  { id: "websiteHelp", key: "setup.help.websiteHelp" },
+  { id: "selfServe", key: "setup.help.selfServe" },
 ];
 
-const QR_STYLES: { id: QRStyle; label: string }[] = [
-  { id: "simple", label: "Simple" },
-  { id: "traditional", label: "Traditional" },
-  { id: "premium", label: "Premium" },
+const QR_STYLES: { id: QRStyle; key: "setup.qr.style.simple" | "setup.qr.style.traditional" | "setup.qr.style.premium" }[] = [
+  { id: "simple", key: "setup.qr.style.simple" },
+  { id: "traditional", key: "setup.qr.style.traditional" },
+  { id: "premium", key: "setup.qr.style.premium" },
 ];
 
-const PAYMENT_METHODS: { id: PaymentMethod; label: string; note: string }[] = [
-  { id: "kbzpay", label: "KBZPay", note: "မိုဘိုင်းနဲ့ ငွေပေးချေမယ်" },
-  { id: "wavepay", label: "WavePay", note: "မိုဘိုင်းနဲ့ ငွေပေးချေမယ်" },
-  { id: "bank", label: "Bank Transfer", note: "ဘဏ်ကနေ လွှဲမယ်" },
-  { id: "contact", label: "Pay Later / Contact မြန်ဆန် Team", note: "အရင် စကားပြောချင်ပါတယ်" },
+const PAYMENT_METHODS: { id: PaymentMethod; labelKey: "setup.payment.kbzpay.label" | "setup.payment.wavepay.label" | "setup.payment.bank.label" | "setup.payment.contact.label"; noteKey: "setup.payment.kbzpay.note" | "setup.payment.wavepay.note" | "setup.payment.bank.note" | "setup.payment.contact.note" }[] = [
+  { id: "kbzpay", labelKey: "setup.payment.kbzpay.label", noteKey: "setup.payment.kbzpay.note" },
+  { id: "wavepay", labelKey: "setup.payment.wavepay.label", noteKey: "setup.payment.wavepay.note" },
+  { id: "bank", labelKey: "setup.payment.bank.label", noteKey: "setup.payment.bank.note" },
+  { id: "contact", labelKey: "setup.payment.contact.label", noteKey: "setup.payment.contact.note" },
 ];
 
 function SetupPage() {
