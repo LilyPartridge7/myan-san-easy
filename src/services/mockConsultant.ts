@@ -96,8 +96,17 @@ export function recommend(a: Answers): Recommendation {
   else if (big || medium || a.mainProblem === "waiting" || a.mainProblem === "kitchenSlow")
     packageId = "growth";
 
-  const websiteStyle: WebsiteStyle =
-    a.restaurantType === "cafe"
+  const custom = a.restaurantType?.startsWith("custom:")
+    ? a.restaurantType.slice(7).toLowerCase()
+    : null;
+
+  const websiteStyle: WebsiteStyle = custom
+    ? /hotpot|bbq|fine dining|buffet/.test(custom)
+      ? "luxury"
+      : /bakery|tea|cafe|juice|coffee/.test(custom)
+        ? "modern"
+        : "warm"
+    : a.restaurantType === "cafe"
       ? "modern"
       : a.restaurantType === "myanmar"
         ? "traditional"
