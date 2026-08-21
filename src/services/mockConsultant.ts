@@ -246,6 +246,118 @@ export type Interpretation =
   | { kind: "match"; value: string; label: L; raw: string }
   | { kind: "unclear"; message: L };
 
+/* ---------------- Free-text restaurant types (open list) ---------------- */
+
+type Cuisine = { keys: string[]; en: string; mm: string };
+
+/** Cuisines the owner may type. These are NOT reduced to the quick-reply buttons. */
+const CUISINES: Cuisine[] = [
+  { keys: ["chinese", "china", "တရုတ်"], en: "Chinese", mm: "တရုတ်" },
+  { keys: ["korean", "korea", "ကိုရီးယား"], en: "Korean", mm: "ကိုရီးယား" },
+  { keys: ["japanese", "japan", "ဂျပန်"], en: "Japanese", mm: "ဂျပန်" },
+  { keys: ["thai", "thailand", "ထိုင်း"], en: "Thai", mm: "ထိုင်း" },
+  { keys: ["indian", "india", "အိန္ဒိယ"], en: "Indian", mm: "အိန္ဒိယ" },
+  { keys: ["italian", "pizza", "pasta", "အီတလီ"], en: "Italian", mm: "အီတလီ" },
+  { keys: ["vietnamese", "vietnam", "ဗီယက်နမ်"], en: "Vietnamese", mm: "ဗီယက်နမ်" },
+  { keys: ["malay", "malaysian", "မလေး"], en: "Malaysian", mm: "မလေးရှား" },
+  { keys: ["shan", "ရှမ်း"], en: "Shan", mm: "ရှမ်း" },
+  { keys: ["rakhine", "ရခိုင်"], en: "Rakhine", mm: "ရခိုင်" },
+  { keys: ["western", "american", "burger", "steak", "အနောက်တိုင်း"], en: "Western", mm: "အနောက်တိုင်း" },
+  { keys: ["halal", "muslim", "ဟာလာ"], en: "Halal", mm: "ဟာလာ" },
+  { keys: ["seafood", "ပင်လယ်စာ"], en: "Seafood", mm: "ပင်လယ်စာ" },
+  { keys: ["vegetarian", "vegan", "သက်သတ်လွတ်"], en: "Vegetarian", mm: "သက်သတ်လွတ်" },
+];
+
+type Modifier = { keys: string[]; en: (c: string) => string; mm: (c: string) => string };
+
+const MODIFIERS: Modifier[] = [
+  { keys: ["hotpot", "hot pot", "ဟော့ပေါ့"], en: (c) => `${c} Hotpot`, mm: (c) => `${c} ဟော့ပေါ့ဆိုင်` },
+  { keys: ["bbq", "barbecue", "grill", "အကင်"], en: (c) => `${c} BBQ`, mm: (c) => `${c} BBQ ဆိုင်` },
+  { keys: ["ramen", "ရာမန်"], en: (c) => `${c} Ramen Restaurant`, mm: (c) => `${c} ရာမန်ဆိုင်` },
+  { keys: ["sushi", "ဆူရှီ"], en: (c) => `${c} / Sushi Restaurant`, mm: (c) => `${c} ဆူရှီဆိုင်` },
+  { keys: ["noodle", "ခေါက်ဆွဲ"], en: (c) => `${c} Noodle Shop`, mm: (c) => `${c} ခေါက်ဆွဲဆိုင်` },
+  { keys: ["curry", "ဟင်း"], en: (c) => `${c} Restaurant`, mm: (c) => `${c} စားသောက်ဆိုင်` },
+  { keys: ["buffet", "ဘူဖေး"], en: (c) => `${c} Buffet Restaurant`, mm: (c) => `${c} ဘူဖေးဆိုင်` },
+  { keys: ["bakery", "cake", "မုန့်", "ကိတ်"], en: (c) => `${c} Bakery`, mm: (c) => `${c} မုန့်ဆိုင်` },
+];
+
+/** Standalone shop types that are their own answer, not a cafe/casual bucket. */
+const STANDALONE: { keys: string[]; en: string; mm: string }[] = [
+  { keys: ["bakery", "cake shop", "မုန့်ဆိုင်", "ကိတ်မုန့်"], en: "Bakery", mm: "မုန့်/ကိတ်ဆိုင်" },
+  { keys: ["tea shop", "teashop", "လက်ဖက်ရည်ဆိုင်"], en: "Tea Shop", mm: "လက်ဖက်ရည်ဆိုင်" },
+  { keys: ["juice", "smoothie", "ဖျော်ရည်"], en: "Juice Bar", mm: "ဖျော်ရည်ဆိုင်" },
+  { keys: ["bar", "pub", "beer station", "ဘီယာ"], en: "Bar / Beer Station", mm: "ဘီယာဆိုင်" },
+  { keys: ["street food", "လမ်းဘေးဆိုင်"], en: "Street Food Shop", mm: "လမ်းဘေးအစားအစာဆိုင်" },
+  { keys: ["food court", "canteen", "စားသောက်ဆောင်"], en: "Food Court / Canteen", mm: "စားသောက်ဆောင်" },
+  { keys: ["fine dining"], en: "Fine Dining Restaurant", mm: "Fine Dining စားသောက်ဆိုင်" },
+];
+
+const AMBIGUOUS_RESTAURANT: L = {
+  mm: "ရပါတယ်။ ဘယ်လိုအစားအစာမျိုး အဓိကရောင်းပါသလဲ?",
+  en: "Sure — what kind of food do you mainly serve?",
+};
+
+const GENERIC_ONLY = /^(food|food shop|shop|restaurant|eatery|စားသောက်ဆိုင်|အစားအစာဆိုင်|ဆိုင်)$/;
+
+/** Value prefix marking an open-ended restaurant type kept in the owner's own words. */
+export const CUSTOM_TYPE_PREFIX = "custom:";
+
+/** Display label for any restaurant-type value, including free-text ones. */
+export function restaurantTypeLabel(value: string, lang: Lang, fallback?: L): string {
+  if (value.startsWith(CUSTOM_TYPE_PREFIX)) return value.slice(CUSTOM_TYPE_PREFIX.length);
+  return fallback ? pick(lang, fallback) : value;
+}
+
+/**
+ * Understand a typed restaurant type without forcing it into a quick-reply bucket.
+ * Returns null when nothing specific was recognised (rules can then try).
+ */
+function interpretRestaurantType(
+  text: string,
+): { kind: "match"; value: string; label: L } | { kind: "unclear"; message: L } | null {
+  const has = (keys: string[]) => keys.some((k) => text.includes(normalizeText(k)));
+
+  // Myanmar cuisine stays mapped to the existing quick choice.
+  if (has(["myanmar", "burmese", "မြန်မာ", "ထမင်းဆိုင်"])) {
+    return {
+      kind: "match",
+      value: "myanmar",
+      label: { mm: "မြန်မာစားသောက်ဆိုင်", en: "Myanmar Restaurant" },
+    };
+  }
+
+  const traditional = has(["traditional", "ရိုးရာ"]);
+  const cuisine = CUISINES.find((c) => has(c.keys));
+
+  if (cuisine) {
+    const mod = MODIFIERS.find((m) => has(m.keys));
+    const en = mod ? mod.en(cuisine.en) : `${cuisine.en} Restaurant`;
+    const mm = mod ? mod.mm(cuisine.mm) : `${cuisine.mm}စားသောက်ဆိုင်`;
+    return {
+      kind: "match",
+      value: `${CUSTOM_TYPE_PREFIX}${traditional ? `Traditional ${en}` : en}`,
+      label: {
+        mm: traditional ? `${cuisine.mm}ရိုးရာအစားအစာဆိုင်` : mm,
+        en: traditional ? `Traditional ${en}` : en,
+      },
+    };
+  }
+
+  const standalone = STANDALONE.find((s) => has(s.keys));
+  if (standalone) {
+    return {
+      kind: "match",
+      value: `${CUSTOM_TYPE_PREFIX}${standalone.en}`,
+      label: { mm: standalone.mm, en: standalone.en },
+    };
+  }
+
+  if (GENERIC_ONLY.test(text)) return { kind: "unclear", message: AMBIGUOUS_RESTAURANT };
+
+  return null;
+}
+
+
 const CLARIFY: Record<Question["id"], L> = {
   restaurantType: {
     mm: "နည်းနည်းမသေချာလို့ပါ။ Hotpot / BBQ ဆိုင်လား၊ Cafe လား၊ မြန်မာစားသောက်ဆိုင်လား? အောက်ကထဲက ရွေးလိုက်လည်း ရပါတယ်။",
