@@ -41,7 +41,7 @@ function buildTranscript(turns: ConsultTurn[], lang: Lang, welcome: string): Msg
     msgs.push({ role: "ai", text: questionText });
     // Typed answers keep the owner's own words in the bubble.
     msgs.push({ role: "user", text: t.raw?.trim() || labelText });
-    const ack = q && t.raw ? typedAck(q, t.value, lang) : ackFor(t.stage as never, lang);
+    const ack = q && t.raw ? typedAck(q, t.value, lang, labelText) : ackFor(t.stage as never, lang);
     if (ack && i < QUESTIONS.length - 1) msgs.push({ role: "ai", text: ack });
   });
   const next = QUESTIONS[turns.length];
@@ -109,7 +109,8 @@ function Consult() {
       label,
       ...(raw ? { raw } : null),
     });
-    update({ [q.id]: value } as never);
+    // Details form shows the owner-facing wording, not the internal value.
+    update({ [q.id]: q.id === "restaurantType" ? label : value } as never);
     setTyping(true);
     window.setTimeout(() => setTyping(false), 550);
   };
