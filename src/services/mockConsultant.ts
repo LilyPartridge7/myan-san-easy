@@ -412,7 +412,15 @@ export function interpretAnswer(question: Question, raw: string): Interpretation
     }
   }
 
+  // Restaurant type is an OPEN list — the owner's own words win over the buttons.
+  if (question.id === "restaurantType") {
+    const free = interpretRestaurantType(text);
+    if (free?.kind === "match") return { ...free, raw };
+    if (free?.kind === "unclear") return free;
+  }
+
   // Numbers: only meaningful for the table-count question.
+
   const num = text.match(/\d+/);
   if (question.id === "tableCount") {
     if (num) {
