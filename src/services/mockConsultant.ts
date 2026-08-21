@@ -448,14 +448,26 @@ export function interpretAnswer(question: Question, raw: string): Interpretation
 }
 
 /** Warm, human acknowledgement of a understood typed answer. */
-export function typedAck(question: Question, value: string, lang: Lang): string {
-  const label = pick(lang, (question.choices.find((c) => c.value === value)?.label ?? value) as L | string);
+export function typedAck(
+  question: Question,
+  value: string,
+  lang: Lang,
+  labelOverride?: string,
+): string {
+  const label =
+    labelOverride ??
+    restaurantTypeLabel(
+      value,
+      lang,
+      question.choices.find((c) => c.value === value)?.label as L | undefined,
+    );
   const line: L =
     question.id === "restaurantType"
       ? {
-          mm: `ဟုတ်ကဲ့၊ ${label} ဆိုင်ပါနော်။ မှတ်ထားလိုက်ပါပြီ။`,
-          en: `Got it — you run a ${label} restaurant.`,
+          mm: `ဟုတ်ကဲ့၊ ${label} ပါနော်။ မှတ်ထားလိုက်ပါပြီ။`,
+          en: `Got it — you run a ${label}.`,
         }
+
       : question.id === "tableCount"
         ? { mm: `ဟုတ်ကဲ့၊ Table ${label} လောက်ပါနော်။`, en: `Got it — about ${label} tables.` }
         : question.id === "orderingMethod"
