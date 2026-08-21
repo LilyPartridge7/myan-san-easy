@@ -17,7 +17,7 @@ export function BrandHeader({
   onBack?: () => void;
   showBack?: boolean;
 }) {
-  const { resetDemo, state, update } = useSetup();
+  const { state, update } = useSetup();
   const router = useRouter();
   const { t } = useT();
   const theme = state.theme;
@@ -69,12 +69,6 @@ export function BrandHeader({
             ) : (
               <Laptop className="h-4 w-4" />
             )}
-          </button>
-          <button
-            onClick={resetDemo}
-            className="hidden min-h-9 rounded-full px-3 text-[11px] text-muted-foreground/70 transition-colors hover:bg-muted sm:block"
-          >
-            {t("resetDemo")}
           </button>
           <Link
             to={exitTo}
