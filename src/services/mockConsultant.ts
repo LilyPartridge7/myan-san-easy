@@ -86,15 +86,63 @@ export type Recommendation = {
 
 const tableLabel = (t: string | null) => (t ? t.replace("-", "–") : "");
 
-export function recommend(a: Answers): Recommendation {
-  const big = a.tableCount === "21-40" || a.tableCount === "40+";
-  const medium = a.tableCount === "11-20";
-  const wantsManagedHelp = a.mainGoal === "staffEase" || a.orderingMethod === "paper";
+export type SystemRec = { id: string; label: L; why: L };
 
+const SYS: Record<string, SystemRec> = {
+  qr_ordering: { id: "qr_ordering", label: { mm: "QR Ordering", en: "QR Ordering" }, why: { mm: "Waiter မစောင့်ဘဲ Order တင်နိုင်မယ်", en: "customers can order without waiting" } },
+  digital_menu: { id: "digital_menu", label: { mm: "Digital Menu", en: "Digital Menu" }, why: { mm: "Customer တွေ ဖုန်းနဲ့ Menu ကြည့်နိုင်မယ်", en: "customers see your menu on their phone" } },
+  pos_order_management: { id: "pos_order_management", label: { mm: "POS / Order Management", en: "POS / Order Management" }, why: { mm: "Order တွေ မမှားအောင် တစ်နေရာတည်းမှာ စီမံနိုင်မယ်", en: "every order is tracked in one place, fewer mistakes" } },
+  kitchen_order_screen: { id: "kitchen_order_screen", label: { mm: "Kitchen Order Screen", en: "Kitchen Order Screen" }, why: { mm: "Order အသစ်ကို Kitchen က တန်းမြင်နိုင်မယ်", en: "new orders reach the kitchen clearly" } },
+  menu_management: { id: "menu_management", label: { mm: "Menu Management", en: "Menu Management" }, why: { mm: "Menu နဲ့ ဈေးနှုန်းကို အလွယ်တကူ ပြင်နိုင်မယ်", en: "update dishes and prices in minutes" } },
+  restaurant_website: { id: "restaurant_website", label: { mm: "ဆိုင် Website", en: "Restaurant Website" }, why: { mm: "Online မှာ ဆိုင်ကို သေချာ မိတ်ဆက်နိုင်မယ်", en: "a professional online presence" } },
+  staff_training: { id: "staff_training", label: { mm: "Staff Training", en: "Staff Training" }, why: { mm: "Staff တွေ အလွယ်တကူ စသုံးနိုင်မယ်", en: "your team can start using the setup quickly" } },
+  support: { id: "support", label: { mm: "Managed Support", en: "Managed Support" }, why: { mm: "System တွေကို မြန်ဆန်က ဆက်ကြည့်ပေးမယ်", en: "မြန်ဆန် looks after your systems for you" } },
+};
+
+/** Deterministic, score-based recommendation using ALL answers. Ties prefer the lower package. */
+export function calculateRestaurantRecommendation(a: Answers) {
+  const s = { start: 0, growth: 0, partner: 0 };
+  const sys = new Set<string>();
+  switch (a.tableCount) {
+    case "1-10": s.start += 2; s.growth += 1; break;
+    case "11-20": s.growth += 2; break;
+    case "21-40": s.growth += 3; s.partner += 1; break;
+    case "40+": s.partner += 3; s.growth += 1; break;
+  }
+  switch (a.orderingMethod) {
+    case "waiter": case "paper": s.growth += 2; break;
+    case "pos": s.partner += 1; break;
+    default: s.start += 1;
+  }
+  switch (a.mainProblem) {
+    case "waiting": s.growth += 2; sys.add("qr_ordering").add("digital_menu"); break;
+    case "wrongOrder": s.growth += 2; sys.add("pos_order_management").add("qr_ordering"); break;
+    case "kitchenSlow": s.growth += 2; sys.add("kitchen_order_screen").add("pos_order_management"); break;
+    case "menuChange": s.start += 1; s.growth += 1; sys.add("digital_menu").add("menu_management"); break;
+  }
+  switch (a.mainGoal) {
+    case "website": s.start += 2; sys.add("restaurant_website"); break;
+    case "fastOrder": s.growth += 2; sys.add("qr_ordering"); break;
+    case "staffEase": s.growth += 2; sys.add("pos_order_management").add("staff_training"); break;
+    case "menuUpdate": s.start += 1; sys.add("menu_management"); break;
+  }
   let packageId: PackageId = "start";
-  if (big && wantsManagedHelp) packageId = "partner";
-  else if (big || medium || a.mainProblem === "waiting" || a.mainProblem === "kitchenSlow")
-    packageId = "growth";
+  if (s.growth > s.start) packageId = "growth";
+  if (s.partner > s.growth && s.partner > s.start) packageId = "partner";
+  if (packageId === "growth" || packageId === "partner") {
+    if (sys.has("qr_ordering") || sys.has("pos_order_management")) sys.add("kitchen_order_screen");
+    sys.add("staff_training");
+  }
+  if (packageId === "partner") sys.add("support");
+  if (sys.size === 0) sys.add("restaurant_website").add("digital_menu");
+  const order = Object.keys(SYS);
+  const recommendedSystems = [...sys].sort((x, y) => order.indexOf(x) - order.indexOf(y)).map((k) => SYS[k]!);
+  return { recommendedPackage: packageId, recommendedSystems, scores: s };
+}
+
+export function recommend(a: Answers): Recommendation & { systems: SystemRec[] } {
+  const calc = calculateRestaurantRecommendation(a);
+  const packageId: PackageId = calc.recommendedPackage;
 
   const custom = a.restaurantType?.startsWith("custom:")
     ? a.restaurantType.slice(7).toLowerCase()
@@ -141,6 +189,7 @@ export function recommend(a: Answers): Recommendation {
 
   return {
     packageId,
+    systems: calc.recommendedSystems,
     headline: { mm: "Recommended for Your Restaurant", en: "Recommended for Your Restaurant" },
     reason,
     why: {

@@ -327,4 +327,4 @@ export function useSetup() {
   const ctx = useContext(SetupContext);
   if (!ctx) throw new Error("useSetup must be used inside SetupProvider");
   return ctx;
-}
+}export const useSetupOptional = () => useContext(SetupContext);

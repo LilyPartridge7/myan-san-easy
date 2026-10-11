@@ -56,6 +56,7 @@ function Consult() {
   const { t, lang, p } = useT();
   const [typing, setTyping] = useState(false);
   const [extraMsgs, setExtraMsgs] = useState<Msg[]>([]);
+  const [showPkgs, setShowPkgs] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
 
   const turns = state.consultTurns;
@@ -198,10 +199,39 @@ function Consult() {
             />
           ) : null}
 
+          {step === 0 && !typing ? (
+            <div className="pl-0 sm:pl-11">
+              <button
+                onClick={() => setShowPkgs((v) => !v)}
+                className="min-h-11 rounded-full border border-primary px-5 text-[15px] font-medium text-primary transition-colors hover:bg-primary/5"
+              >
+                {showPkgs ? t("consult.hidePackages") : t("consult.viewPackages")}
+              </button>
+              {showPkgs ? (
+                <div className="fade-up mt-4 grid gap-4 md:grid-cols-3">
+                  {(["start", "growth", "partner"] as const).map((id) => (
+                    <PackageCard key={id} id={id} />
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+
           {!typing && finished ? (
             <div className="fade-up space-y-4">
               <AIMessage>
-                {t("consult.recIntro")} {p(rec.reason)}
+                <p className="font-semibold">
+                  {t("consult.recPackage", { name: rec.packageId.charAt(0).toUpperCase() + rec.packageId.slice(1) })}
+                </p>
+                <p className="mt-1">{t("consult.recIntro")} {p(rec.reason)}</p>
+                <p className="mt-2">{t("consult.recommendSystems")}</p>
+                <ul className="mt-1 space-y-1">
+                  {rec.systems.map((s) => (
+                    <li key={s.id}>
+                      ✓ <span className="font-medium">{p(s.label)}</span> — {p(s.why)}
+                    </li>
+                  ))}
+                </ul>
               </AIMessage>
               <div className="pl-0 sm:pl-11">
                 <PackageCard id={rec.packageId} recommendedFor={state.restaurantName} />

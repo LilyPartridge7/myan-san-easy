@@ -1,4 +1,4 @@
-import { useSetup } from "@/state/setupStore";
+import { useSetupOptional } from "@/state/setupStore";
 import { pick, type L, type Lang } from "./types";
 import { shared } from "./strings/shared";
 import { landing } from "./strings/landing";
@@ -41,8 +41,8 @@ export function translate(
  * re-renders text only and never touches business state.
  */
 export function useT() {
-  const { state } = useSetup();
-  const lang = state.language as Lang;
+  const ctx = useSetupOptional();
+  const lang = (ctx?.state.language ?? "mm") as Lang;
   return {
     lang,
     isEn: lang === "en",
