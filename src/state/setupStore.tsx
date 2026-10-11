@@ -324,8 +324,7 @@ export function SetupProvider({ children }: { children: ReactNode }) {
 }
 
 export function useSetup() {
-export const useSetupOptional = () => useContext(SetupContext);
   const ctx = useContext(SetupContext);
   if (!ctx) throw new Error("useSetup must be used inside SetupProvider");
   return ctx;
-}
+}export const useSetupOptional = () => useContext(SetupContext);
