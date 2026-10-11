@@ -38,7 +38,7 @@ export const setup = {
   "setup.website.previewReady": { mm: "Website preview အဆင်သင့်ဖြစ်ပါပြီ။ အခုကြည့်မလား၊ setup ကိုဆက်လုပ်မလား?", en: "Your website preview is ready. View it now, or continue with setup?" },
   "setup.continueSetup": { mm: "Continue Setup", en: "Continue Setup" },
   "setup.preparing": { mm: "Preparing...", en: "Preparing..." },
-  "setup.previewWebsite": { mm: "Preview Website", en: "Preview Website" },
+  "setup.previewWebsite": { mm: "သင့်ဆိုင် Digital Setup ကို ကြည့်မယ်", en: "Preview Your Digital Setup" },
 
   // QR stage
   "setup.qr.intro": { mm: "Table မှာ customer scan လုပ်ဖို့ QR ပုံစံရွေးရအောင်။", en: "Let's choose a QR style for customers to scan at the table." },
