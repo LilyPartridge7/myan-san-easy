@@ -15,9 +15,13 @@ export const consult = {
     en: "Restoring your consultation...",
   },
   "consult.welcome": {
-    mm: "မင်္ဂလာပါ။ မြန်ဆန်ပါ။ သင့်ဆိုင်အတွက် ဘာလိုအပ်လဲ သိရအောင် မေးခွန်းလေး ၅ ခုလောက် မေးပါရစေ။ မသေချာသေးလည်း ရပါတယ်။",
-    en: "Hello 👋 I'm မြန်ဆန်. I'll ask a few simple questions so I can understand what would work best for your restaurant.",
+    mm: "မင်္ဂလာပါ 👋\n\nမြန်ဆန်က သင့်ဆိုင်အတွက် လိုအပ်တဲ့ Digital System တွေကို ရွေးပေးပြီး စတင်အသုံးပြုနိုင်အောင် ကူညီပေးပါတယ်။\n\nဥပမာ —\n• ဆိုင် Website & Digital Menu\n• QR Ordering\n• POS / Order Management\n• Kitchen Order Screen\n• Menu Management\n• Staff Training & Support\n\nဘာ System လိုမလဲ မသိလည်းရပါတယ်။ မေးခွန်းနည်းနည်း ဖြေလိုက်ရင် သင့်ဆိုင်အတွက် လိုအပ်တာကို အကြံပြုပေးပါမယ်။",
+    en: "Welcome 👋\n\nမြန်ဆန် helps restaurants choose and set up the digital tools they actually need.\n\nWe can help with:\n• Restaurant Website & Digital Menu\n• QR Ordering\n• POS / Order Management\n• Kitchen Order Screen\n• Menu Management\n• Staff Training & Support\n\nYou don't need to know which system to choose. Answer a few simple questions and we'll recommend a setup for your restaurant.",
   },
+  "consult.viewPackages": { mm: "Package တွေကြည့်မယ်", en: "View Packages" },
+  "consult.hidePackages": { mm: "မြန်ဆန်က အကြံပြုပေးမယ်", en: "Let မြန်ဆန် Recommend" },
+  "consult.recommendSystems": { mm: "ဒါကြောင့် အကြံပြုတာတွေ —", en: "So we recommend:" },
+  "consult.recPackage": { mm: "သင့်ဆိုင်အတွက် {name} ကို အကြံပြုပါတယ်။", en: "{name} is recommended for your restaurant." },
   "consult.thinking": {
     mm: "မြန်ဆန် is thinking...",
     en: "မြန်ဆန် is thinking...",

@@ -189,6 +189,7 @@ export function recommend(a: Answers): Recommendation & { systems: SystemRec[] }
 
   return {
     packageId,
+    systems: calc.recommendedSystems,
     headline: { mm: "Recommended for Your Restaurant", en: "Recommended for Your Restaurant" },
     reason,
     why: {
