@@ -9,7 +9,7 @@ export function AIMessage({ children, className }: { children: ReactNode; classN
       <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">
         မြန်
       </div>
-      <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-card px-4 py-3 text-[15px] leading-relaxed text-card-foreground shadow-sm ring-1 ring-border">
+      <div className="max-w-[85%] whitespace-pre-line rounded-2xl rounded-tl-sm bg-card px-4 py-3 text-[15px] leading-relaxed text-card-foreground shadow-sm ring-1 ring-border">
         {children}
       </div>
     </div>
