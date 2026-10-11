@@ -700,7 +700,13 @@ export function interpretAnswer(question: Question, raw: string): Interpretation
   // Multi-select: collect every tool mentioned.
   if (question.multi) {
     const hits = question.choices.filter(
-      (ch) => ch.value !== "none" && (ch.keys ?? []).some((k) => keyHit(text, k)),
+      (ch) =>
+        ch.value !== "none" &&
+        (ch.keys ?? []).some(
+          (k) =>
+            keyHit(text, k) &&
+            !new RegExp(`(no |don t have |without )${normalizeText(k)}|${normalizeText(k)} ?မရှိ|${normalizeText(k)} ?မသုံး`).test(text),
+        ),
     );
     if (hits.length) {
       return {
