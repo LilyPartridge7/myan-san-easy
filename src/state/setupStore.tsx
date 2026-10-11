@@ -147,7 +147,9 @@ type Ctx = {
   resetDemo: () => void;
 };
 
-const SetupContext = createContext<Ctx | null>(null);
+// Keep one context instance across hot reloads so provider and consumers always match.
+const g = globalThis as unknown as { __myansanSetupCtx?: React.Context<Ctx | null> };
+const SetupContext = (g.__myansanSetupCtx ??= createContext<Ctx | null>(null));
 
 export function SetupProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<SetupState>(INITIAL);
