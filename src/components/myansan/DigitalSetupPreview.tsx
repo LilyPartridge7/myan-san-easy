@@ -487,6 +487,7 @@ export function DigitalSetupPreview({
   const [orders, setOrders] = useState<Order[]>(SEED);
   const [seq, setSeq] = useState(104);
   const pkg = PACKAGES.find((x) => x.id === packageId)!;
+  const pkgName = p(pkg.name);
   const included = systems.filter((s) => systemInclusion(packageId, s.id) === "included");
 
   const placeOrder = (items: Record<string, number>) => {
@@ -501,7 +502,7 @@ export function DigitalSetupPreview({
       <header className="mx-auto max-w-6xl px-4 pt-6 text-center">
         <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">{p({ mm: "သင့်ဆိုင် Digital Setup ကို ကြည့်မယ်", en: "Preview Your Digital Setup" })}</h1>
         <p className="mt-1 text-xs text-muted-foreground">
-          {p({ mm: `${pkg.name} Package ထဲပါတဲ့ System တွေကို ကြည့်နေပါတယ်`, en: `You are viewing systems included in ${pkg.name}` })}
+          {p({ mm: `${pkgName} Package ထဲပါတဲ့ System တွေကို ကြည့်နေပါတယ်`, en: `You are viewing systems included in ${pkgName}` })}
         </p>
       </header>
       <nav className="sticky top-[61px] z-30 mt-4 border-b border-border bg-background/95 backdrop-blur">
@@ -521,7 +522,7 @@ export function DigitalSetupPreview({
             <div className="rounded-3xl border border-border bg-card p-5 sm:p-7">
               <p className="text-xs tracking-[0.3em] text-muted-foreground">{name}</p>
               <h2 className="mt-1 text-lg font-semibold">{p({ mm: "သင့်ဆိုင်အတွက် အကြံပြု Digital Setup", en: "Your Recommended Digital Setup" })}</h2>
-              <p className="mt-2 inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold tracking-widest text-primary">{pkg.name.toUpperCase()} PACKAGE</p>
+              <p className="mt-2 inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold tracking-widest text-primary">{pkgName.toUpperCase()} PACKAGE</p>
               {basedOn.length > 0 && (
                 <div className="mt-4">
                   <p className="text-[11px] font-semibold tracking-widest text-muted-foreground">{p({ mm: "အခြေခံထားတာ", en: "BASED ON" })}</p>
@@ -546,7 +547,7 @@ export function DigitalSetupPreview({
               <div className="mt-5 flex flex-wrap gap-2">
                 <button onClick={() => setActive(tabs[1] ?? "overview")} className="min-h-11 rounded-full border border-border px-5 text-sm font-medium">{p({ mm: "System တွေ စမ်းကြည့်မယ်", en: "Explore Systems" })}</button>
                 <button onClick={onCustomize} className="min-h-11 rounded-full border border-border px-5 text-sm font-medium">{p({ mm: "စိတ်ကြိုက်ပြင်မယ်", en: "Customize Setup" })}</button>
-                <button onClick={onChoose} className="min-h-11 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground">{p({ mm: `${pkg.name} ကို ရွေးမယ်`, en: `Choose ${pkg.name}` })}</button>
+                <button onClick={onChoose} className="min-h-11 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground">{p({ mm: `${pkgName} ကို ရွေးမယ်`, en: `Choose ${pkgName}` })}</button>
               </div>
               {included.length < systems.length && (
                 <p className="mt-3 text-[11px] text-muted-foreground">{p({ mm: "Optional Add-on တွေကို Setup မှာ ထပ်ထည့်နိုင်ပါတယ် — Package ထဲ အလိုအလျောက် မပါပါ။", en: "Optional add-ons can be added during setup — they are not part of the package price." })}</p>
