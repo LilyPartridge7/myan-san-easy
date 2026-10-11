@@ -4,7 +4,7 @@ import { ChevronLeft } from "lucide-react";
 import { BrandHeader } from "@/components/myansan/BrandHeader";
 import { AIMessage, ChatComposer, QuickChoices, UserMessage } from "@/components/myansan/Chat";
 import { PackageCard } from "@/components/myansan/PackageCard";
-import { QUESTIONS, ackFor, interpretAnswer, recommend, typedAck } from "@/services/mockConsultant";
+import { ackFor, answerLabel, interpretAnswer, questionsFor, recommend, typedAck } from "@/services/mockConsultant";
 import { useSetup, type ConsultTurn } from "@/state/setupStore";
 import { useT } from "@/i18n";
 import { pick, type Lang } from "@/i18n/types";
@@ -33,18 +33,18 @@ type Msg = { role: "ai" | "user"; text: string };
 /** Rebuild the whole conversation from the saved answer history, in the current language. */
 function buildTranscript(turns: ConsultTurn[], lang: Lang, welcome: string): Msg[] {
   const msgs: Msg[] = [{ role: "ai", text: welcome }];
+  const qs = questionsFor(turns);
   turns.forEach((t, i) => {
-    const q = QUESTIONS.find((qq) => qq.id === t.stage);
+    const q = qs[i];
     const questionText = q ? pick(lang, q.text) : t.question;
-    const choice = q?.choices.find((c) => c.value === t.value);
-    const labelText = choice ? pick(lang, choice.label) : t.label;
+    const labelText = q ? answerLabel(q, t.value, lang) : t.label;
     msgs.push({ role: "ai", text: questionText });
     // Typed answers keep the owner's own words in the bubble.
     msgs.push({ role: "user", text: t.raw?.trim() || labelText });
     const ack = q && t.raw ? typedAck(q, t.value, lang, labelText) : ackFor(t.stage as never, lang);
-    if (ack && i < QUESTIONS.length - 1) msgs.push({ role: "ai", text: ack });
+    if (ack && i < qs.length - 1) msgs.push({ role: "ai", text: ack });
   });
-  const next = QUESTIONS[turns.length];
+  const next = qs[turns.length];
   if (next) msgs.push({ role: "ai", text: pick(lang, next.text) });
   return msgs;
 }
@@ -61,14 +61,16 @@ function Consult() {
 
   const turns = state.consultTurns;
   const step = turns.length;
-  const question = QUESTIONS[step];
-  const finished = step >= QUESTIONS.length;
+  const qs = useMemo(() => questionsFor(turns), [turns]);
+  const question = qs[step];
+  const finished = step >= qs.length;
 
   const answers = useMemo(
     () => ({
       restaurantType: turns.find((t) => t.stage === "restaurantType")?.value ?? null,
       tableCount: turns.find((t) => t.stage === "tableCount")?.value ?? null,
-      orderingMethod: turns.find((t) => t.stage === "orderingMethod")?.value ?? null,
+      currentTools: turns.find((t) => t.stage === "currentTools")?.value ?? null,
+      followUp: turns.find((t) => t.stage === "followUp")?.value ?? null,
       mainProblem: turns.find((t) => t.stage === "mainProblem")?.value ?? null,
       mainGoal: turns.find((t) => t.stage === "mainGoal")?.value ?? null,
     }),
@@ -100,7 +102,7 @@ function Consult() {
 
   /** The single pipeline every answer goes through — tapped or typed. */
   const processAnswer = (value: string, label: string, raw?: string) => {
-    const q = QUESTIONS[step];
+    const q = qs[step];
     if (!q || typing) return;
     setExtraMsgs([]);
     answerConsult({
@@ -121,7 +123,7 @@ function Consult() {
   /** Free text is normalized against the CURRENT question, then reuses the same pipeline. */
   const handleTyped = (text: string) => {
     if (typing) return;
-    const q = QUESTIONS[step];
+    const q = qs[step];
     if (!q) {
       setExtraMsgs((m) => [
         ...m,
@@ -194,6 +196,9 @@ function Consult() {
 
           {!typing && question ? (
             <QuickChoices
+              key={`${step}-${question.id}`}
+              multi={!!question.multi}
+              doneLabel={t("consult.doneSelecting")}
               choices={question.choices.map((c) => ({ value: c.value, label: p(c.label) }))}
               onSelect={answer}
             />
@@ -224,6 +229,7 @@ function Consult() {
                   {t("consult.recPackage", { name: rec.packageId.charAt(0).toUpperCase() + rec.packageId.slice(1) })}
                 </p>
                 <p className="mt-1">{t("consult.recIntro")} {p(rec.reason)}</p>
+                {rec.note ? <p className="mt-2">{p(rec.note)}</p> : null}
                 <p className="mt-2">{t("consult.recommendSystems")}</p>
                 <ul className="mt-1 space-y-1">
                   {rec.systems.map((s) => (

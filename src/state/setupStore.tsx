@@ -52,6 +52,8 @@ export type SetupState = {
   orderingMethod: string | null;
   mainProblem: string | null;
   mainGoal: string | null;
+  currentTools: string | null;
+  followUp: string | null;
   recommendedPackage: PackageId | null;
   selectedPackage: PackageId | null;
   selectedServices: ServiceKey[];
@@ -91,6 +93,8 @@ const INITIAL: SetupState = {
   orderingMethod: null,
   mainProblem: null,
   mainGoal: null,
+  currentTools: null,
+  followUp: null,
   recommendedPackage: null,
   selectedPackage: null,
   selectedServices: [],
@@ -143,7 +147,9 @@ type Ctx = {
   resetDemo: () => void;
 };
 
-const SetupContext = createContext<Ctx | null>(null);
+// Keep one context instance across hot reloads so provider and consumers always match.
+const g = globalThis as unknown as { __myansanSetupCtx?: React.Context<Ctx | null> };
+const SetupContext = (g.__myansanSetupCtx ??= createContext<Ctx | null>(null));
 
 export function SetupProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<SetupState>(INITIAL);

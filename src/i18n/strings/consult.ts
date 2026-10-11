@@ -42,6 +42,7 @@ export const consult = {
     mm: "Compare Plans",
     en: "Compare Plans",
   },
+  "consult.doneSelecting": { mm: "ရွေးပြီးပါပြီ", en: "Done" },
   "consult.editPrevious": {
     mm: "အရင်မေးခွန်းကို ပြင်မယ်",
     en: "Edit previous question",

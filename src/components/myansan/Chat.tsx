@@ -29,21 +29,58 @@ export function UserMessage({ children }: { children: ReactNode }) {
 export function QuickChoices({
   choices,
   onSelect,
+  multi,
+  doneLabel,
 }: {
   choices: { value: string; label: string }[];
   onSelect: (value: string, label: string) => void;
+  multi?: boolean;
+  doneLabel?: string;
 }) {
+  const [picked, setPicked] = useState<string[]>([]);
+  const toggle = (v: string) =>
+    setPicked((cur) =>
+      cur.includes(v)
+        ? cur.filter((x) => x !== v)
+        : v === "none"
+          ? ["none"]
+          : [...cur.filter((x) => x !== "none"), v],
+    );
+  const done = () => {
+    const sel = choices.filter((c) => picked.includes(c.value));
+    if (!sel.length) return;
+    onSelect(sel.map((c) => c.value).join(","), sel.map((c) => c.label).join(", "));
+  };
   return (
     <div className="fade-up flex flex-wrap gap-2 pl-11">
-      {choices.map((c) => (
+      {choices.map((c) => {
+        const on = multi && picked.includes(c.value);
+        return (
+          <button
+            key={c.value}
+            aria-pressed={multi ? on : undefined}
+            onClick={() => (multi ? toggle(c.value) : onSelect(c.value, c.label))}
+            className={cn(
+              "min-h-11 rounded-full border px-5 py-2.5 text-left text-[15px] font-medium transition-colors active:scale-[0.98]",
+              on
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-card text-card-foreground hover:border-primary hover:bg-primary/5",
+            )}
+          >
+            {on ? "✓ " : ""}
+            {c.label}
+          </button>
+        );
+      })}
+      {multi ? (
         <button
-          key={c.value}
-          onClick={() => onSelect(c.value, c.label)}
-          className="min-h-11 rounded-full border border-border bg-card px-5 py-2.5 text-[15px] font-medium text-card-foreground transition-colors hover:border-primary hover:bg-primary/5 active:scale-[0.98]"
+          onClick={done}
+          disabled={!picked.length}
+          className="min-h-11 rounded-full bg-primary px-6 text-[15px] font-semibold text-primary-foreground transition-opacity disabled:opacity-40"
         >
-          {c.label}
+          {doneLabel ?? "Done"}
         </button>
-      ))}
+      ) : null}
     </div>
   );
 }
