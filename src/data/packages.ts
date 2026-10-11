@@ -113,3 +113,29 @@ export const PACKAGES: {
 ];
 
 export const getPackage = (id: PackageId) => PACKAGES.find((p) => p.id === id)!;
+
+/** Single source of truth: which recommended system each package includes. */
+export const SYSTEM_SERVICE: Record<string, ServiceKey> = {
+  qr_ordering: "qrOrdering",
+  digital_menu: "phoneMenu",
+  menu_management: "phoneMenu",
+  restaurant_website: "website",
+  pos_order_management: "kitchenScreen",
+  kitchen_order_screen: "kitchenScreen",
+  staff_training: "staffTraining",
+  reporting: "priorityHelp",
+  integration: "priorityHelp",
+  support: "priorityHelp",
+};
+export type Inclusion = "included" | "addon";
+export const systemInclusion = (pkg: PackageId, systemId: string): Inclusion => {
+  const svc = SYSTEM_SERVICE[systemId];
+  return svc && getPackage(pkg).services.includes(svc) ? "included" : "addon";
+};
+/** Honest availability label shown next to each system. */
+export const SYSTEM_AVAILABILITY: Record<string, "available" | "pilot" | "soon"> = {
+  pos_order_management: "pilot",
+  kitchen_order_screen: "pilot",
+  reporting: "pilot",
+  integration: "pilot",
+};
