@@ -1,9 +1,10 @@
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { useMemo } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
 import { DigitalSetupPreview } from "@/components/myansan/DigitalSetupPreview";
 import { IMAGES } from "@/data/images";
-import { recommend, templateFor } from "@/services/mockConsultant";
+import { answerLabel, questionsFor, recommend, templateFor } from "@/services/mockConsultant";
 import { useSetup } from "@/state/setupStore";
 import { useT } from "@/i18n";
 
@@ -93,13 +94,14 @@ function PreviewError() {
 }
 
 function PreviewPage() {
-  const { state, hydrated, goToStage } = useSetup();
-  const { t, p } = useT();
+  const { state, hydrated, goToStage, applyPackage } = useSetup();
+  const { t, p, lang } = useT();
+  const navigate = useNavigate();
   const template = templateFor(state.websiteStyle ?? "luxury");
   const returnStage = state.previewReturnStage ?? "website";
-  const systems = useMemo(() => {
+  const rec = useMemo(() => {
     const v = (s: string) => state.consultTurns.find((x) => x.stage === s)?.value ?? null;
-    if (state.consultTurns.length === 0) return [];
+    if (state.consultTurns.length === 0) return null;
     return recommend({
       restaurantType: v("restaurantType"),
       tableCount: v("tableCount"),
@@ -107,8 +109,21 @@ function PreviewPage() {
       mainProblem: v("mainProblem"),
       followUp: v("followUp"),
       mainGoal: v("mainGoal"),
-    }).systems;
+    });
   }, [state.consultTurns]);
+  const systems = rec?.systems ?? [];
+  const packageId = state.selectedPackage ?? state.recommendedPackage ?? rec?.packageId ?? "growth";
+  const basedOn = useMemo(() => {
+    const qs = questionsFor(state.consultTurns);
+    return state.consultTurns
+      .filter((tn) => tn.stage !== "restaurantType")
+      .map((tn) => {
+        const q = qs.find((x) => x.id === tn.stage);
+        return q ? answerLabel(q, tn.value, lang) : tn.label;
+      })
+      .filter(Boolean);
+  }, [state.consultTurns, lang]);
+  const branches = state.consultTurns.some((x) => x.value === "multiBranch");
 
   if (!hydrated) return <PreviewLoading />;
 
@@ -129,6 +144,11 @@ function PreviewPage() {
         name={state.restaurantName}
         tagline={state.tagline}
         color={state.restaurantColor}
+        packageId={packageId}
+        basedOn={basedOn}
+        branches={branches}
+        onChoose={() => { applyPackage(packageId); goToStage("website"); navigate({ to: "/setup" }); }}
+        onCustomize={() => { goToStage("package"); navigate({ to: "/setup" }); }}
       />
       <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-3 px-4 py-10">
         <Link to="/consult" className={btn}>
