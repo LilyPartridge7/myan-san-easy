@@ -379,7 +379,7 @@ export function calculateRestaurantRecommendation(a: Answers) {
   if (packageId === "partner") wanted.push("support");
   if (wanted.length === 0) wanted.push("restaurant_website", "digital_menu");
 
-  const owned = new Set(tools.map((t) => TOOL_COVERS[t]).filter(Boolean));
+  const owned = new Set(tools.map((t) => TOOL_COVERS[t]).filter((x): x is string => !!x));
   const sys = new Set(wanted.filter((k) => !owned.has(k)));
   // Already has a POS but kitchen/ordering flow is the issue → connect around it.
   if (owned.has("pos_order_management") && wanted.includes("pos_order_management")) sys.add("integration");
@@ -462,7 +462,7 @@ export function recommend(a: Answers): Recommendation & { systems: SystemRec[] }
     systems: calc.recommendedSystems,
     headline: { mm: "Recommended for Your Restaurant", en: "Recommended for Your Restaurant" },
     reason,
-    note,
+    ...(note ? { note } : {}),
     why: {
       mm: "သင့်ဆိုင်အရွယ်အစား၊ လက်ရှိသုံးနေတဲ့ Tool တွေနဲ့ အခက်ဆုံးအပိုင်းကို ကြည့်ပြီး လိုအပ်တာလေးတွေကိုပဲ ရွေးပေးထားပါတယ်။",
       en: "Based on your size, the tools you already use and where running the restaurant is hardest, I picked only what you actually need.",

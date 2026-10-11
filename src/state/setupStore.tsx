@@ -52,6 +52,8 @@ export type SetupState = {
   orderingMethod: string | null;
   mainProblem: string | null;
   mainGoal: string | null;
+  currentTools: string | null;
+  followUp: string | null;
   recommendedPackage: PackageId | null;
   selectedPackage: PackageId | null;
   selectedServices: ServiceKey[];
@@ -91,6 +93,8 @@ const INITIAL: SetupState = {
   orderingMethod: null,
   mainProblem: null,
   mainGoal: null,
+  currentTools: null,
+  followUp: null,
   recommendedPackage: null,
   selectedPackage: null,
   selectedServices: [],
