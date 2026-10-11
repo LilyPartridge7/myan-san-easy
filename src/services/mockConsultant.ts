@@ -136,7 +136,7 @@ export function calculateRestaurantRecommendation(a: Answers) {
   if (packageId === "partner") sys.add("support");
   if (sys.size === 0) sys.add("restaurant_website").add("digital_menu");
   const order = Object.keys(SYS);
-  const recommendedSystems = [...sys].sort((x, y) => order.indexOf(x) - order.indexOf(y)).map((k) => SYS[k]);
+  const recommendedSystems = [...sys].sort((x, y) => order.indexOf(x) - order.indexOf(y)).map((k) => SYS[k]!);
   return { recommendedPackage: packageId, recommendedSystems, scores: s };
 }
 

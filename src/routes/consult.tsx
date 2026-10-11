@@ -221,7 +221,7 @@ function Consult() {
             <div className="fade-up space-y-4">
               <AIMessage>
                 <p className="font-semibold">
-                  {t("consult.recPackage", { name: rec.packageId[0].toUpperCase() + rec.packageId.slice(1) })}
+                  {t("consult.recPackage", { name: rec.packageId.charAt(0).toUpperCase() + rec.packageId.slice(1) })}
                 </p>
                 <p className="mt-1">{t("consult.recIntro")} {p(rec.reason)}</p>
                 <p className="mt-2">{t("consult.recommendSystems")}</p>
