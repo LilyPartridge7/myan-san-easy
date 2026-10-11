@@ -43,7 +43,7 @@ export const customer = {
   "owner.reviewSetup": { mm: "Setup ပြန်ကြည့်မယ်", en: "Review Setup" },
   "owner.home": { mm: "ပင်မစာမျက်နှာ", en: "Home" },
   "owner.resetDemo": { mm: "Demo ပြန်စမည်", en: "Reset Demo" },
-  "preview.loadingTitleMm": { mm: "သင့်ဆိုင် Website Preview ကို ပြင်ဆင်နေပါတယ်...", en: "Preparing your restaurant website preview..." },
+  "preview.loadingTitleMm": { mm: "သင့်ဆိုင် Digital Setup Preview ကို ပြင်ဆင်နေပါတယ်...", en: "Preparing your digital setup preview..." },
   "preview.loadingSubtitle": { mm: "Preparing your restaurant preview...", en: "Preparing your restaurant preview..." },
   "preview.loadingHint": { mm: "This should only take a moment.", en: "This should only take a moment." },
   "preview.errorTitle": {

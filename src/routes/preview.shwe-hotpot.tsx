@@ -1,8 +1,9 @@
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
+import { useMemo } from "react";
 import { ChevronLeft } from "lucide-react";
-import { RestaurantPreview } from "@/components/myansan/RestaurantPreview";
+import { DigitalSetupPreview } from "@/components/myansan/DigitalSetupPreview";
 import { IMAGES } from "@/data/images";
-import { templateFor } from "@/services/mockConsultant";
+import { recommend, templateFor } from "@/services/mockConsultant";
 import { useSetup } from "@/state/setupStore";
 import { useT } from "@/i18n";
 
@@ -93,44 +94,53 @@ function PreviewError() {
 
 function PreviewPage() {
   const { state, hydrated, goToStage } = useSetup();
-  const { t } = useT();
+  const { t, p } = useT();
   const template = templateFor(state.websiteStyle ?? "luxury");
   const returnStage = state.previewReturnStage ?? "website";
+  const systems = useMemo(() => {
+    const v = (s: string) => state.consultTurns.find((x) => x.stage === s)?.value ?? null;
+    if (state.consultTurns.length === 0) return [];
+    return recommend({
+      restaurantType: v("restaurantType"),
+      tableCount: v("tableCount"),
+      currentTools: v("currentTools"),
+      mainProblem: v("mainProblem"),
+      followUp: v("followUp"),
+      mainGoal: v("mainGoal"),
+    }).systems;
+  }, [state.consultTurns]);
 
   if (!hydrated) return <PreviewLoading />;
 
+  const btn = "inline-flex min-h-11 items-center rounded-full border border-border bg-card px-4 text-sm font-medium";
   return (
     <div className="page-enter min-h-screen">
       <div className="sticky top-0 z-40 flex flex-wrap items-center gap-2 border-b border-border bg-background/90 px-4 py-3 backdrop-blur">
-        <Link
-          to="/setup"
-          onClick={() => goToStage(returnStage)}
-          className="inline-flex min-h-11 items-center gap-1 rounded-full border border-border bg-card px-4 text-sm font-medium"
-        >
+        <Link to="/setup" onClick={() => goToStage(returnStage)} className={btn}>
           <ChevronLeft className="h-4 w-4" /> {t("preview.backToSetup")}
         </Link>
-        <Link
-          to="/setup"
-          onClick={() => goToStage("website")}
-          className="inline-flex min-h-11 items-center rounded-full border border-border bg-card px-4 text-sm font-medium"
-        >
-          {t("preview.edit")}
-        </Link>
-        <Link
-          to="/setup"
-          onClick={() => goToStage("qr")}
-          className="ml-auto inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground"
-        >
+        <Link to="/setup" onClick={() => goToStage("qr")} className="ml-auto inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground">
           {t("preview.continueSetup")}
         </Link>
       </div>
-      <RestaurantPreview
+      <DigitalSetupPreview
+        systems={systems}
         template={template}
         name={state.restaurantName}
         tagline={state.tagline}
         color={state.restaurantColor}
-        heroImage={IMAGES.heroInterior}
       />
+      <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-3 px-4 py-10">
+        <Link to="/consult" className={btn}>
+          {p({ mm: "အကြံပြုချက်သို့ ပြန်မယ်", en: "Back to Recommendation" })}
+        </Link>
+        <Link to="/setup" onClick={() => goToStage("package")} className={btn}>
+          {p({ mm: "Setup ကို စိတ်ကြိုက်ပြင်မယ်", en: "Customize Setup" })}
+        </Link>
+        <Link to="/setup" onClick={() => goToStage("qr")} className="inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground">
+          {t("preview.continueSetup")}
+        </Link>
+      </div>
     </div>
   );
 }
