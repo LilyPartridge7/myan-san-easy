@@ -15,16 +15,8 @@ export const consult = {
     en: "Restoring your consultation...",
   },
   "consult.welcome": {
-    mm: "မင်္ဂလာပါ 👋
-
-POS, Kitchen, Website ကနေ Restaurant Health, Growth Coaching နဲ့ Customer Feedback အထိ မြန်ဆန်က ကူညီပေးနိုင်ပါတယ်။
-
-မေးခွန်း 4 ခုလောက်ဖြေပြီး သင့်ဆိုင်အတွက် သင့်တော်တာကို ရွေးပေးပါမယ်။",
-    en: "Welcome 👋
-
-မြန်ဆန် can help with everything from POS, Kitchen and Website setup to Restaurant Health, Growth Coaching and Customer Feedback.
-
-Answer 4 quick questions and we'll recommend the right setup.",
+    mm: "မင်္ဂလာပါ 👋\n\nPOS, Kitchen, Website ကနေ Restaurant Health, Growth Coaching နဲ့ Customer Feedback အထိ မြန်ဆန်က ကူညီပေးနိုင်ပါတယ်။\n\nမေးခွန်း 4 ခုလောက်ဖြေပြီး သင့်ဆိုင်အတွက် သင့်တော်တာကို ရွေးပေးပါမယ်။",
+    en: "Welcome 👋\n\nမြန်ဆန် can help with everything from POS, Kitchen and Website setup to Restaurant Health, Growth Coaching and Customer Feedback.\n\nAnswer 4 quick questions and we'll recommend the right setup.",
   },
   "consult.viewPackages": { mm: "Package တွေကြည့်မယ်", en: "View Packages" },
   "consult.hidePackages": { mm: "မြန်ဆန်က အကြံပြုပေးမယ်", en: "Let မြန်ဆန် Recommend" },
