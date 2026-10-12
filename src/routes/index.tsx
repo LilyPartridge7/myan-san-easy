@@ -92,10 +92,10 @@ function Landing() {
   };
 
   return (
-    <main className="fade-in">
+    <main className="fade-in overflow-x-clip">
       {/* HERO */}
       <section className="relative h-[100dvh] min-h-[580px] w-full overflow-hidden">
-        <div className="fixed inset-0 z-[-1] h-[100dvh] overflow-hidden">
+        <div className="fixed inset-0 z-[-1] h-[100dvh] overflow-hidden [contain:paint]">
         <img
           src={IMAGES.heroInterior}
           alt="Warm restaurant interior with wooden tables and ambient lighting"
