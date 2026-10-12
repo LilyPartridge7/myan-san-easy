@@ -119,7 +119,7 @@ function InclusionBadge({ pkg, systemId }: { pkg: PackageId; systemId: string })
   );
 }
 
-function Frame({ tab, pkg, children, hint }: { tab: Exclude<TabId, "overview">; pkg: PackageId; children: React.ReactNode; hint: L }) {
+function Frame({ tab, pkg, children, hint }: { tab: keyof typeof TAB_SYSTEM; pkg: PackageId; children: React.ReactNode; hint: L }) {
   const { p } = useT();
   return (
     <section className="mx-auto max-w-6xl px-3 py-5 sm:px-4">
