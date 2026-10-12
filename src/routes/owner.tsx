@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { MenuPreview, OrdersPreview, WebsitePreview, QRPreview } from "@/components/myansan/OwnerPreviews";
 import { QrCode, UtensilsCrossed, ReceiptText, Globe } from "lucide-react";
 import { IMAGES } from "@/data/images";
 import { useSetup } from "@/state/setupStore";
@@ -25,7 +27,8 @@ export const Route = createFileRoute("/owner")({
 
 function OwnerHome() {
   const { state, resetDemo, goToStage } = useSetup();
-  const { t } = useT();
+  const { t, p } = useT();
+  const [active, setActive] = useState<"overview" | "menu" | "orders" | "website" | "qr">("overview");
   const navigate = useNavigate();
   const openSetup = () => {
     if (state.confirmed) goToStage("saved");
@@ -66,24 +69,31 @@ function OwnerHome() {
           />
         </div>
 
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Link to="/r/shwe-hotpot/table/$table" params={{ table: "7" }} className={tileClass}>
-            <UtensilsCrossed className="h-5 w-5 text-primary" />
-            {t("owner.menu")}
-          </Link>
-          <Link to="/r/shwe-hotpot/table/$table" params={{ table: "7" }} className={tileClass}>
-            <ReceiptText className="h-5 w-5 text-primary" />
-            {t("owner.orders")}
-          </Link>
-          <Link to="/preview/shwe-hotpot" search={{ from: "owner" }} className={tileClass}>
-            <Globe className="h-5 w-5 text-primary" />
-            {t("owner.website")}
-          </Link>
-          <button onClick={openSetup} className={tileClass}>
-            <QrCode className="h-5 w-5 text-primary" />
-            {t("owner.qr")}
-          </button>
+        <p className="mt-8 text-sm font-medium">{p({ en: "Explore Your Digital Systems", mm: "သင့်ဆိုင် Digital System တွေကို ကြည့်မယ်" })}</p>
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {([
+            ["menu", UtensilsCrossed, t("owner.menu")],
+            ["orders", ReceiptText, t("owner.orders")],
+            ["website", Globe, t("owner.website")],
+            ["qr", QrCode, t("owner.qr")],
+          ] as const).map(([id, Icon, label]) => (
+            <button key={id} aria-pressed={active === id}
+              onClick={() => setActive(active === id ? "overview" : id)}
+              className={`${tileClass} ${active === id ? "border-primary bg-primary/10 ring-1 ring-primary" : ""}`}>
+              <Icon className="h-5 w-5 text-primary" />
+              {label}
+            </button>
+          ))}
         </div>
+
+        {active !== "overview" && (
+          <div key={active} className="owner-fade mt-4 rounded-2xl border border-border bg-card p-4 sm:p-5">
+            {active === "menu" && <MenuPreview />}
+            {active === "orders" && <OrdersPreview />}
+            {active === "website" && <WebsitePreview />}
+            {active === "qr" && <QRPreview />}
+          </div>
+        )}
 
         <div className="mt-10 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
           <button onClick={openSetup} className="underline underline-offset-4">
