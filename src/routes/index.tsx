@@ -4,6 +4,8 @@ import { ChevronDown } from "lucide-react";
 import { IMAGES } from "@/data/images";
 import { PackageCard } from "@/components/myansan/PackageCard";
 import { LanguageToggle } from "@/components/myansan/LanguageToggle";
+import { ContactButton } from "@/components/myansan/ContactDialog";
+import { ComparePackagesTable } from "@/components/myansan/ComparePackagesTable";
 import { useT } from "@/i18n";
 import type { StringKey } from "@/i18n";
 
@@ -14,12 +16,12 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Tell မြန်ဆန် what your restaurant needs. QR ordering, a beautiful website and kitchen order screens — without learning complicated technology.",
+          "Myan San helps restaurant owners find, preview and set up the digital systems their restaurant actually needs.",
       },
       { property: "og:title", content: "မြန်ဆန် — သင့်ဆိုင်အတွက် နည်းပညာ အကူအညီ" },
       {
         property: "og:description",
-        content: "A simpler way to bring your restaurant online — no technical knowledge needed.",
+        content: "Myan San helps restaurant owners find, preview and set up the digital systems their restaurant actually needs.",
       },
       { property: "og:image", content: IMAGES.heroInterior },
       { name: "twitter:image", content: IMAGES.heroInterior },
@@ -81,6 +83,7 @@ function Landing() {
   const { t } = useT();
   const [leaving, setLeaving] = useState(false);
   const [openService, setOpenService] = useState<string | null>(null);
+  const [compare, setCompare] = useState(false);
 
   const startConsult = () => {
     if (leaving) return;
@@ -89,14 +92,16 @@ function Landing() {
   };
 
   return (
-    <main className="fade-in">
+    <main className="fade-in overflow-x-clip">
       {/* HERO */}
       <section className="relative h-[100dvh] min-h-[580px] w-full overflow-hidden">
+        <div className="fixed inset-0 z-[-1] h-[100dvh] overflow-hidden [contain:paint]">
         <img
           src={IMAGES.heroInterior}
           alt="Warm restaurant interior with wooden tables and ambient lighting"
-          className="fixed inset-0 z-[-1] h-[100dvh] w-full object-cover slow-zoom"
+          className="h-full w-full object-cover slow-zoom"
         />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,42,95,0.94)] via-[rgba(15,42,95,0.55)] to-[rgba(8,17,31,0.35)]" />
         <div className="absolute inset-0 flex flex-col px-5 pt-5 sm:px-10 lg:px-16">
           <div className="flex items-center justify-between gap-3">
@@ -246,10 +251,13 @@ function Landing() {
         <p className="text-[11px] tracking-[0.35em] text-muted-foreground">{t("landing.packages")}</p>
         <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">{t("landing.packagesHeading")}</h2>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
-          <PackageCard id="start" compact />
-          <PackageCard id="growth" compact />
-          <PackageCard id="partner" compact />
+          <PackageCard id="start" compact><button onClick={startConsult} className="mt-5 min-h-12 w-full rounded-full bg-primary px-5 text-[15px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover">{t("findMySetup")}</button></PackageCard>
+          <PackageCard id="growth" compact><button onClick={startConsult} className="mt-5 min-h-12 w-full rounded-full bg-primary px-5 text-[15px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover">{t("findMySetup")}</button></PackageCard>
+          <PackageCard id="partner" compact><ContactButton className="mt-5 w-full" /></PackageCard>
         </div>
+        <p className="mt-4 text-sm text-muted-foreground">{t("pkgNoPreselect")}</p>
+        <button type="button" aria-expanded={compare} onClick={() => setCompare(!compare)} className="mt-4 min-h-11 rounded-full border border-border px-5 text-sm font-medium transition-colors hover:bg-muted">{compare ? t("hideCompare") : t("comparePackages")}</button>
+        {compare ? <ComparePackagesTable /> : null}
       </section>
 
       {/* FINAL CTA */}
@@ -270,10 +278,7 @@ function Landing() {
           </button>
         </div>
         <p className="mt-8 text-center text-xs text-muted-foreground">
-          © မြန်ဆန် ·{" "}
-          <Link to="/owner" className="underline underline-offset-4">
-            {t("landing.footerOwnerHome")}
-          </Link>
+          © မြန်ဆန်
         </p>
       </section>
     </main>

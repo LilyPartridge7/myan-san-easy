@@ -485,7 +485,7 @@ export function DigitalSetupPreview({
   onChoose: () => void;
   onCustomize: () => void;
 }) {
-  const { p } = useT();
+  const { p, lang } = useT();
   const tabs = useMemo(() => tabsFor(systems), [systems]);
   const [active, setActive] = useState<TabId>("overview");
   const current = tabs.includes(active) ? active : "overview";
@@ -546,8 +546,8 @@ export function DigitalSetupPreview({
                 ))}
               </ul>
               <div className="mt-5 grid grid-cols-2 gap-3 rounded-2xl bg-muted/60 p-4">
-                <div><p className="text-[11px] text-muted-foreground">{p({ mm: "လစဉ်", en: "Monthly" })}</p><p className="font-semibold">{monthlyLabel(packageId)}</p></div>
-                <div><p className="text-[11px] text-muted-foreground">Setup</p><p className="font-semibold">{setupLabel(packageId)}</p></div>
+                <div><p className="text-[11px] text-muted-foreground">{p({ mm: "လစဉ်", en: "Monthly" })}</p><p className="font-semibold">{monthlyLabel(packageId, lang)}</p></div>
+                <div><p className="text-[11px] text-muted-foreground">Setup</p><p className="font-semibold">{setupLabel(packageId, lang)}</p></div>
               </div>
               <div className="mt-5 flex flex-wrap gap-2">
                 <button onClick={() => setActive(tabs[1] ?? "overview")} className="min-h-11 rounded-full border border-border px-5 text-sm font-medium">{p({ mm: "System တွေ စမ်းကြည့်မယ်", en: "Explore Systems" })}</button>
