@@ -23,8 +23,8 @@ export const landing = {
     en: "Starting...",
   },
   "landing.exploreExperience": {
-    mm: "Customer Experience ကြည့်မယ်",
-    en: "Explore Customer Experience",
+    mm: "Solution တွေ ကြည့်မယ်",
+    en: "Explore Solutions",
   },
   "landing.trustLine": {
     mm: "✓ Easy to understand\u00a0\u00a0 ✓ Burmese + English\u00a0\u00a0 ✓ No technical knowledge needed",

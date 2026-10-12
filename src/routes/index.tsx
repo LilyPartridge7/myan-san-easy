@@ -121,8 +121,7 @@ function Landing() {
                 {leaving ? t("landing.starting") : t("landing.startConsult")}
               </button>
               <Link
-                to="/r/shwe-hotpot/table/$table"
-                params={{ table: "7" }}
+                to="/preview/shwe-hotpot"
                 className="min-h-12 rounded-full border border-white/50 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10 sm:min-h-13 sm:px-7 sm:text-[15px]"
               >
                 {t("landing.exploreExperience")}
