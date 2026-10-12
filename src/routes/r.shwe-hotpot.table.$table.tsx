@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Minus, Plus } from "lucide-react";
+import { ArrowLeft, Minus, Plus } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { CATEGORIES, MENU, formatMMK } from "@/data/menu";
 import { IMAGES } from "@/data/images";
@@ -46,6 +46,13 @@ function CustomerOrdering() {
   return (
     <div className="min-h-screen bg-background pb-28">
       <section className="relative h-56 w-full overflow-hidden">
+        <Link
+          to="/owner"
+          aria-label={t("back")}
+          className="absolute left-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(20,12,10,0.55)] text-white backdrop-blur transition-colors hover:bg-[rgba(20,12,10,0.75)]"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Link>
         <img src={IMAGES.hotpot} alt="Shwe Hotpot" className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(20,12,10,0.92)] to-transparent" />
         <div className="absolute bottom-5 left-5">

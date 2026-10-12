@@ -9,6 +9,9 @@ import { useSetup } from "@/state/setupStore";
 import { useT } from "@/i18n";
 
 export const Route = createFileRoute("/preview/shwe-hotpot")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    from: typeof search.from === "string" ? search.from : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Shwe Hotpot — Website Preview by မြန်ဆန်" },
@@ -94,6 +97,7 @@ function PreviewError() {
 }
 
 function PreviewPage() {
+  const { from } = Route.useSearch();
   const { state, hydrated, goToStage, applyPackage } = useSetup();
   const { t, p, lang } = useT();
   const navigate = useNavigate();
@@ -131,9 +135,15 @@ function PreviewPage() {
   return (
     <div className="page-enter min-h-screen">
       <div className="sticky top-0 z-40 flex flex-wrap items-center gap-2 border-b border-border bg-background/90 px-4 py-3 backdrop-blur">
-        <Link to="/setup" onClick={() => goToStage(returnStage)} className={btn}>
-          <ChevronLeft className="h-4 w-4" /> {t("preview.backToSetup")}
-        </Link>
+        {from === "owner" ? (
+          <Link to="/owner" className={btn}>
+            <ChevronLeft className="h-4 w-4" /> {t("preview.backToOwner")}
+          </Link>
+        ) : (
+          <Link to="/setup" onClick={() => goToStage(returnStage)} className={btn}>
+            <ChevronLeft className="h-4 w-4" /> {t("preview.backToSetup")}
+          </Link>
+        )}
         <Link to="/setup" onClick={() => goToStage("qr")} className="ml-auto inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground">
           {t("preview.continueSetup")}
         </Link>

@@ -56,6 +56,7 @@ export const customer = {
   },
   "preview.tryAgain": { mm: "ထပ်ကြိုးစားမည်", en: "Try Again" },
   "preview.backToSetup": { mm: "Setup သို့ ပြန်သွားမည်", en: "Back to Setup" },
+  "preview.backToOwner": { mm: "ဆိုင်ရှင်စာမျက်နှာသို့ ပြန်မယ်", en: "Back to My Restaurant" },
   "preview.edit": { mm: "ပြင်မည်", en: "Edit" },
   "preview.continueSetup": { mm: "Setup ဆက်လုပ်မည် →", en: "Continue Setup →" },
   "qr.scanToOrder": { mm: "စကင်ဖတ်ပြီး မှာယူပါ", en: "SCAN TO ORDER" },

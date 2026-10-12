@@ -75,7 +75,7 @@ function OwnerHome() {
             <ReceiptText className="h-5 w-5 text-primary" />
             {t("owner.orders")}
           </Link>
-          <Link to="/preview/shwe-hotpot" className={tileClass}>
+          <Link to="/preview/shwe-hotpot" search={{ from: "owner" }} className={tileClass}>
             <Globe className="h-5 w-5 text-primary" />
             {t("owner.website")}
           </Link>
