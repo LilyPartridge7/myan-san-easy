@@ -3,20 +3,20 @@ import type { L } from "../types";
 /** Strings for the landing screens. Keys are prefixed with "landing.". */
 export const landing = {
   "landing.heroTitleLine1": {
-    mm: "သင့်ဆိုင်အတွက် လိုအပ်တာကို ပြောပါ။",
-    en: "Tell us what your restaurant needs.",
+    mm: "သင့်ဆိုင်။",
+    en: "Your Restaurant.",
   },
   "landing.heroTitleLine2": {
-    mm: "ကျန်တာကို မြန်ဆန်က ကူညီပေးပါမယ်။",
-    en: "မြန်ဆန် will help with the rest.",
+    mm: "သင့်တော်တဲ့ Digital Setup။",
+    en: "The Right Digital Setup.",
   },
   "landing.heroDescription": {
-    mm: "A simpler way to bring your restaurant online — without learning complicated technology.",
-    en: "A simpler way to bring your restaurant online — without learning complicated technology.",
+    mm: "ဆိုင်မှာ ဘာအခက်အခဲရှိလဲ ပြောပါ။ လိုအပ်တဲ့ Digital Setup ကို မြန်ဆန်က အကြံပြုပေးပြီး ဆိုင်ပိုကောင်းလာအောင် ဆက်ကူညီပေးပါမယ်။",
+    en: "Tell us what is difficult. We'll recommend what your restaurant actually needs — and help you improve after setup.",
   },
   "landing.startConsult": {
-    mm: "အခမဲ့ အကြံပေးမှု စတင်မယ်",
-    en: "Start Free Consultation",
+    mm: "ကျွန်တော့် Setup ရှာမယ်",
+    en: "Find My Setup",
   },
   "landing.starting": {
     mm: "Starting...",

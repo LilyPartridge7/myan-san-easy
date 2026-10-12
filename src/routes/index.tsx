@@ -128,7 +128,11 @@ function Landing() {
                 {t("landing.exploreExperience")}
               </Link>
             </div>
-            <p className="mt-6 text-xs text-white/70">{t("landing.trustLine")}</p>
+            <ul className="mt-6 flex flex-wrap gap-1.5">
+              {["POS", "Kitchen", "QR", "Website", "Health Score", "Growth Coach", "Feedback Intelligence"].map((x) => (
+                <li key={x} className="rounded-full border border-white/30 bg-white/10 px-3 py-1 text-[11px] font-medium text-white/90">{x}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
