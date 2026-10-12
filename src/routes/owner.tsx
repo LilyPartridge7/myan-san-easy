@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { MenuPreview, OrdersPreview, WebsitePreview, QRPreview } from "@/components/myansan/OwnerPreviews";
-import { QrCode, UtensilsCrossed, ReceiptText, Globe } from "lucide-react";
+import { MenuPreview, OrdersPreview, WebsitePreview, QRPreview, KitchenPreview } from "@/components/myansan/OwnerPreviews";
+import { QrCode, UtensilsCrossed, ReceiptText, Globe, ChefHat } from "lucide-react";
 import { IMAGES } from "@/data/images";
 import { useSetup } from "@/state/setupStore";
 import { useT } from "@/i18n";
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/owner")({
 function OwnerHome() {
   const { state, resetDemo, goToStage } = useSetup();
   const { t, p } = useT();
-  const [active, setActive] = useState<"overview" | "menu" | "orders" | "website" | "qr">("overview");
+  const [active, setActive] = useState<"overview" | "menu" | "orders" | "kitchen" | "website" | "qr">("overview");
   const navigate = useNavigate();
   const openSetup = () => {
     if (state.confirmed) goToStage("saved");
@@ -70,12 +70,13 @@ function OwnerHome() {
         </div>
 
         <p className="mt-8 text-sm font-medium">{p({ en: "Explore Your Digital Systems", mm: "သင့်ဆိုင် Digital System တွေကို ကြည့်မယ်" })}</p>
-        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-5">
           {([
-            ["menu", UtensilsCrossed, t("owner.menu")],
-            ["orders", ReceiptText, t("owner.orders")],
-            ["website", Globe, t("owner.website")],
             ["qr", QrCode, t("owner.qr")],
+            ["orders", ReceiptText, t("owner.orders")],
+            ["kitchen", ChefHat, "Kitchen"],
+            ["menu", UtensilsCrossed, t("owner.menu")],
+            ["website", Globe, t("owner.website")],
           ] as const).map(([id, Icon, label]) => (
             <button key={id} aria-pressed={active === id}
               onClick={() => setActive(active === id ? "overview" : id)}
@@ -92,6 +93,7 @@ function OwnerHome() {
             {active === "orders" && <OrdersPreview />}
             {active === "website" && <WebsitePreview />}
             {active === "qr" && <QRPreview />}
+            {active === "kitchen" && <KitchenPreview />}
           </div>
         )}
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Link } from "@tanstack/react-router";
 import { useT } from "@/i18n";
 import { useSetup } from "@/state/setupStore";
@@ -24,6 +24,61 @@ function Head({ title, sub }: { title: string; sub: string }) {
         <p className="text-xs text-muted-foreground">{sub}</p>
       </div>
       <Sample />
+    </div>
+  );
+}
+
+
+/* ---------- Shared demo order state (QR → Orders → Kitchen) ---------- */
+type DemoStatus = "New" | "Preparing" | "Ready";
+type Demo = { cart: Record<string, number>; order: null | { items: [string, number, number][]; total: number; status: DemoStatus } };
+let demo: Demo = { cart: {}, order: null };
+const subs = new Set<() => void>();
+const setDemo = (d: Partial<Demo>) => { demo = { ...demo, ...d }; subs.forEach((f) => f()); };
+const useDemo = () => useSyncExternalStore((f) => { subs.add(f); return () => subs.delete(f); }, () => demo, () => demo);
+export const resetDemoOrder = () => setDemo({ cart: {}, order: null });
+const statusMm: Record<DemoStatus, string> = { New: "အသစ်", Preparing: "ပြင်ဆင်နေသည်", Ready: "Ready" };
+
+function ResetDemo() {
+  const { p } = useT();
+  return (
+    <button onClick={resetDemoOrder} className="mt-4 text-xs text-muted-foreground underline underline-offset-4">
+      {p({ en: "Reset Demo", mm: "Demo ပြန်စမယ်" })}
+    </button>
+  );
+}
+
+export function KitchenPreview() {
+  const { p, lang } = useT();
+  const { order } = useDemo();
+  const cols: DemoStatus[] = ["New", "Preparing", "Ready"];
+  return (
+    <div>
+      <Head title="KITCHEN" sub={p({ en: "Orders from QR and POS arrive here.", mm: "QR နဲ့ POS က Order တွေ ဒီကိုရောက်လာပါတယ်။" })} />
+      <div className="grid gap-3 sm:grid-cols-3">
+        {cols.map((c) => (
+          <div key={c} className="rounded-xl border border-border bg-muted/40 p-3">
+            <p className="mb-2 text-xs font-semibold tracking-wider">{(lang === "mm" ? statusMm[c] : c).toUpperCase()}</p>
+            {order?.status === c ? (
+              <div className="rounded-lg border border-primary bg-card p-3 text-sm">
+                <p className="font-semibold">ORDER #A104</p>
+                <p className="text-xs text-muted-foreground">TABLE 07 · {p({ en: "Just now", mm: "ခုနက" })}</p>
+                {order.items.map(([n, q]) => <p key={n}>{n} ×{q}</p>)}
+                {c !== "Ready" && (
+                  <button onClick={() => setDemo({ order: { ...order, status: c === "New" ? "Preparing" : "Ready" } })}
+                    className="mt-2 w-full rounded-lg bg-primary py-1.5 text-xs font-medium text-primary-foreground">
+                    {c === "New" ? p({ en: "Start Preparing", mm: "စပြင်မယ်" }) : p({ en: "Mark Ready", mm: "Ready လုပ်မယ်" })}
+                  </button>
+                )}
+              </div>
+            ) : (
+              <p className="text-xs text-muted-foreground">—</p>
+            )}
+          </div>
+        ))}
+      </div>
+      {!order && <p className="mt-3 text-xs text-muted-foreground">{p({ en: "Place a demo order in QR Ordering first.", mm: "QR Ordering မှာ Demo Order အရင်တင်ပါ။" })}</p>}
+      <ResetDemo />
     </div>
   );
 }
@@ -76,21 +131,22 @@ export function MenuPreview() {
 }
 
 const ORDERS = [
-  { id: "A104", table: "07", total: 40000, status: "Preparing", items: ["Chicken Hotpot ×1", "Premium Beef ×1", "Milk Tea ×2"] },
   { id: "A103", table: "03", total: 18000, status: "New", items: ["Seafood Hotpot ×1"] },
   { id: "A102", table: "11", total: 26000, status: "Ready", items: ["Premium Beef ×1", "Soft Drink ×2"] },
 ];
 
 export function OrdersPreview() {
   const { p } = useT();
+  const { order } = useDemo();
   const [open, setOpen] = useState("A104");
+  const list = order ? [{ id: "A104", table: "07", total: order.total, status: order.status, items: order.items.map(([n, q]) => `${n} ×${q}`) }, ...ORDERS] : ORDERS;
   const tone = (s: string) =>
     s === "New" ? "bg-primary/15 text-primary" : s === "Ready" ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400" : "bg-amber-500/15 text-amber-600 dark:text-amber-400";
   return (
     <div>
       <Head title="ORDERS" sub={p({ en: "Tap an order to see details.", mm: "Order တစ်ခုကို နှိပ်ပြီး အသေးစိတ်ကြည့်ပါ။" })} />
       <div className="space-y-2">
-        {ORDERS.map((o) => (
+        {list.map((o) => (
           <button key={o.id} onClick={() => setOpen(open === o.id ? "" : o.id)}
             className={`block w-full rounded-xl border p-3 text-left ${open === o.id ? "border-primary" : "border-border"}`}>
             <div className="flex items-center justify-between gap-2">
@@ -110,6 +166,7 @@ export function OrdersPreview() {
           </button>
         ))}
       </div>
+      <ResetDemo />
     </div>
   );
 }
@@ -141,8 +198,10 @@ const QR_ITEMS = [
 export function QRPreview() {
   const { p } = useT();
   const { state } = useSetup();
-  const [cart, setCart] = useState<Record<string, number>>({});
-  const [placed, setPlaced] = useState(false);
+  const { cart, order } = useDemo();
+  const placed = !!order;
+  const setCart = (f: (c: Record<string, number>) => Record<string, number>) => setDemo({ cart: f(demo.cart) });
+  const place = () => setDemo({ order: { items: QR_ITEMS.filter((i) => cart[i.name]).map((i) => [i.name, cart[i.name], i.price]), total, status: "New" } });
   const total = QR_ITEMS.reduce((s, i) => s + (cart[i.name] ?? 0) * i.price, 0);
   const count = Object.values(cart).reduce((a, b) => a + b, 0);
   return (
@@ -153,11 +212,10 @@ export function QRPreview() {
         <p className="mb-3 text-center text-xs text-muted-foreground">Table 07</p>
         {placed ? (
           <div className="py-8 text-center">
-            <p className="text-lg font-semibold">Order #A104</p>
-            <p className="text-sm text-muted-foreground">Status: NEW</p>
-            <button onClick={() => { setPlaced(false); setCart({}); }} className="mt-4 text-xs underline">
-              {p({ en: "New order", mm: "Order အသစ်" })}
-            </button>
+            <p className="text-lg font-semibold">Demo Order #A104</p>
+            <p className="text-sm">{p({ en: "Order received", mm: "Order လက်ခံပြီးပါပြီ" })} · {fmt(order!.total)}</p>
+            <p className="mt-1 text-sm text-muted-foreground">Status: {order!.status.toUpperCase()}</p>
+            <p className="mt-3 text-xs text-muted-foreground">{p({ en: "This is a sample order for demonstration only.", mm: "ဒီ Order က Demo အတွက်သာဖြစ်ပါတယ်။" })}</p>
           </div>
         ) : (
           <>
@@ -177,13 +235,14 @@ export function QRPreview() {
               <span>Cart · {count}</span>
               <b>{fmt(total)}</b>
             </div>
-            <button disabled={!count} onClick={() => setPlaced(true)}
+            <button disabled={!count} onClick={place}
               className="mt-3 w-full rounded-xl bg-primary py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-40">
-              Place Order
+              {p({ en: "Place Demo Order", mm: "Demo Order တင်မယ်" })}
             </button>
           </>
         )}
       </div>
+      <ResetDemo />
     </div>
   );
 }
