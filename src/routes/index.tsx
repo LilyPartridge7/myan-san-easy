@@ -95,11 +95,13 @@ function Landing() {
     <main className="fade-in">
       {/* HERO */}
       <section className="relative h-[100dvh] min-h-[580px] w-full overflow-hidden">
+        <div className="fixed inset-0 z-[-1] h-[100dvh] overflow-hidden">
         <img
           src={IMAGES.heroInterior}
           alt="Warm restaurant interior with wooden tables and ambient lighting"
-          className="fixed inset-0 z-[-1] h-[100dvh] w-full object-cover slow-zoom"
+          className="h-full w-full object-cover slow-zoom"
         />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,42,95,0.94)] via-[rgba(15,42,95,0.55)] to-[rgba(8,17,31,0.35)]" />
         <div className="absolute inset-0 flex flex-col px-5 pt-5 sm:px-10 lg:px-16">
           <div className="flex items-center justify-between gap-3">
