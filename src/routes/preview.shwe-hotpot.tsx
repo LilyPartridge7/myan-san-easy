@@ -1,3 +1,4 @@
+import { ContactButton } from "@/components/myansan/ContactDialog";
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { useNavigate } from "@tanstack/react-router";
@@ -167,6 +168,7 @@ function PreviewPage() {
         <Link to="/setup" onClick={() => goToStage("package")} className={btn}>
           {p({ mm: "Setup ကို စိတ်ကြိုက်ပြင်မယ်", en: "Customize Setup" })}
         </Link>
+        <ContactButton variant="outline" />
         <Link to="/setup" onClick={() => goToStage("qr")} className="inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground">
           {t("preview.continueSetup")}
         </Link>

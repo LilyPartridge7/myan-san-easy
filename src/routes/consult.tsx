@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import { BrandHeader } from "@/components/myansan/BrandHeader";
 import { AIMessage, ChatComposer, QuickChoices, UserMessage } from "@/components/myansan/Chat";
+import { ContactButton } from "@/components/myansan/ContactDialog";
 import { PackageCard } from "@/components/myansan/PackageCard";
 import { ackFor, answerLabel, computeHealth, interpretAnswer, questionsFor, recommend, STEP_OF, tablesFromText, typedAck } from "@/services/mockConsultant";
 import { HealthScore } from "@/components/myansan/HealthScore";
@@ -269,8 +270,9 @@ function Consult() {
                     onClick={() => { update({ previewReturnStage: "recommendation" } as never); navigate({ to: "/preview/shwe-hotpot", search: { from: undefined } }); }}
                     className="min-h-12 rounded-full bg-primary px-6 text-[15px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
                   >
-                    {p({ mm: "ကျွန်တော့် Digital Setup ကြည့်မယ်", en: "See My Digital Setup" })}
+                    {p({ mm: "ကျွန်တော့် Setup ကို Preview ကြည့်မယ်", en: "Preview My Setup" })}
                   </button>
+                  <ContactButton variant="outline" />
                   <button onClick={() => setShowWhy((v) => !v)} className="min-h-12 rounded-full border border-border bg-card px-6 text-[15px] font-medium hover:bg-muted">
                     {p({ mm: "ဘာကြောင့် ဒါကို အကြံပြုတာလဲ?", en: "Why this recommendation?" })}
                   </button>
