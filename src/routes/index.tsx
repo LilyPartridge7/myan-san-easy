@@ -122,7 +122,7 @@ function Landing() {
               </button>
               <Link
                 to="/preview/shwe-hotpot"
-                search={{}}
+                search={{ from: undefined }}
                 className="min-h-12 rounded-full border border-white/50 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10 sm:min-h-13 sm:px-7 sm:text-[15px]"
               >
                 {t("landing.exploreExperience")}
@@ -233,7 +233,7 @@ function Landing() {
           </h2>
           <Link
             to="/preview/shwe-hotpot"
-            search={{}}
+            search={{ from: undefined }}
             className="mt-6 inline-flex min-h-12 items-center rounded-full border border-white/60 px-6 text-sm font-medium text-white transition-colors hover:bg-white/10 sm:text-[15px]"
           >
             {t("landing.viewSampleWebsite")}
