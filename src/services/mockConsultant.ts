@@ -29,7 +29,7 @@ const c = (value: string, en: string, mm: string, keys: string[] = []): Choice =
 
 const Q_TYPE: Question = {
   id: "restaurantType",
-  text: { mm: "ဘယ်လိုစားသောက်ဆိုင်မျိုး ဖွင့်ထားပါသလဲ?", en: "What kind of restaurant do you run?" },
+  text: { mm: "သင့်ဆိုင်အကြောင်း ပြောပြပါ — ဘယ်လိုဆိုင်မျိုးလဲ? (ဥပမာ — တရုတ်စားသောက်ဆိုင်၊ Table 18 လုံး)", en: "Tell us about your restaurant — what kind is it? (e.g. Traditional Chinese restaurant, 18 tables)" },
   choices: [
     c("hotpot", "Hotpot / BBQ", "Hotpot / BBQ"),
     c("cafe", "Cafe", "Cafe"),
@@ -43,8 +43,8 @@ const Q_TYPE: Question = {
 const Q_TABLES: Question = {
   id: "tableCount",
   text: {
-    mm: "ဆိုင်မှာ Table ဘယ်လောက်လောက်၊ Branch ဘယ်နှဆိုင်လောက် စီမံနေရပါသလဲ?",
-    en: "About how many tables or branches do you manage?",
+    mm: "Table ဘယ်လောက်လောက် ရှိပါသလဲ?",
+    en: "And about how many tables?",
   },
   choices: [
     c("1-10", "1–10 tables", "Table 1–10"),
@@ -59,38 +59,36 @@ const Q_TOOLS: Question = {
   id: "currentTools",
   multi: true,
   text: {
-    mm: "အခုဆိုင်မှာ အောက်ကအရာတွေထဲက ဘာတွေသုံးနေပါသလဲ? (တစ်ခုထက်ပိုရွေးလို့ရပါတယ်)",
-    en: "Which of these do you already use in your restaurant? (Pick all that apply)",
+    mm: "အခု ဘာတွေ သုံးနေပြီလဲ? (တစ်ခုထက်ပိုရွေးလို့ရပါတယ်)",
+    en: "What do you already use? (Pick all that apply)",
   },
   choices: [
-    c("paperMenu", "Paper menu", "Paper Menu", ["paper", "printed menu", "စာရွက်"]),
     c("facebook", "Facebook page", "Facebook Page", ["facebook", "fb", "ဖေ့ဘုတ်"]),
     c("website", "Restaurant website", "Restaurant Website", ["website", "web site", "ဝဘ်ဆိုက်"]),
-    c("qr", "QR menu / QR ordering", "QR Menu / QR Ordering", ["qr"]),
+    c("qr", "QR / Digital Menu", "QR / Digital Menu", ["qr"]),
     c("pos", "POS", "POS", ["pos", "cashier system", "casher"]),
-    c("kds", "Kitchen order screen", "Kitchen Order Screen", ["kitchen screen", "kds", "kitchen display"]),
+    c("kds", "Kitchen Screen", "Kitchen Screen", ["kitchen screen", "kds", "kitchen display"]),
     c("payment", "Digital payment", "Digital Payment", ["kbz", "wave", "pay", "payment", "ငွေလွှဲ"]),
-    c("reports", "Sales reports", "Sales Report", ["report", "sales", "ရောင်းအား"]),
-    c("none", "Mostly manual / None", "အများစုကို လက်နဲ့လုပ်နေတယ် / မသုံးသေးဘူး", ["none", "nothing", "manual", "no", "မသုံး", "မရှိ", "လက်နဲ့"]),
+    c("reports", "Reporting", "Reporting", ["report", "sales", "ရောင်းအား"]),
+    c("none", "Mostly manual", "အများစု လက်နဲ့လုပ်တယ်", ["none", "nothing", "manual", "no", "မသုံး", "မရှိ", "လက်နဲ့"]),
   ],
 };
 
 const Q_PROBLEM: Question = {
   id: "mainProblem",
   text: {
-    mm: "ဆိုင်ကို စီမံတဲ့အခါ ဘယ်အပိုင်းက အခက်ဆုံးဖြစ်ပါသလဲ?",
-    en: "Which part of running your restaurant gives you the most trouble?",
+    mm: "ဆိုင်မှာ ဘာကို စီမံရတာ အခက်ဆုံးလဲ?",
+    en: "What is hardest to manage in your restaurant?",
   },
   choices: [
-    c("orders", "Staff cannot handle orders fast enough", "Staff တွေ Order မီအောင် မယူနိုင်ဘူး", ["order", "waiter", "busy", "အော်ဒါ"]),
-    c("kitchen", "Orders are delayed or mixed up before reaching the kitchen", "Kitchen ကို Order ရောက်တာ နောက်ကျတယ် / ရှုပ်တယ်", ["kitchen", "chef", "cook", "မီးဖို"]),
-    c("menu", "Updating menu items or prices takes too much work", "Menu နဲ့ ဈေးနှုန်း ပြင်ရတာ အလုပ်များတယ်", ["menu", "price", "ဈေး", "မီနူး", "ပြန်ရိုက်", "reprint"]),
-    c("staff", "Training and managing staff takes too much time", "Staff သင်ပေးရတာ / စီမံရတာ အချိန်ယူတယ်", ["staff", "train", "သင်", "ဝန်ထမ်း"]),
-    c("visibility", "It is hard to know what is happening when I am away", "ဆိုင်မှာ မရှိတဲ့အချိန် ဘာဖြစ်နေလဲ သိရခက်တယ်", ["away", "not there", "မရှိရင်", "မရှိတဲ့", "မသိဘူး", "ရောင်းနေလဲ"]),
-    c("online", "Our restaurant does not look professional online", "Online မှာ ဆိုင်ပုံစံ Professional မဖြစ်သေးဘူး", ["online", "website", "facebook", "professional"]),
-    c("systems", "We use different tools and managing them is difficult", "System အမျိုးမျိုးခွဲသုံးနေရလို့ စီမံရခက်တယ်", ["systems", "tools", "မချိတ်", "integrat", "system အမျိုးမျိုး"]),
-    c("growth", "Managing more tables or branches is becoming difficult", "ဆိုင်ကြီးလာတာ / Branch များလာတာနဲ့ စီမံရခက်လာတယ်", ["branch", "grow", "expand", "ဆိုင်ခွဲ", "ကြီးလာ"]),
-    c("other", "Something else", "အခြား"),
+    c("orders", "Orders & Service", "Order နဲ့ Service", ["order", "waiter", "busy", "အော်ဒါ"]),
+    c("kitchen", "Kitchen", "Kitchen", ["kitchen", "chef", "cook", "မီးဖို"]),
+    c("menu", "Menu & Prices", "Menu နဲ့ ဈေးနှုန်း", ["menu", "price", "ဈေး", "မီနူး", "ပြန်ရိုက်", "reprint"]),
+    c("staff", "Staff", "Staff", ["staff", "train", "သင်", "ဝန်ထမ်း"]),
+    c("visibility", "Seeing what happens when I'm away", "ဆိုင်မှာမရှိချိန် အခြေအနေသိဖို့", ["away", "not there", "မရှိရင်", "မရှိတဲ့", "မသိဘူး", "ရောင်းနေလဲ"]),
+    c("online", "Online Presence", "Online မှာ ဆိုင်ပုံစံ", ["online", "website", "facebook", "professional"]),
+    c("systems", "Too Many Systems", "System များလွန်းတယ်", ["systems", "tools", "မချိတ်", "integrat", "system အမျိုးမျိုး"]),
+    c("growth", "Growth / Branches", "ဆိုင်ကြီးလာတာ / Branch", ["branch", "grow", "expand", "ဆိုင်ခွဲ", "ကြီးလာ"]),
   ],
 };
 
@@ -189,18 +187,18 @@ export const FOLLOW_UPS: Record<string, Question> = {
 const Q_GOAL: Question = {
   id: "mainGoal",
   text: {
-    mm: "ဆိုင်အလုပ်ထဲက တစ်ခုကို အရင်ဆုံး ပိုလွယ်အောင်လုပ်ပေးမယ်ဆိုရင် ဘာကိုရွေးချင်ပါသလဲ?",
-    en: "If we could make one part of your restaurant easier first, what would matter most?",
+    mm: "ဘာကို အဓိက ပိုကောင်းစေချင်လဲ?",
+    en: "What would you most like to improve?",
   },
   choices: [
     c("saveStaffTime", "Save staff time", "Staff အချိန်သက်သာချင်တယ်", ["staff time", "save time", "အချိန်"]),
     c("reduceMistakes", "Reduce mistakes", "အမှားလျော့ချင်တယ်", ["mistake", "error", "အမှား"]),
-    c("serveFaster", "Serve customers faster", "Customer ကို ပိုမြန်မြန်ဝန်ဆောင်ချင်တယ်", ["faster", "fast", "quick", "မြန်မြန်"]),
-    c("smootherKitchen", "Make kitchen work smoother", "Kitchen အလုပ်ပိုချောချင်တယ်", ["kitchen"]),
-    c("easierMenu", "Update menu more easily", "Menu ပြင်ရတာပိုလွယ်ချင်တယ်", ["menu"]),
-    c("seeBusiness", "See the business more clearly", "ဆိုင်အခြေအနေကို ပိုရှင်းရှင်းမြင်ချင်တယ်", ["see", "report", "sales", "မြင်"]),
+    c("serveFaster", "Serve faster", "Customer ကို ပိုမြန်မြန်ဝန်ဆောင်ချင်တယ်", ["faster", "fast", "quick", "မြန်မြန်"]),
+    c("smootherKitchen", "Improve kitchen flow", "Kitchen အလုပ်ပိုချောချင်တယ်", ["kitchen"]),
+    c("easierMenu", "Update menus easily", "Menu ပြင်ရတာပိုလွယ်ချင်တယ်", ["menu"]),
+    c("seeBusiness", "See my business more clearly", "ဆိုင်အခြေအနေကို ပိုရှင်းရှင်းမြင်ချင်တယ်", ["see", "report", "sales", "မြင်"]),
     c("professionalOnline", "Look more professional online", "Online မှာ ပို Professional ဖြစ်ချင်တယ်", ["online", "website", "professional"]),
-    c("manageGrowth", "Manage growth more easily", "ဆိုင်ကြီးလာရင် စီမံရပိုလွယ်ချင်တယ်", ["growth", "branch", "ကြီးလာ"]),
+    c("manageGrowth", "Grow more easily", "ဆိုင်ကြီးလာရင် စီမံရပိုလွယ်ချင်တယ်", ["growth", "branch", "ကြီးလာ"]),
     c("letMyansan", "Let မြန်ဆန် recommend", "မြန်ဆန်က အကြံပြုပေးပါ", ["recommend", "you decide", "မသိ", "အကြံပြု"]),
   ],
 };
@@ -210,9 +208,46 @@ export const QUESTIONS: Question[] = [Q_TYPE, Q_TABLES, Q_TOOLS, Q_PROBLEM, Q_GO
 
 /** The question sequence for the current answers — only ONE relevant follow-up is asked. */
 export function questionsFor(turns: { stage: string; value: string }[]): Question[] {
-  const problem = turns.find((t) => t.stage === "mainProblem")?.value;
-  const follow = problem ? FOLLOW_UPS[problem] : undefined;
-  return [Q_TYPE, Q_TABLES, Q_TOOLS, Q_PROBLEM, ...(follow ? [follow] : []), Q_GOAL];
+  void turns;
+  return [Q_TYPE, Q_TABLES, Q_TOOLS, Q_PROBLEM, Q_GOAL];
+}
+
+/** Owner-facing step number (type + tables are one step). */
+export const STEP_OF: Record<string, number> = { restaurantType: 1, tableCount: 1, currentTools: 2, mainProblem: 3, mainGoal: 4 };
+
+/** Table count mentioned inside a free-text restaurant answer, e.g. "Chinese restaurant, 18 tables". */
+export function tablesFromText(raw: string): Choice | null {
+  const m = normalizeText(raw).match(/(\d+)\s*(table|tables|လုံး|ခုံ|စားပွဲ)?/);
+  if (!m) return null;
+  const v = bucketForTables(parseInt(m[1]!, 10));
+  return Q_TABLES.choices.find((x) => x.value === v) ?? null;
+}
+
+export type HealthDim = { key: string; label: L; score: number };
+export type Health = { total: number; dims: HealthDim[]; status: L; insights: { kind: "strong" | "attention" | "opportunity"; text: L }[] };
+
+/** Initial health score — a rough assessment from the consultation answers only. */
+export function computeHealth(a: Answers): Health {
+  const tools = new Set((a.currentTools ?? "").split(",").filter(Boolean));
+  const p = a.mainProblem ?? "";
+  const clamp = (n: number) => Math.max(4, Math.min(20, n));
+  const dims: HealthDim[] = [
+    { key: "digital", label: { mm: "Digital Presence", en: "Digital Presence" }, score: clamp(8 + (tools.has("facebook") ? 4 : 0) + (tools.has("website") ? 5 : 0) + (tools.has("qr") ? 2 : 0) - (p === "online" ? 3 : 0)) },
+    { key: "ops", label: { mm: "Operations", en: "Operations" }, score: clamp(9 + (tools.has("pos") ? 4 : 0) + (tools.has("kds") ? 4 : 0) + (tools.has("qr") ? 2 : 0) - (["orders", "kitchen"].includes(p) ? 3 : 0) - (tools.has("none") ? 2 : 0)) },
+    { key: "visibility", label: { mm: "Management Visibility", en: "Management Visibility" }, score: clamp(8 + (tools.has("reports") ? 6 : 0) + (tools.has("pos") ? 3 : 0) - (["visibility", "growth", "systems"].includes(p) ? 3 : 0)) },
+    { key: "staff", label: { mm: "Staff Readiness", en: "Staff Readiness" }, score: clamp(13 - (p === "staff" ? 4 : 0) - (tools.size >= 4 ? 1 : 0)) },
+    { key: "cx", label: { mm: "Customer Experience", en: "Customer Experience" }, score: clamp(14 + (tools.has("payment") ? 2 : 0) + (tools.has("qr") ? 2 : 0) - (p === "orders" ? 2 : 0)) },
+  ];
+  const total = dims.reduce((n, d) => n + d.score, 0);
+  const status: L = total >= 75 ? { mm: "ကောင်းပါတယ်", en: "Healthy" } : total >= 50 ? { mm: "ဂရုစိုက်ရန်လို", en: "Needs Attention" } : { mm: "အရေးတကြီး ပြင်ရန်", en: "At Risk" };
+  const sorted = [...dims].sort((x, y) => x.score - y.score);
+  const best = sorted[sorted.length - 1]!, worst = sorted[0]!, second = sorted[1]!;
+  const insights: Health["insights"] = [
+    { kind: "strong", text: tools.has("payment") ? { mm: "Digital Payment ကို သုံးနေပြီးသားပါ။", en: "Your restaurant already uses digital payments." } : { mm: `${best.label.mm} က အခုအားကောင်းဆုံးအပိုင်းပါ။`, en: `${best.label.en} is your strongest area today.` } },
+    { kind: "attention", text: tools.has("none") || !tools.has("pos") ? { mm: "Order ကိုင်တွယ်တာ အများစု လက်နဲ့ ဖြစ်နေသေးတယ်။", en: "Order handling is still mostly manual." } : { mm: `${worst.label.mm} ကို ဂရုစိုက်ဖို့လိုပါတယ်။`, en: `${worst.label.en} needs attention.` } },
+    { kind: "opportunity", text: !tools.has("reports") ? { mm: "ဆိုင်မှာမရှိချိန် အခြေအနေကို မြင်ရတာ နည်းနေသေးတယ်။", en: "You currently have limited visibility when you're away." } : { mm: `${second.label.mm} ကို ပိုကောင်းအောင်လုပ်နိုင်ပါတယ်။`, en: `${second.label.en} can improve quickly.` } },
+  ];
+  return { total, dims, status, insights };
 }
 
 /** Display label for a stored value (handles multi-select and free-text types). */

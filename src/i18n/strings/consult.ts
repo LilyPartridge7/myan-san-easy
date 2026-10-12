@@ -15,8 +15,8 @@ export const consult = {
     en: "Restoring your consultation...",
   },
   "consult.welcome": {
-    mm: "မင်္ဂလာပါ 👋\n\nမြန်ဆန်က သင့်ဆိုင်အတွက် လိုအပ်တဲ့ Digital System တွေကို ရွေးပေးပြီး စတင်အသုံးပြုနိုင်အောင် ကူညီပေးပါတယ်။\n\nဥပမာ —\n• ဆိုင် Website & Digital Menu\n• QR Ordering\n• POS / Order Management\n• Kitchen Order Screen\n• Menu Management\n• Staff Training & Support\n\nဘာ System လိုမလဲ မသိလည်းရပါတယ်။ မေးခွန်းနည်းနည်း ဖြေလိုက်ရင် သင့်ဆိုင်အတွက် လိုအပ်တာကို အကြံပြုပေးပါမယ်။",
-    en: "Welcome 👋\n\nမြန်ဆန် helps restaurants choose and set up the digital tools they actually need.\n\nWe can help with:\n• Restaurant Website & Digital Menu\n• QR Ordering\n• POS / Order Management\n• Kitchen Order Screen\n• Menu Management\n• Staff Training & Support\n\nYou don't need to know which system to choose. Answer a few simple questions and we'll recommend a setup for your restaurant.",
+    mm: "မင်္ဂလာပါ 👋\n\nPOS, Kitchen, Website ကနေ Restaurant Health, Growth Coaching နဲ့ Customer Feedback အထိ မြန်ဆန်က ကူညီပေးနိုင်ပါတယ်။\n\nမေးခွန်း 4 ခုလောက်ဖြေပြီး သင့်ဆိုင်အတွက် သင့်တော်တာကို ရွေးပေးပါမယ်။",
+    en: "Welcome 👋\n\nမြန်ဆန် can help with everything from POS, Kitchen and Website setup to Restaurant Health, Growth Coaching and Customer Feedback.\n\nAnswer 4 quick questions and we'll recommend the right setup.",
   },
   "consult.viewPackages": { mm: "Package တွေကြည့်မယ်", en: "View Packages" },
   "consult.hidePackages": { mm: "မြန်ဆန်က အကြံပြုပေးမယ်", en: "Let မြန်ဆန် Recommend" },

@@ -10,8 +10,9 @@ import type { Template } from "@/state/setupStore";
 import type { L } from "@/i18n/types";
 import { useT } from "@/i18n";
 import { cn } from "@/lib/utils";
+import { CoachTab, FeedbackTab, HealthTab } from "@/components/myansan/ImproveTabs";
 
-type TabId = "overview" | "pos" | "kitchen" | "website" | "qr" | "owner" | "integration" | "training";
+type TabId = "overview" | "pos" | "kitchen" | "website" | "qr" | "owner" | "integration" | "training" | "health" | "coach" | "feedback";
 
 const TAB_LABEL: Record<TabId, L> = {
   overview: { mm: "အကျဉ်းချုပ်", en: "Overview" },
@@ -22,9 +23,12 @@ const TAB_LABEL: Record<TabId, L> = {
   owner: { mm: "Owner View", en: "Owner View" },
   integration: { mm: "POS ချိတ်ဆက်မှု", en: "POS Integration" },
   training: { mm: "Staff Training", en: "Staff Training" },
+  health: { mm: "Health Score", en: "Health Score" },
+  coach: { mm: "Growth Coach", en: "Growth Coach" },
+  feedback: { mm: "Feedback", en: "Feedback" },
 };
 
-const TAB_SYSTEM: Record<Exclude<TabId, "overview">, string> = {
+const TAB_SYSTEM: Record<Exclude<TabId, "overview" | "health" | "coach" | "feedback">, string> = {
   pos: "pos_order_management",
   kitchen: "kitchen_order_screen",
   website: "restaurant_website",
@@ -36,7 +40,8 @@ const TAB_SYSTEM: Record<Exclude<TabId, "overview">, string> = {
 
 function tabsFor(systems: SystemRec[]): TabId[] {
   const ids = new Set(systems.map((s) => s.id));
-  if (ids.size === 0) return ["overview", "website", "qr", "training"];
+  const improve: TabId[] = ["health", "feedback", "coach"];
+  if (ids.size === 0) return ["overview", "qr", "pos", "kitchen", "website", "training", ...improve];
   const tabs: TabId[] = ["overview"];
   if (ids.has("qr_ordering") || ids.has("digital_menu") || ids.has("menu_management")) tabs.push("qr");
   if (ids.has("pos_order_management")) tabs.push("pos");
@@ -45,7 +50,7 @@ function tabsFor(systems: SystemRec[]): TabId[] {
   if (ids.has("staff_training")) tabs.push("training");
   if (ids.has("reporting")) tabs.push("owner");
   if (ids.has("integration")) tabs.push("integration");
-  return tabs;
+  return [...tabs, ...improve];
 }
 
 /* ---------- One consistent demo dataset ---------- */
@@ -114,7 +119,7 @@ function InclusionBadge({ pkg, systemId }: { pkg: PackageId; systemId: string })
   );
 }
 
-function Frame({ tab, pkg, children, hint }: { tab: Exclude<TabId, "overview">; pkg: PackageId; children: React.ReactNode; hint: L }) {
+function Frame({ tab, pkg, children, hint }: { tab: keyof typeof TAB_SYSTEM; pkg: PackageId; children: React.ReactNode; hint: L }) {
   const { p } = useT();
   return (
     <section className="mx-auto max-w-6xl px-3 py-5 sm:px-4">
@@ -559,6 +564,9 @@ export function DigitalSetupPreview({
         {current === "pos" && <POSTab orders={orders} setOrders={setOrders} pkg={packageId} />}
         {current === "kitchen" && <KitchenTab orders={orders} setOrders={setOrders} pkg={packageId} />}
         {current === "training" && <TrainingTab pkg={packageId} />}
+        {current === "health" && <HealthTab onImprove={() => setActive("coach")} />}
+        {current === "feedback" && <FeedbackTab go={(t) => setActive(t as TabId)} />}
+        {current === "coach" && <CoachTab go={(t) => setActive(t as TabId)} available={tabs} />}
         {current === "owner" && <OwnerTab pkg={packageId} branches={branches} />}
         {current === "integration" && <IntegrationTab pkg={packageId} />}
         {current === "website" && (
