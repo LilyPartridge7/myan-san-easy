@@ -303,6 +303,7 @@ function SetupPage() {
               extra={
                 <Link
                   to="/preview/shwe-hotpot"
+                  search={{}}
                   preload="intent"
                   onClick={() => {
                     setOpeningPreview(true);

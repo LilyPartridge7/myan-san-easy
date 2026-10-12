@@ -9,8 +9,8 @@ import { useSetup } from "@/state/setupStore";
 import { useT } from "@/i18n";
 
 export const Route = createFileRoute("/preview/shwe-hotpot")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    from: typeof search.from === "string" ? search.from : undefined,
+  validateSearch: (search: { from?: string }) => ({
+    from: search.from,
   }),
   head: () => ({
     meta: [
