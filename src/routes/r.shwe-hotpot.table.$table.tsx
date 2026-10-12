@@ -63,6 +63,10 @@ function CustomerOrdering() {
         </div>
       </section>
 
+      <div className="flex flex-wrap items-center gap-2 border-b border-border bg-secondary/60 px-4 py-2 text-xs">
+        <span className="rounded-full bg-primary/10 px-2.5 py-0.5 font-semibold tracking-wide text-primary">{t("demoMode")}</span>
+        <span className="text-muted-foreground">{t("demoOnlyNote")}</span>
+      </div>
       <nav className="sticky top-0 z-20 flex gap-2 overflow-x-auto border-b border-border bg-background/95 px-4 py-3 backdrop-blur">
         {CATEGORIES.map((c) => (
           <button
@@ -143,6 +147,8 @@ function CustomerOrdering() {
       {state.orderPlaced ? (
         <div className="fixed inset-x-4 bottom-5 z-30 mx-auto max-w-[560px] rounded-2xl border border-border bg-card p-5 shadow-lg">
           <p className="text-[15px] font-semibold">{t("customer.orderNumber", { id: state.orderPlaced })}</p>
+          <p className="mt-1 text-sm text-primary">{t("demoPlaced")}</p>
+          <p className="text-xs text-muted-foreground">{t("demoPlacedNote")}</p>
           <ul className="mt-3 space-y-1.5 text-[15px]">
             <li className="text-primary">{t("customer.received")}</li>
             <li className="text-accent-foreground">{t("customer.preparing")}</li>

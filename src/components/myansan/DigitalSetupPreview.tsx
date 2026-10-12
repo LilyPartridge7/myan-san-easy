@@ -485,7 +485,7 @@ export function DigitalSetupPreview({
   onChoose: () => void;
   onCustomize: () => void;
 }) {
-  const { p } = useT();
+  const { p, lang } = useT();
   const tabs = useMemo(() => tabsFor(systems), [systems]);
   const [active, setActive] = useState<TabId>("overview");
   const current = tabs.includes(active) ? active : "overview";
