@@ -201,7 +201,7 @@ export function QRPreview() {
   const { cart, order } = useDemo();
   const placed = !!order;
   const setCart = (f: (c: Record<string, number>) => Record<string, number>) => setDemo({ cart: f(demo.cart) });
-  const place = () => setDemo({ order: { items: QR_ITEMS.filter((i) => cart[i.name]).map((i) => [i.name, cart[i.name], i.price]), total, status: "New" } });
+  const place = () => setDemo({ order: { items: QR_ITEMS.filter((i) => cart[i.name]).map((i) => [i.name, cart[i.name] ?? 0, i.price] as [string, number, number]), total, status: "New" } });
   const total = QR_ITEMS.reduce((s, i) => s + (cart[i.name] ?? 0) * i.price, 0);
   const count = Object.values(cart).reduce((a, b) => a + b, 0);
   return (
