@@ -23,14 +23,16 @@ export const HELP_PRICING: Record<HelpService, number> = {
 export const formatMMK = (n: number) => `${n.toLocaleString("en-US")} MMK`;
 
 /** "59,000 MMK / month" or "From 99,000 MMK / month" */
-export const monthlyLabel = (id: PackageId) => {
+export const monthlyLabel = (id: PackageId, lang: "mm" | "en" = "en") => {
   const p = PACKAGE_PRICING[id];
+  if (lang === "mm") return `${formatMMK(p.monthly)}${p.from ? " မှစ၍" : ""} / လစဉ်`;
   return `${p.from ? "From " : ""}${formatMMK(p.monthly)} / month`;
 };
 
 /** "200,000 MMK" or "From 300,000 MMK" */
-export const setupLabel = (id: PackageId) => {
+export const setupLabel = (id: PackageId, lang: "mm" | "en" = "en") => {
   const p = PACKAGE_PRICING[id];
+  if (lang === "mm") return `${formatMMK(p.setup)}${p.from ? " မှစ၍" : ""}`;
   return `${p.from ? "From " : ""}${formatMMK(p.setup)}`;
 };
 

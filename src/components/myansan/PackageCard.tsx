@@ -1,3 +1,4 @@
+import type React from "react";
 import { Check } from "lucide-react";
 import type { PackageId } from "@/data/packages";
 import { PACKAGES, getPackage } from "@/data/packages";
@@ -11,15 +12,17 @@ export function PackageCard({
   selected,
   onChoose,
   compact,
+  children,
 }: {
   id: PackageId;
   recommendedFor?: string;
   selected?: boolean;
   onChoose?: () => void;
   compact?: boolean;
+  children?: React.ReactNode;
 }) {
   const pkg = getPackage(id);
-  const { t, p } = useT();
+  const { t, p, lang } = useT();
   const name = p(pkg.name);
   return (
     <div
@@ -45,9 +48,9 @@ export function PackageCard({
         </p>
       ) : null}
       <div className="mt-4 rounded-xl bg-secondary/60 px-4 py-3">
-        <p className="text-[17px] font-semibold tracking-tight">{monthlyLabel(id)}</p>
+        <p className="text-[17px] font-semibold tracking-tight">{monthlyLabel(id, lang)}</p>
         <p className="mt-0.5 text-sm text-muted-foreground">
-          {id === "partner" ? t("pkgCustomSetup") : t("pkgOneTimeSetup")}: {setupLabel(id)}
+          {id === "partner" ? t("pkgCustomSetup") : t("pkgOneTimeSetup")}: {setupLabel(id, lang)}
         </p>
       </div>
       <ul className={cn("mt-4 space-y-2", compact && "text-sm")}>
@@ -66,6 +69,7 @@ export function PackageCard({
           {t("pkgChoose", { name })}
         </button>
       ) : null}
+      {children}
     </div>
   );
 }
