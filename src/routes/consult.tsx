@@ -4,7 +4,8 @@ import { ChevronLeft } from "lucide-react";
 import { BrandHeader } from "@/components/myansan/BrandHeader";
 import { AIMessage, ChatComposer, QuickChoices, UserMessage } from "@/components/myansan/Chat";
 import { PackageCard } from "@/components/myansan/PackageCard";
-import { ackFor, answerLabel, interpretAnswer, questionsFor, recommend, typedAck } from "@/services/mockConsultant";
+import { ackFor, answerLabel, computeHealth, interpretAnswer, questionsFor, recommend, STEP_OF, tablesFromText, typedAck } from "@/services/mockConsultant";
+import { HealthScore } from "@/components/myansan/HealthScore";
 import { useSetup, type ConsultTurn } from "@/state/setupStore";
 import { useT } from "@/i18n";
 import { pick, type Lang } from "@/i18n/types";
@@ -77,6 +78,14 @@ function Consult() {
     [turns],
   );
   const rec = useMemo(() => recommend(answers), [answers]);
+  const health = useMemo(() => computeHealth(answers), [answers]);
+  const [revealed, setRevealed] = useState(false);
+  const [showWhy, setShowWhy] = useState(false);
+  useEffect(() => {
+    if (!finished) { setRevealed(false); return; }
+    const id = window.setTimeout(() => setRevealed(true), 900);
+    return () => window.clearTimeout(id);
+  }, [finished]);
 
   const messages = useMemo(
     () => [...buildTranscript(turns, lang, t("consult.welcome")), ...extraMsgs],
@@ -114,8 +123,14 @@ function Consult() {
     });
     // Details form shows the owner-facing wording, not the internal value.
     update({ [q.id]: q.id === "restaurantType" ? label : value } as never);
+    // "Chinese restaurant, 18 tables" answers step 1 in one go.
+    const tb = q.id === "restaurantType" && raw ? tablesFromText(raw) : null;
+    if (tb) {
+      answerConsult({ stage: "tableCount", question: pick(lang, qs[1]!.text), value: tb.value, label: pick(lang, tb.label) });
+      update({ tableCount: tb.value } as never);
+    }
     setTyping(true);
-    window.setTimeout(() => setTyping(false), 550);
+    window.setTimeout(() => setTyping(false), 220);
   };
 
   const answer = (value: string, label: string) => processAnswer(value, label);
@@ -195,6 +210,9 @@ function Consult() {
           ) : null}
 
           {!typing && question ? (
+            <p className="pl-0 text-[11px] font-semibold tracking-widest text-primary sm:pl-11">{STEP_OF[question.id]} {lang === "mm" ? "/ 4" : "of 4"}</p>
+          ) : null}
+          {!typing && question ? (
             <QuickChoices
               key={`${step}-${question.id}`}
               multi={!!question.multi}
@@ -222,14 +240,19 @@ function Consult() {
             </div>
           ) : null}
 
-          {!typing && finished ? (
+          {!typing && finished && !revealed ? (
+            <div className="fade-up pl-11 text-sm text-muted-foreground">
+              {p({ mm: "သင့်ဆိုင်ကို နားလည်နေပါတယ်... သင့်တော်တဲ့ Solution တွေ ရွေးနေပါတယ်...", en: "Understanding your restaurant... Matching the right solutions... Preparing your setup..." })}
+            </div>
+          ) : null}
+          {!typing && finished && revealed ? (
             <div className="fade-up space-y-4">
               <AIMessage>
                 <p className="font-semibold">
                   {t("consult.recPackage", { name: rec.packageId.charAt(0).toUpperCase() + rec.packageId.slice(1) })}
                 </p>
-                <p className="mt-1">{t("consult.recIntro")} {p(rec.reason)}</p>
-                {rec.note ? <p className="mt-2">{p(rec.note)}</p> : null}
+                <p className="mt-1">{p(rec.reason).split(". ")[0]}.</p>
+                {showWhy ? <p className="mt-2 text-sm">{p(rec.why)} {p(rec.reason)} {rec.note ? p(rec.note) : ""}</p> : null}
                 <p className="mt-2">{t("consult.recommendSystems")}</p>
                 <ul className="mt-1 space-y-1">
                   {rec.systems.map((s) => (
@@ -240,7 +263,19 @@ function Consult() {
                 </ul>
               </AIMessage>
               <div className="pl-0 sm:pl-11">
-                <PackageCard id={rec.packageId} recommendedFor={state.restaurantName} />
+                <HealthScore health={health} onImprove={() => navigate({ to: "/preview/shwe-hotpot" })} />
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <button
+                    onClick={() => { update({ previewReturnStage: "recommendation" } as never); navigate({ to: "/preview/shwe-hotpot" }); }}
+                    className="min-h-12 rounded-full bg-primary px-6 text-[15px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+                  >
+                    {p({ mm: "ကျွန်တော့် Digital Setup ကြည့်မယ်", en: "See My Digital Setup" })}
+                  </button>
+                  <button onClick={() => setShowWhy((v) => !v)} className="min-h-12 rounded-full border border-border bg-card px-6 text-[15px] font-medium hover:bg-muted">
+                    {p({ mm: "ဘာကြောင့် ဒါကို အကြံပြုတာလဲ?", en: "Why this recommendation?" })}
+                  </button>
+                </div>
+                <div className="mt-4"><PackageCard id={rec.packageId} recommendedFor={state.restaurantName} /></div>
                 <div className="mt-4 flex flex-wrap gap-3">
                   <button
                     onClick={() => {
