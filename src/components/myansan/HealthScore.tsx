@@ -17,7 +17,7 @@ export function HealthScore({ health, sample, onImprove }: { health: Health; sam
         <p className="text-[11px] font-semibold tracking-widest text-muted-foreground">
           {sample ? p({ mm: "RESTAURANT HEALTH SCORE", en: "RESTAURANT HEALTH SCORE" }) : p({ mm: "INITIAL RESTAURANT HEALTH SCORE", en: "INITIAL RESTAURANT HEALTH SCORE" })}
         </p>
-        {sample && <span className="rounded-full bg-muted px-2.5 py-0.5 text-[10px] font-semibold tracking-wider text-muted-foreground">{p({ mm: "Sample Data", en: "Sample Data" })}</span>}
+        {null}
       </div>
       <div className="mt-2 flex items-end gap-3">
         <p className="text-4xl font-semibold tracking-tight">{health.total}<span className="text-lg text-muted-foreground"> / 100</span></p>

@@ -23,7 +23,7 @@ export const SAMPLE_HEALTH: Health = {
 
 const Tag = () => {
   const { p } = useT();
-  return <span className="rounded-full bg-muted px-2.5 py-0.5 text-[10px] font-semibold tracking-wider text-muted-foreground">{p({ mm: "Sample Data", en: "Sample Data" })}</span>;
+  return null;
 };
 
 export function HealthTab({ onImprove }: { onImprove: () => void }) {

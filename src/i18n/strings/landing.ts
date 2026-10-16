@@ -22,10 +22,7 @@ export const landing = {
     mm: "Starting...",
     en: "Starting...",
   },
-  "landing.exploreExperience": {
-    mm: "Solution တွေ ကြည့်မယ်",
-    en: "Explore Solutions",
-  },
+  "landing.exploreExperience": { mm: "သင့် Setup ကို ကြည့်မယ်", en: "Explore Your Setup" },
   "landing.trustLine": {
     mm: "✓ Easy to understand\u00a0\u00a0 ✓ Burmese + English\u00a0\u00a0 ✓ No technical knowledge needed",
     en: "✓ Easy to understand\u00a0\u00a0 ✓ Burmese + English\u00a0\u00a0 ✓ No technical knowledge needed",
@@ -90,7 +87,7 @@ export const landing = {
     mm: "ဆိုင်အတွက် လှပတဲ့ website တစ်ခု ရပါမယ်",
     en: "You'll get a beautiful website for your restaurant",
   },
-  "landing.viewSampleWebsite": { mm: "နမူနာ website ကြည့်မယ်", en: "View Sample Website" },
+  "landing.viewSampleWebsite": { mm: "Website ကြည့်မယ်", en: "View Website" },
   "landing.packages": { mm: "PACKAGES", en: "PACKAGES" },
   "landing.packagesHeading": {
     mm: "ရိုးရှင်းတဲ့ ရွေးချယ်မှု ၃ မျိုး",

@@ -262,3 +262,17 @@
 
 @keyframes owner-fade { from { opacity: 0; } to { opacity: 1; } }
 .owner-fade { animation: owner-fade 180ms ease-out; }
+
+/* Cockpit accent palette */
+@theme inline {
+  --color-accent-cyan: var(--accent-cyan);
+  --color-accent-orange: var(--accent-orange);
+  --color-accent-violet: var(--accent-violet);
+  --color-accent-green: var(--accent-green);
+}
+:root {
+  --accent-cyan: oklch(0.78 0.14 210);
+  --accent-orange: oklch(0.74 0.17 55);
+  --accent-violet: oklch(0.66 0.2 295);
+  --accent-green: oklch(0.74 0.17 155);
+}

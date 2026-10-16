@@ -116,7 +116,7 @@ export const setup = {
   "setup.saveForLater": { mm: "Save for Later", en: "Save for Later" },
 
   // Payment stage
-  "setup.payment.demoCheckout": { mm: "Demo Checkout", en: "Demo Checkout" },
+  "setup.payment.demoCheckout": { mm: "Checkout", en: "Checkout" },
   "setup.payment.heading": { mm: "Complete Your Setup", en: "Complete Your Setup" },
   "setup.payment.subtitle": { mm: "Package ကိုအတည်ပြုပြီး မြန်ဆန် team နဲ့ setup စတင်နိုင်ပါတယ်။", en: "Confirm your package and start setup with the မြန်ဆန် team." },
   "setup.row.restaurant": { mm: "RESTAURANT", en: "RESTAURANT" },
@@ -130,7 +130,7 @@ export const setup = {
   "setup.payment.contact.label": { mm: "Pay Later / Contact မြန်ဆန် Team", en: "Pay Later / Contact မြန်ဆန် Team" },
   "setup.payment.contact.note": { mm: "အရင် စကားပြောချင်ပါတယ်", en: "I'd like to talk first" },
   "setup.payment.contactMessage": { mm: "ရပါတယ်။ မြန်ဆန် team က သင့်ကို ဆက်သွယ်ပြီး package နဲ့ payment အကြောင်း ရှင်းပြပေးပါမယ်။", en: "Sure. The မြန်ဆန် team will contact you to explain the package and payment." },
-  "setup.payment.secureNote": { mm: "🔒 Secure checkout · သင့်အချက်အလက်ကို မြန်ဆန် team အတွက်သာ သုံးပါမယ်။ (Demo — real transaction မလုပ်ပါ)", en: "🔒 Secure checkout · Your information will only be used by the မြန်ဆန် team. (Demo — no real transaction)" },
+  "setup.payment.secureNote": { mm: "🔒 Secure checkout · သင့်အချက်အလက်ကို မြန်ဆန် team အတွက်သာ သုံးပါမယ်။", en: "🔒 Secure checkout · Your information will only be used by the မြန်ဆန် team." },
   "setup.processing": { mm: "Processing...", en: "Processing..." },
   "setup.requestSetup": { mm: "Request Setup", en: "Request Setup" },
   "setup.pay": { mm: "Pay {amount}", en: "Pay {amount}" },

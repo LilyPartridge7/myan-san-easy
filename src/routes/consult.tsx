@@ -222,6 +222,16 @@ function Consult() {
               onSelect={answer}
             />
           ) : null}
+          {!typing && question ? (
+            <div className="pl-0 sm:pl-11">
+              <button
+                onClick={() => { const c = question.choices[0]; if (c) answer(c.value, p(c.label)); }}
+                className="text-sm font-medium text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+              >
+                {p({ en: "Skip this question →", mm: "ဒီမေးခွန်း ကျော်မယ် →" })}
+              </button>
+            </div>
+          ) : null}
 
           {step === 0 && !typing ? (
             <div className="pl-0 sm:pl-11">
