@@ -22,7 +22,7 @@ export const landing = {
     mm: "Starting...",
     en: "Starting...",
   },
-  "landing.exploreExperience": { mm: "မြန်ဆန် ကို လေ့လာမယ်", en: "Explore မြန်ဆန်" },
+  "landing.exploreExperience": { mm: "မြန်ဆန် ကို လေ့လာမယ်", en: "Explore MyanSan" },
   "landing.trustLine": {
     mm: "✓ Easy to understand\u00a0\u00a0 ✓ Burmese + English\u00a0\u00a0 ✓ No technical knowledge needed",
     en: "✓ Easy to understand\u00a0\u00a0 ✓ Burmese + English\u00a0\u00a0 ✓ No technical knowledge needed",
@@ -34,7 +34,7 @@ export const landing = {
   "landing.step1Title": { mm: "Tell Us About Your Restaurant", en: "Tell Us About Your Restaurant" },
   "landing.step1Desc": { mm: "ဆိုင်အခြေအနေကို ရိုးရိုးလေး ပြောပြပါ။", en: "Tell us simply about your restaurant's situation." },
   "landing.step2Title": { mm: "We Recommend What You Need", en: "We Recommend What You Need" },
-  "landing.step2Desc": { mm: "မြန်ဆန်က သင့်ဆိုင်နဲ့ကိုက်တာ ရွေးပေးပါမယ်။", en: "မြန်ဆန် will pick what fits your restaurant." },
+  "landing.step2Desc": { mm: "မြန်ဆန်က သင့်ဆိုင်နဲ့ကိုက်တာ ရွေးပေးပါမယ်။", en: "MyanSan will pick what fits your restaurant." },
   "landing.step3Title": { mm: "Choose Your Setup", en: "Choose Your Setup" },
   "landing.step3Desc": { mm: "ကြိုက်သလို နည်းနည်းပြင်ပြီး စလို့ရပါပြီ။", en: "Adjust it a little the way you like and you're ready to start." },
   "landing.helpTitle": {
@@ -62,7 +62,7 @@ export const landing = {
   "landing.svcMenuSummary": { mm: "Menu ကို ဓာတ်ပုံ၊ စျေးနှုန်းနဲ့အတူ အွန်လိုင်းတင်ပေးခြင်း", en: "Putting your menu online with photos and prices" },
   "landing.svcMenuDetails": {
     mm: "လက်ရှိ menu ကို မြန်ဆန် team က digital ပြောင်းပေးပါတယ်။ စျေးနှုန်းပြောင်းချင်ရင်၊ ကုန်သွားတဲ့ ဟင်းကို sold out ပြချင်ရင် ဖုန်းကနေတင် အလွယ်တကူ ပြင်နိုင်ပါတယ်။",
-    en: "The မြန်ဆန် team digitizes your current menu. If you want to change prices or mark a dish as sold out, you can easily do it right from your phone.",
+    en: "The MyanSan team digitizes your current menu. If you want to change prices or mark a dish as sold out, you can easily do it right from your phone.",
   },
   "landing.svcWebsiteTitle": { mm: "Restaurant Website", en: "Restaurant Website" },
   "landing.svcWebsiteSummary": { mm: "ဆိုင်အတွက် လှပပြီး professional ဖြစ်တဲ့ website", en: "A beautiful, professional website for your restaurant" },
@@ -74,7 +74,7 @@ export const landing = {
   "landing.svcTrainingSummary": { mm: "ဆိုင်ဝန်ထမ်းတွေကို အသုံးပြုနည်း သင်ပေးခြင်း", en: "Teaching your staff how to use the system" },
   "landing.svcTrainingDetails": {
     mm: "မြန်ဆန် team က ဆိုင်ကိုလာပြီး QR stand ချထားပေးတာ၊ staff ကို လက်တွေ့သင်ပေးတာတွေ လုပ်ပေးပါတယ်။ နည်းပညာ မကျွမ်းကျင်လည်း ရပါတယ်။",
-    en: "The မြန်ဆန် team comes to your restaurant, sets up QR stands, and gives hands-on training to staff. No technical skill required.",
+    en: "The MyanSan team comes to your restaurant, sets up QR stands, and gives hands-on training to staff. No technical skill required.",
   },
   "landing.svcSupportTitle": { mm: "Ongoing Support", en: "Ongoing Support" },
   "landing.svcSupportSummary": { mm: "လစဉ် ဆက်လက်ကူညီပေးမှု", en: "Continuous monthly support" },
@@ -99,7 +99,7 @@ export const landing = {
   },
   "landing.finalCtaSubheading": {
     mm: "နည်းပညာပိုင်းကို မြန်ဆန်က ကူညီပေးပါမယ်။",
-    en: "မြန်ဆန် will help with the technology side.",
+    en: "MyanSan will help with the technology side.",
   },
   "landing.footerOwnerHome": { mm: "Owner Home", en: "Owner Home" },
 } satisfies Record<string, L>;

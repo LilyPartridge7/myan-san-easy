@@ -35,19 +35,19 @@ export const SERVICE_LABELS: Record<ServiceKey, { group: L; label: L }> = {
     label: { mm: "ဆိုင်နဲ့လိုက်တဲ့ QR ဒီဇိုင်း", en: "QR design matching your restaurant" },
   },
   staffTraining: {
-    group: { mm: "HELP FROM မြန်ဆန်", en: "HELP FROM မြန်ဆန်" },
+    group: { mm: "HELP FROM မြန်ဆန်", en: "HELP FROM MyanSan" },
     label: { mm: "Staff ကို အသုံးပြုနည်း သင်ပေးမယ်", en: "We train your staff on how to use it" },
   },
   qrStand: {
-    group: { mm: "HELP FROM မြန်ဆန်", en: "HELP FROM မြန်ဆန်" },
+    group: { mm: "HELP FROM မြန်ဆန်", en: "HELP FROM MyanSan" },
     label: { mm: "QR stand ပြင်ဆင်ပေးမယ်", en: "We prepare your QR stands" },
   },
   menuSetup: {
-    group: { mm: "HELP FROM မြန်ဆန်", en: "HELP FROM မြန်ဆန်" },
+    group: { mm: "HELP FROM မြန်ဆန်", en: "HELP FROM MyanSan" },
     label: { mm: "Menu ကို digital ပြောင်းပေးမယ်", en: "We digitalize your menu" },
   },
   priorityHelp: {
-    group: { mm: "HELP FROM မြန်ဆန်", en: "HELP FROM မြန်ဆန်" },
+    group: { mm: "HELP FROM မြန်ဆန်", en: "HELP FROM MyanSan" },
     label: { mm: "အမြန်ဆုံး အကူအညီ (Priority)", en: "Fastest priority support" },
   },
 };
@@ -61,7 +61,7 @@ export const PACKAGES: {
 }[] = [
   {
     id: "start",
-    name: { mm: "မြန်ဆန် START", en: "မြန်ဆန် START" },
+    name: { mm: "မြန်ဆန် START", en: "MyanSan START" },
     tagline: { mm: "လွယ်လွယ်ကူကူ စတင်ချင်တဲ့ ဆိုင်တွေအတွက်", en: "For restaurants that want a simple start" },
     benefits: [
       { mm: "Customer က ဖုန်းနဲ့ menu ကြည့်နိုင်မယ်", en: "Customers can view the menu on their phone" },
@@ -73,7 +73,7 @@ export const PACKAGES: {
   },
   {
     id: "growth",
-    name: { mm: "မြန်ဆန် GROWTH", en: "မြန်ဆန် GROWTH" },
+    name: { mm: "မြန်ဆန် GROWTH", en: "MyanSan GROWTH" },
     tagline: { mm: "customer များတဲ့ ဆိုင်တွေအတွက်", en: "For restaurants with more customers" },
     benefits: [
       { mm: "START ထဲက အားလုံး ပါဝင်တယ်", en: "Everything in START" },
@@ -86,10 +86,10 @@ export const PACKAGES: {
   },
   {
     id: "partner",
-    name: { mm: "မြန်ဆန် PARTNER", en: "မြန်ဆန် PARTNER" },
+    name: { mm: "မြန်ဆန် PARTNER", en: "MyanSan PARTNER" },
     tagline: {
       mm: "မြန်ဆန် team ရဲ့ အကူအညီ ပိုလိုချင်တဲ့ ဆိုင်ရှင်တွေအတွက်",
-      en: "For owners who want more help from the မြန်ဆန် team",
+      en: "For owners who want more help from the MyanSan team",
     },
     benefits: [
       { mm: "GROWTH ထဲက အားလုံး ပါဝင်တယ်", en: "Everything in GROWTH" },

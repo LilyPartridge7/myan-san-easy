@@ -24,7 +24,7 @@ export const setup = {
   "setup.package.heading": { mm: "Your Setup · {name}", en: "Your Setup · {name}" },
   "setup.package.group.customer": { mm: "CUSTOMER", en: "CUSTOMER" },
   "setup.package.group.restaurant": { mm: "YOUR RESTAURANT", en: "YOUR RESTAURANT" },
-  "setup.package.group.help": { mm: "HELP FROM မြန်ဆန်", en: "HELP FROM မြန်ဆန်" },
+  "setup.package.group.help": { mm: "HELP FROM မြန်ဆန်", en: "HELP FROM MyanSan" },
   "setup.saveContinue": { mm: "Save & Continue", en: "Save & Continue" },
 
   // Website stage
@@ -45,11 +45,11 @@ export const setup = {
   "setup.qr.style.simple": { mm: "Simple", en: "Simple" },
   "setup.qr.style.traditional": { mm: "Traditional", en: "Traditional" },
   "setup.qr.style.premium": { mm: "Premium", en: "Premium" },
-  "setup.qr.pickForMe": { mm: "မြန်ဆန်က ရွေးပေးပါ", en: "Let မြန်ဆန် choose for me" },
+  "setup.qr.pickForMe": { mm: "မြန်ဆန်က ရွေးပေးပါ", en: "Let MyanSan choose for me" },
   "setup.continue": { mm: "Continue", en: "Continue" },
 
   // Services / help stage
-  "setup.services.intro": { mm: "နောက်ဆုံးအနေနဲ့ ဘယ်အပိုင်းတွေကို မြန်ဆန် team က ကူညီပေးရမလဲ?", en: "Lastly, which parts should the မြန်ဆန် team help you with?" },
+  "setup.services.intro": { mm: "နောက်ဆုံးအနေနဲ့ ဘယ်အပိုင်းတွေကို မြန်ဆန် team က ကူညီပေးရမလဲ?", en: "Lastly, which parts should the MyanSan team help you with?" },
   "setup.help.menuDigital": { mm: "Menu ကို digital ပြောင်းပေးပါ", en: "Convert my menu to digital" },
   "setup.help.qrStand": { mm: "QR stand ပြင်ဆင်ပေးပါ", en: "Prepare QR stands" },
   "setup.help.staffTraining": { mm: "Staff ကို အသုံးပြုနည်း သင်ပေးပါ", en: "Train staff on how to use it" },
@@ -59,7 +59,7 @@ export const setup = {
 
   // Details stage
   "setup.details.heading": { mm: "Almost Done", en: "Almost Done" },
-  "setup.details.subtitle": { mm: "မြန်ဆန် team က သင့်ဆိုင် setup ကို ဆက်လက်ကူညီပေးနိုင်ဖို့ အချက်အလက်အနည်းငယ် လိုပါတယ်။", en: "The မြန်ဆန် team needs a few more details to keep helping with your restaurant setup." },
+  "setup.details.subtitle": { mm: "မြန်ဆန် team က သင့်ဆိုင် setup ကို ဆက်လက်ကူညီပေးနိုင်ဖို့ အချက်အလက်အနည်းငယ် လိုပါတယ်။", en: "The MyanSan team needs a few more details to keep helping with your restaurant setup." },
   "setup.details.locationTitle": { mm: "ဆိုင်ဘယ်မှာရှိပါသလဲ?", en: "Where is your restaurant located?" },
   "setup.details.contactTitle": { mm: "ဘယ်လိုဆက်သွယ်ရမလဲ?", en: "How should we contact you?" },
   "setup.field.restaurantName": { mm: "ဆိုင်နာမည် *", en: "Restaurant Name *" },
@@ -91,7 +91,7 @@ export const setup = {
   "setup.error.phone": { mm: "ဆက်သွယ်နိုင်ဖို့ ဖုန်းနံပါတ်ထည့်ပေးပါ။", en: "Please enter a phone number so we can reach you." },
 
   // Summary stage
-  "setup.summary.subtitle": { mm: "Your မြန်ဆန် Setup", en: "Your မြန်ဆန် Setup" },
+  "setup.summary.subtitle": { mm: "Your မြန်ဆန် Setup", en: "Your MyanSan Setup" },
   "setup.row.package": { mm: "PACKAGE", en: "PACKAGE" },
   "setup.row.customerOrdering": { mm: "CUSTOMER ORDERING", en: "CUSTOMER ORDERING" },
   "setup.row.qrOrdering": { mm: "QR Ordering", en: "QR Ordering" },
@@ -110,7 +110,7 @@ export const setup = {
   "setup.row.addOns": { mm: "ADD-ONS", en: "ADD-ONS" },
   "setup.row.amountDueToday": { mm: "AMOUNT DUE TODAY", en: "AMOUNT DUE TODAY" },
   "setup.from": { mm: "From ", en: "From " },
-  "setup.quoteNote": { mm: "PARTNER setup ကို ဆိုင်အလိုက် ပြင်ဆင်ပေးတာဖြစ်လို့ နောက်ဆုံးစျေးနှုန်းကို မြန်ဆန် team က quotation နဲ့ အတည်ပြုပေးပါမယ်။", en: "Because PARTNER setups are customized per restaurant, the မြန်ဆန် team will confirm the final price with a quotation." },
+  "setup.quoteNote": { mm: "PARTNER setup ကို ဆိုင်အလိုက် ပြင်ဆင်ပေးတာဖြစ်လို့ နောက်ဆုံးစျေးနှုန်းကို မြန်ဆန် team က quotation နဲ့ အတည်ပြုပေးပါမယ်။", en: "Because PARTNER setups are customized per restaurant, the MyanSan team will confirm the final price with a quotation." },
   "setup.edit": { mm: "Edit", en: "Edit" },
   "setup.continueToPayment": { mm: "Continue to Payment", en: "Continue to Payment" },
   "setup.saveForLater": { mm: "Save for Later", en: "Save for Later" },
@@ -118,7 +118,7 @@ export const setup = {
   // Payment stage
   "setup.payment.demoCheckout": { mm: "Checkout", en: "Checkout" },
   "setup.payment.heading": { mm: "Complete Your Setup", en: "Complete Your Setup" },
-  "setup.payment.subtitle": { mm: "Package ကိုအတည်ပြုပြီး မြန်ဆန် team နဲ့ setup စတင်နိုင်ပါတယ်။", en: "Confirm your package and start setup with the မြန်ဆန် team." },
+  "setup.payment.subtitle": { mm: "Package ကိုအတည်ပြုပြီး မြန်ဆန် team နဲ့ setup စတင်နိုင်ပါတယ်။", en: "Confirm your package and start setup with the MyanSan team." },
   "setup.row.restaurant": { mm: "RESTAURANT", en: "RESTAURANT" },
   "setup.payment.methodTitle": { mm: "Payment Method", en: "Payment Method" },
   "setup.payment.kbzpay.label": { mm: "KBZPay", en: "KBZPay" },
@@ -127,29 +127,29 @@ export const setup = {
   "setup.payment.wavepay.note": { mm: "မိုဘိုင်းနဲ့ ငွေပေးချေမယ်", en: "Pay with mobile" },
   "setup.payment.bank.label": { mm: "Bank Transfer", en: "Bank Transfer" },
   "setup.payment.bank.note": { mm: "ဘဏ်ကနေ လွှဲမယ်", en: "Transfer from bank" },
-  "setup.payment.contact.label": { mm: "Pay Later / Contact မြန်ဆန် Team", en: "Pay Later / Contact မြန်ဆန် Team" },
+  "setup.payment.contact.label": { mm: "Pay Later / Contact မြန်ဆန် Team", en: "Pay Later / Contact MyanSan Team" },
   "setup.payment.contact.note": { mm: "အရင် စကားပြောချင်ပါတယ်", en: "I'd like to talk first" },
-  "setup.payment.contactMessage": { mm: "ရပါတယ်။ မြန်ဆန် team က သင့်ကို ဆက်သွယ်ပြီး package နဲ့ payment အကြောင်း ရှင်းပြပေးပါမယ်။", en: "Sure. The မြန်ဆန် team will contact you to explain the package and payment." },
-  "setup.payment.secureNote": { mm: "🔒 Secure checkout · သင့်အချက်အလက်ကို မြန်ဆန် team အတွက်သာ သုံးပါမယ်။", en: "🔒 Secure checkout · Your information will only be used by the မြန်ဆန် team." },
+  "setup.payment.contactMessage": { mm: "ရပါတယ်။ မြန်ဆန် team က သင့်ကို ဆက်သွယ်ပြီး package နဲ့ payment အကြောင်း ရှင်းပြပေးပါမယ်။", en: "Sure. The MyanSan team will contact you to explain the package and payment." },
+  "setup.payment.secureNote": { mm: "🔒 Secure checkout · သင့်အချက်အလက်ကို မြန်ဆန် team အတွက်သာ သုံးပါမယ်။", en: "🔒 Secure checkout · Your information will only be used by the MyanSan team." },
   "setup.processing": { mm: "Processing...", en: "Processing..." },
   "setup.requestSetup": { mm: "Request Setup", en: "Request Setup" },
   "setup.pay": { mm: "Pay {amount}", en: "Pay {amount}" },
 
   // Success stage
   "setup.success.heading": { mm: "Setup Confirmed", en: "Setup Confirmed" },
-  "setup.success.thanks": { mm: "ကျေးဇူးတင်ပါတယ်။ {name} အတွက် မြန်ဆန် setup request ကို လက်ခံပြီးပါပြီ။", en: "Thank you. Your မြန်ဆန် setup request for {name} has been received." },
+  "setup.success.thanks": { mm: "ကျေးဇူးတင်ပါတယ်။ {name} အတွက် မြန်ဆန် setup request ကို လက်ခံပြီးပါပြီ။", en: "Thank you. Your MyanSan setup request for {name} has been received." },
   "setup.row.reference": { mm: "REFERENCE", en: "REFERENCE" },
   "setup.row.status": { mm: "STATUS", en: "STATUS" },
   "setup.status.waitingForContact": { mm: "Waiting for Contact", en: "Waiting for Contact" },
   "setup.status.paid": { mm: "Paid", en: "Paid" },
-  "setup.success.followUp": { mm: "မြန်ဆန် team က သင့်ကို ဆက်သွယ်ပြီး setup အဆင့်တွေကို ဆက်လက်ကူညီပေးပါမယ်။", en: "The မြန်ဆန် team will contact you and continue helping with the setup steps." },
+  "setup.success.followUp": { mm: "မြန်ဆန် team က သင့်ကို ဆက်သွယ်ပြီး setup အဆင့်တွေကို ဆက်လက်ကူညီပေးပါမယ်။", en: "The MyanSan team will contact you and continue helping with the setup steps." },
   "setup.goToRestaurant": { mm: "Go to My Restaurant", en: "Go to My Restaurant" },
   "setup.viewMySetup": { mm: "View My Setup", en: "View My Setup" },
-  "setup.contactBrand": { mm: "Contact မြန်ဆန်", en: "Contact မြန်ဆန်" },
+  "setup.contactBrand": { mm: "Contact မြန်ဆန်", en: "Contact MyanSan" },
 
   // Saved stage
   "setup.saved.badge": { mm: "Setup Confirmed", en: "Setup Confirmed" },
-  "setup.saved.subtitle": { mm: "သိမ်းဆည်းထားတဲ့ သင့် မြန်ဆန် setup အချက်အလက်များ", en: "Your saved မြန်ဆန် setup details" },
+  "setup.saved.subtitle": { mm: "သိမ်းဆည်းထားတဲ့ သင့် မြန်ဆန် setup အချက်အလက်များ", en: "Your saved MyanSan setup details" },
   "setup.row.phone": { mm: "PHONE", en: "PHONE" },
   "setup.row.payment": { mm: "PAYMENT", en: "PAYMENT" },
   "setup.row.totalPaidToday": { mm: "TOTAL PAID TODAY", en: "TOTAL PAID TODAY" },

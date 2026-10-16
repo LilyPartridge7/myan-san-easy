@@ -61,5 +61,5 @@ export const customer = {
   "preview.continueSetup": { mm: "Setup ဆက်လုပ်မည် →", en: "Continue Setup →" },
   "qr.scanToOrder": { mm: "စကင်ဖတ်ပြီး မှာယူပါ", en: "SCAN TO ORDER" },
   "qr.table": { mm: "စားပွဲ {table}", en: "TABLE {table}" },
-  "qr.poweredBy": { mm: "Powered by မြန်ဆန်", en: "Powered by မြန်ဆန်" },
+  "qr.poweredBy": { mm: "Powered by မြန်ဆန်", en: "Powered by MyanSan" },
 } satisfies Record<string, L>;
