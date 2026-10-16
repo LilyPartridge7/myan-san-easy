@@ -138,12 +138,15 @@ function SetupPage() {
   const tc = state.consultTurns.find((x) => x.stage === "tableCount")?.value ?? state.tableCount ?? "";
   const setupDays = tc === "21-40" || tc === "40+" || tc === "multiBranch" ? 7 : tc === "11-20" ? 5 : 3;
 
-  const back = () => (canGoBack ? goBack() : navigate({ to: "/consult" }));
+  const back = () => {
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+    return canGoBack ? goBack() : navigate({ to: "/consult" });
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <BrandHeader subtitle={t("setup.subtitle")} />
-      <div className="mx-auto max-w-[820px] px-4 py-6 pb-24">
+      <div key={stage} className="page-enter mx-auto max-w-[820px] px-4 py-6 pb-24">
         <StageRail active={rail as "Consultation" | "Your Setup" | "Review"} />
 
         {stage === "recommendation" ? (

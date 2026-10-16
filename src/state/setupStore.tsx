@@ -307,7 +307,7 @@ export function SetupProvider({ children }: { children: ReactNode }) {
       undoConsult,
       goToStage,
       goBack,
-      canGoBack: state.stageHistory.length > 0,
+      canGoBack: state.stageHistory.some((c) => c !== state.currentStage && c !== "website" && c !== "qr"),
       toggleService,
       toggleHelp,
       applyPackage,
