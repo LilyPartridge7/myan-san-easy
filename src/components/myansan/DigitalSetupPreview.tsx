@@ -10,6 +10,9 @@ import type { Template } from "@/state/setupStore";
 import type { L } from "@/i18n/types";
 import { useT } from "@/i18n";
 import { cn } from "@/lib/utils";
+import { QRPreview } from "@/components/myansan/QRPreview";
+import { WebsiteStyleSelector } from "@/components/myansan/WebsiteStyleSelector";
+import { useSetupOptional } from "@/state/setupStore";
 import { CoachTab, FeedbackTab, HealthTab } from "@/components/myansan/ImproveTabs";
 
 type TabId = "overview" | "pos" | "kitchen" | "website" | "qr" | "owner" | "integration" | "training" | "health" | "coach" | "feedback";
@@ -486,6 +489,7 @@ export function DigitalSetupPreview({
   onCustomize: () => void;
 }) {
   const { p, lang } = useT();
+  const setup = useSetupOptional();
   const tabs = useMemo(() => tabsFor(systems), [systems]);
   const [active, setActive] = useState<TabId>("overview");
   const current = tabs.includes(active) ? active : "overview";
@@ -560,7 +564,24 @@ export function DigitalSetupPreview({
             </div>
           </section>
         )}
-        {current === "qr" && <QRTab name={name} pkg={packageId} onPlace={placeOrder} />}
+        {current === "qr" && (
+          <>
+            <div className="mx-auto max-w-4xl px-4 pt-5">
+              <div className="rounded-2xl border border-border bg-card p-4">
+                <p className="text-sm font-semibold">{p({ mm: "စားပွဲ QR ပုံစံ ရွေးပါ", en: "Choose your table QR style" })}</p>
+                <div className="mt-3 grid grid-cols-3 gap-3">
+                  {(["simple", "traditional", "premium"] as const).map((q) => (
+                    <button key={q} onClick={() => setup?.update({ qrStyle: q })} className={cn("rounded-2xl border p-2 transition-all", setup?.state.qrStyle === q ? "border-primary ring-2 ring-primary" : "border-border")}>
+                      <QRPreview style={q} restaurantName={name} small />
+                      <p className="py-1.5 text-xs font-medium capitalize">{q}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <QRTab name={name} pkg={packageId} onPlace={placeOrder} />
+          </>
+        )}
         {current === "pos" && <POSTab orders={orders} setOrders={setOrders} pkg={packageId} />}
         {current === "kitchen" && <KitchenTab orders={orders} setOrders={setOrders} pkg={packageId} />}
         {current === "training" && <TrainingTab pkg={packageId} />}
@@ -571,12 +592,21 @@ export function DigitalSetupPreview({
         {current === "integration" && <IntegrationTab pkg={packageId} />}
         {current === "website" && (
           <section className="py-4">
+            {setup && (
+              <div className="mx-auto mb-4 max-w-4xl px-4">
+                <div className="rounded-2xl border border-border bg-card p-4">
+                  <p className="mb-3 text-sm font-semibold">{p({ mm: "Website ပုံစံ ရွေးပါ", en: "Choose your website style" })}</p>
+                  <WebsiteStyleSelector value={setup.state.websiteStyle} onChange={(s) => setup.update({ websiteStyle: s })} />
+                </div>
+              </div>
+            )}
             <div className="mx-auto mb-3 flex max-w-6xl flex-wrap items-center gap-2 px-4">
               <h2 className="text-base font-semibold">Website</h2>
               <InclusionBadge pkg={packageId} systemId="restaurant_website" />
               <SampleTag />
             </div>
             <RestaurantPreview template={template} name={name} tagline={tagline} color={color} heroImage={IMAGES.heroInterior} />
+
           </section>
         )}
       </div>

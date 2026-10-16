@@ -87,6 +87,10 @@ function SetupPage() {
     if (hydrated && !state.recommendedPackage) {
       update({ recommendedPackage: rec.packageId });
     }
+    if (hydrated && (state.currentStage === "website" || state.currentStage === "qr")) {
+      update({ websiteStyle: state.websiteStyle ?? "modern", qrStyle: state.qrStyle ?? rec.qrStyle });
+      goToStage("services");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hydrated]);
 
@@ -152,7 +156,8 @@ function SetupPage() {
               <button
                 onClick={() => {
                   applyPackage(recommendedId);
-                  goToStage("website");
+                  update({ websiteStyle: state.websiteStyle ?? "modern", qrStyle: state.qrStyle ?? rec.qrStyle });
+                  goToStage("services");
                 }}
                 className="min-h-12 rounded-full bg-primary px-6 text-[15px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
               >
@@ -230,7 +235,10 @@ function SetupPage() {
             ))}
             <SetupNavigation
               onBack={back}
-              onContinue={() => goToStage("website")}
+              onContinue={() => {
+                update({ websiteStyle: state.websiteStyle ?? "modern", qrStyle: state.qrStyle ?? rec.qrStyle });
+                goToStage("services");
+              }}
               continueLabel={t("setup.saveContinue")}
             />
           </div>
