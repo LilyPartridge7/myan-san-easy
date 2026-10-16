@@ -18,6 +18,7 @@ export type SetupStage =
   | "qr"
   | "services"
   | "details"
+  | "location"
   | "summary"
   | "payment"
   | "saved"
@@ -69,6 +70,8 @@ export type SetupState = {
   township: string;
   city: string;
   mapLink: string;
+  lat: number | null;
+  lng: number | null;
   contactName: string;
   phone: string;
   email: string;
@@ -110,6 +113,8 @@ const INITIAL: SetupState = {
   township: "",
   city: "",
   mapLink: "",
+  lat: null,
+  lng: null,
   contactName: "",
   phone: "",
   email: "",
