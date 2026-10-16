@@ -264,10 +264,10 @@ function Consult() {
                 </ul>
               </AIMessage>
               <div className="pl-0 sm:pl-11">
-                <HealthScore health={health} onImprove={() => navigate({ to: "/preview/shwe-hotpot", search: { from: undefined } })} />
+                <HealthScore health={health} onImprove={() => navigate({ to: "/preview/shwe-hotpot", search: { from: undefined, demo: undefined } })} />
                 <div className="mt-4 flex flex-wrap gap-3">
                   <button
-                    onClick={() => { update({ previewReturnStage: "recommendation" } as never); navigate({ to: "/preview/shwe-hotpot", search: { from: undefined } }); }}
+                    onClick={() => { update({ previewReturnStage: "recommendation" } as never); navigate({ to: "/preview/shwe-hotpot", search: { from: undefined, demo: undefined } }); }}
                     className="min-h-12 rounded-full bg-primary px-6 text-[15px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
                   >
                     {p({ mm: "ကျွန်တော့် Setup ကို Preview ကြည့်မယ်", en: "Preview My Setup" })}
