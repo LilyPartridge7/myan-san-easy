@@ -62,4 +62,13 @@ export const customer = {
   "qr.scanToOrder": { mm: "စကင်ဖတ်ပြီး မှာယူပါ", en: "SCAN TO ORDER" },
   "qr.table": { mm: "စားပွဲ {table}", en: "TABLE {table}" },
   "qr.poweredBy": { mm: "Powered by မြန်ဆန်", en: "Powered by မြန်ဆန်" },
+  "demo.badge": { mm: "DEMO MODE — SAMPLE DATA", en: "DEMO MODE — SAMPLE DATA" },
+  "demo.stepOf": { mm: "အဆင့် {n} / {total}", en: "Step {n} of {total}" },
+  "demo.next": { mm: "နောက်တစ်ဆင့် →", en: "Next →" },
+  "demo.skip": { mm: "Demo ကို ကျော်မယ်", en: "Skip Demo" },
+  "demo.step1": { mm: "Customer က QR နဲ့ order တင်တယ်", en: "Customer places a QR order" },
+  "demo.step2": { mm: "Order က POS ထဲ ရောက်လာတယ်", en: "The order appears in POS" },
+  "demo.step3": { mm: "Kitchen မှာ status ပြောင်းတယ်", en: "Kitchen status changes" },
+  "demo.step4": { mm: "ငွေရှင်းတာ ပြီးစီးတယ်", en: "Payment is completed" },
+  "demo.step5": { mm: "ဆိုင်ရှင်က နောက်တစ်ဆင့် insight မြင်တယ်", en: "Owner sees the next business insight" },
 } satisfies Record<string, L>;

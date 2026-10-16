@@ -472,7 +472,7 @@ function IntegrationTab({ pkg }: { pkg: PackageId }) {
 }
 
 export function DigitalSetupPreview({
-  systems, name, tagline, color, template, packageId, basedOn, branches, onChoose, onCustomize,
+  systems, name, tagline, color, template, packageId, basedOn, branches, onChoose, onCustomize, activeTab, onTabChange,
 }: {
   systems: SystemRec[];
   name: string;
@@ -484,10 +484,14 @@ export function DigitalSetupPreview({
   branches: boolean;
   onChoose: () => void;
   onCustomize: () => void;
+  activeTab?: string | undefined;
+  onTabChange?: ((tab: string) => void) | undefined;
 }) {
   const { p, lang } = useT();
   const tabs = useMemo(() => tabsFor(systems), [systems]);
-  const [active, setActive] = useState<TabId>("overview");
+  const [activeLocal, setActiveLocal] = useState<TabId>("overview");
+  const active = (activeTab as TabId | undefined) ?? activeLocal;
+  const setActive = (id: TabId) => { setActiveLocal(id); onTabChange?.(id); };
   const current = tabs.includes(active) ? active : "overview";
   const [orders, setOrders] = useState<Order[]>(SEED);
   const [seq, setSeq] = useState(104);
