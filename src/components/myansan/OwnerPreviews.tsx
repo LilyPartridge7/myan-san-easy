@@ -181,7 +181,7 @@ export function WebsitePreview() {
         <RestaurantPreview template={templateFor(state.websiteStyle ?? "luxury")} name={state.restaurantName}
           tagline={state.tagline} color={state.restaurantColor} heroImage={IMAGES.heroInterior} />
       </div>
-      <Link to="/preview/shwe-hotpot" search={{ from: "owner" }}
+      <Link to="/preview/shwe-hotpot" search={{ from: "owner", demo: undefined }}
         className="mt-4 inline-flex rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground">
         {p({ en: "Open Full Preview", mm: "အပြည့်အစုံ ကြည့်မယ်" })}
       </Link>

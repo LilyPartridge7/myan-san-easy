@@ -484,8 +484,8 @@ export function DigitalSetupPreview({
   branches: boolean;
   onChoose: () => void;
   onCustomize: () => void;
-  activeTab?: string;
-  onTabChange?: (tab: string) => void;
+  activeTab?: string | undefined;
+  onTabChange?: ((tab: string) => void) | undefined;
 }) {
   const { p, lang } = useT();
   const tabs = useMemo(() => tabsFor(systems), [systems]);

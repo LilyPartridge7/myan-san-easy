@@ -113,7 +113,7 @@ function PreviewPage() {
   const navigate = useNavigate();
   const demoActive = demo === "1";
   const [demoStep, setDemoStep] = useState(0);
-  const [demoTab, setDemoTab] = useState<string | undefined>(demoActive ? DEMO_STEPS[0].tab : undefined);
+  const [demoTab, setDemoTab] = useState<string | undefined>(demoActive ? DEMO_STEPS[0]!.tab : undefined);
   const exitDemo = () => {
     setDemoTab(undefined);
     void navigate({ to: "/preview/shwe-hotpot", search: { from, demo: undefined }, replace: true });
@@ -171,12 +171,12 @@ function PreviewPage() {
             <span className="rounded-full bg-primary px-3 py-1 text-[10px] font-bold tracking-widest text-primary-foreground">{t("demo.badge")}</span>
             <div className="min-w-0 flex-1">
               <p className="text-[11px] font-medium text-muted-foreground">{t("demo.stepOf", { n: demoStep + 1, total: DEMO_STEPS.length })}</p>
-              <p className="truncate text-sm font-semibold">{t(DEMO_STEPS[demoStep].labelKey)}</p>
+              <p className="truncate text-sm font-semibold">{t(DEMO_STEPS[demoStep]!.labelKey)}</p>
             </div>
             <button onClick={exitDemo} className="min-h-10 rounded-full border border-border bg-card px-4 text-sm font-medium">{t("demo.skip")}</button>
             {demoStep < DEMO_STEPS.length - 1 ? (
               <button
-                onClick={() => { const n = demoStep + 1; setDemoStep(n); setDemoTab(DEMO_STEPS[n].tab); }}
+                onClick={() => { const n = demoStep + 1; setDemoStep(n); setDemoTab(DEMO_STEPS[n]!.tab); }}
                 className="min-h-10 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground"
               >
                 {t("demo.next")}
