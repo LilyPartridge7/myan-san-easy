@@ -45,7 +45,7 @@ export function HealthScore({ health, sample, onImprove }: { health: Health; sam
       </ul>
       {!sample && (
         <p className="mt-3 text-[11px] text-muted-foreground">
-          {p({ mm: "လက်ရှိ Setup အကဲဖြတ်ချက်ပေါ် အခြေခံထားပါတယ်။ မြန်ဆန် System တွေ ချိတ်ပြီးသုံးလာရင် Score ပိုတိကျလာပါမယ်။", en: "Based on your current setup assessment. Your score becomes more accurate as your restaurant starts using connected မြန်ဆန် systems." })}
+          {p({ mm: "လက်ရှိ Setup အကဲဖြတ်ချက်ပေါ် အခြေခံထားပါတယ်။ မြန်ဆန် System တွေ ချိတ်ပြီးသုံးလာရင် Score ပိုတိကျလာပါမယ်။", en: "Based on your current setup assessment. Your score becomes more accurate as your restaurant starts using connected MyanSan systems." })}
         </p>
       )}
       {onImprove && (

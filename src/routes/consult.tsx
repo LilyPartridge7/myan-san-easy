@@ -14,7 +14,7 @@ import { pick, type Lang } from "@/i18n/types";
 export const Route = createFileRoute("/consult")({
   head: () => ({
     meta: [
-      { title: "အခမဲ့ အကြံပေးမှု — မြန်ဆန်" },
+      { title: "Free Consultation — မြန်ဆန်" },
       {
         name: "description",
         content:

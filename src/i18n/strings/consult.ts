@@ -16,15 +16,15 @@ export const consult = {
   },
   "consult.welcome": {
     mm: "မင်္ဂလာပါ 👋\n\nPOS, Kitchen, Website ကနေ Restaurant Health, Growth Coaching နဲ့ Customer Feedback အထိ မြန်ဆန်က ကူညီပေးနိုင်ပါတယ်။\n\nမေးခွန်း 4 ခုလောက်ဖြေပြီး သင့်ဆိုင်အတွက် သင့်တော်တာကို ရွေးပေးပါမယ်။",
-    en: "Welcome 👋\n\nမြန်ဆန် can help with everything from POS, Kitchen and Website setup to Restaurant Health, Growth Coaching and Customer Feedback.\n\nAnswer 4 quick questions and we'll recommend the right setup.",
+    en: "Welcome 👋\n\nMyanSan can help with everything from POS, Kitchen and Website setup to Restaurant Health, Growth Coaching and Customer Feedback.\n\nAnswer 4 quick questions and we'll recommend the right setup.",
   },
   "consult.viewPackages": { mm: "Package တွေကြည့်မယ်", en: "View Packages" },
-  "consult.hidePackages": { mm: "မြန်ဆန်က အကြံပြုပေးမယ်", en: "Let မြန်ဆန် Recommend" },
+  "consult.hidePackages": { mm: "မြန်ဆန်က အကြံပြုပေးမယ်", en: "Let MyanSan Recommend" },
   "consult.recommendSystems": { mm: "ဒါကြောင့် အကြံပြုတာတွေ —", en: "So we recommend:" },
   "consult.recPackage": { mm: "သင့်ဆိုင်အတွက် {name} ကို အကြံပြုပါတယ်။", en: "{name} is recommended for your restaurant." },
   "consult.thinking": {
     mm: "မြန်ဆန် is thinking...",
-    en: "မြန်ဆန် is thinking...",
+    en: "MyanSan is thinking...",
   },
   "consult.recIntro": {
     mm: "အခု သင့်ဆိုင်အခြေအနေကို နားလည်ပါပြီ။",
@@ -53,6 +53,6 @@ export const consult = {
   },
   "consult.fallbackNoQuestion": {
     mm: "မှတ်ထားပါတယ်။ မြန်ဆန် team က ဒီအချက်ကို ဆက်ကြည့်ပေးပါမယ်။",
-    en: "Noted! The မြန်ဆန် team will follow up on this.",
+    en: "Noted! The MyanSan team will follow up on this.",
   },
 } satisfies Record<string, L>;

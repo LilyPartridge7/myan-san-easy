@@ -199,7 +199,7 @@ const Q_GOAL: Question = {
     c("seeBusiness", "See my business more clearly", "ဆိုင်အခြေအနေကို ပိုရှင်းရှင်းမြင်ချင်တယ်", ["see", "report", "sales", "မြင်"]),
     c("professionalOnline", "Look more professional online", "Online မှာ ပို Professional ဖြစ်ချင်တယ်", ["online", "website", "professional"]),
     c("manageGrowth", "Grow more easily", "ဆိုင်ကြီးလာရင် စီမံရပိုလွယ်ချင်တယ်", ["growth", "branch", "ကြီးလာ"]),
-    c("letMyansan", "Let မြန်ဆန် recommend", "မြန်ဆန်က အကြံပြုပေးပါ", ["recommend", "you decide", "မသိ", "အကြံပြု"]),
+    c("letMyansan", "Let MyanSan recommend", "မြန်ဆန်က အကြံပြုပေးပါ", ["recommend", "you decide", "မသိ", "အကြံပြု"]),
   ],
 };
 
@@ -294,7 +294,7 @@ const SYS: Record<string, SystemRec> = {
   reporting: { id: "reporting", label: { mm: "Basic Reporting / Owner Dashboard", en: "Basic Reporting / Owner Dashboard" }, why: { mm: "ဆိုင်မှာမရှိလည်း ရောင်းအားနဲ့ Order တွေကို မြင်နိုင်မယ်", en: "see sales and orders even when you are away" } },
   integration: { id: "integration", label: { mm: "Integration Planning", en: "Integration Planning" }, why: { mm: "လက်ရှိ System တွေကို ချိတ်ဆက်ပြီး တစ်နေရာတည်းက စီမံနိုင်အောင်", en: "connect the tools you already have instead of adding more" } },
   staff_training: { id: "staff_training", label: { mm: "Staff Training", en: "Staff Training" }, why: { mm: "Staff တွေ အလွယ်တကူ စသုံးနိုင်ပြီး Owner မေးခွန်းဖြေရတာ လျော့မယ်", en: "your team learns quickly, fewer questions for you" } },
-  support: { id: "support", label: { mm: "Managed Support", en: "Managed Support" }, why: { mm: "System တွေကို မြန်ဆန်က ဆက်ကြည့်ပေးမယ်", en: "မြန်ဆန် looks after your systems for you" } },
+  support: { id: "support", label: { mm: "Managed Support", en: "Managed Support" }, why: { mm: "System တွေကို MyanSanက ဆက်ကြည့်ပေးမယ်", en: "MyanSan looks after your systems for you" } },
 };
 
 /** Owner problem → systems that solve it. */
@@ -444,7 +444,7 @@ const BENEFIT: Record<string, L> = {
   staff: { mm: "Staff တွေ ပိုမြန်မြန်တတ်ပြီး Owner အချိန်ပိုသက်သာပါမယ်။", en: "Your staff learn faster and you spend less time answering the same questions." },
   visibility: { mm: "ဆိုင်မှာ မရှိလည်း ဆိုင်အခြေအနေကို ရှင်းရှင်းမြင်နိုင်ပါမယ်။", en: "You can see how the business is doing even when you are away." },
   online: { mm: "Website နဲ့ Digital Menu က ဆိုင်ကို ရှာရလွယ်ပြီး Professional ဖြစ်စေပါတယ်။", en: "A restaurant website and digital menu make your business easier to find and more professional." },
-  systems: { mm: "System တွေကို အသစ်ထပ်မထည့်ဘဲ ချိတ်ဆက်ပြီး မြန်ဆန်က တစ်နေရာတည်းက ကူညီပေးပါမယ်။", en: "Instead of adding more tools, မြန်ဆန် connects and looks after what you have." },
+  systems: { mm: "System တွေကို အသစ်ထပ်မထည့်ဘဲ ချိတ်ဆက်ပြီး မြန်ဆန်က တစ်နေရာတည်းက ကူညီပေးပါမယ်။", en: "Instead of adding more tools, MyanSan connects and looks after what you have." },
   growth: { mm: "Branch တွေကို တစ်နေရာတည်းက ကြည့်ပြီး ညီညီညာညာ စီမံနိုင်ပါမယ်။", en: "You can oversee every branch from one place and keep them consistent." },
 };
 
