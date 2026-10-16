@@ -323,3 +323,14 @@ button:not(:disabled):active, a:active { transform: scale(.97); }
 @keyframes ms-logo-float { 0%,100% { transform: translateY(0) scale(1); opacity: .85 } 50% { transform: translateY(-6px) scale(1.04); opacity: 1 } }
 .ms-logo-loader { animation: ms-logo-float 1.6s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .ms-logo-loader { animation: none; } }
+
+/* Scroll reveal for page sections (progressive enhancement). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    main section, .ms-reveal {
+      animation: myan-fade-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+}
