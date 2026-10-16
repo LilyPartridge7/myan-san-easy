@@ -319,3 +319,7 @@ button:not(:disabled):active, a:active { transform: scale(.97); }
 .ms-glow { animation: ms-glow-drift 22s ease-in-out infinite; }
 .ms-glow-2 { animation-duration: 28s; animation-delay: -6s; }
 .ms-glow-3 { animation-duration: 34s; animation-delay: -13s; }
+
+@keyframes ms-logo-float { 0%,100% { transform: translateY(0) scale(1); opacity: .85 } 50% { transform: translateY(-6px) scale(1.04); opacity: 1 } }
+.ms-logo-loader { animation: ms-logo-float 1.6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .ms-logo-loader { animation: none; } }

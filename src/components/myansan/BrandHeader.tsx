@@ -1,3 +1,4 @@
+import logoAsset from "@/assets/myansan-logo.png.asset.json";
 import { Link, useRouter } from "@tanstack/react-router";
 import { ArrowLeft, Home, Laptop, Moon, Sun } from "lucide-react";
 import { useSetup } from "@/state/setupStore";
@@ -42,11 +43,14 @@ export function BrandHeader({
         >
           <Home className="h-4 w-4" />
         </Link>
-        <Link to="/" className="hidden min-w-0 flex-col leading-tight sm:flex">
+        <Link to="/" className="flex min-w-0 items-center gap-2">
+          <img src={logoAsset.url} alt="MyanSan" className="h-9 w-auto shrink-0 rounded-md" />
+          <span className="hidden min-w-0 flex-col leading-tight sm:flex">
           <span className="text-lg font-semibold tracking-tight text-primary">{t("brand")}</span>
           {subtitle ? (
             <span className="truncate text-[11px] text-muted-foreground">{subtitle}</span>
           ) : null}
+          </span>
         </Link>
         {status ? (
           <span className="ml-3 hidden items-center gap-1.5 text-xs text-muted-foreground sm:flex">
