@@ -166,4 +166,6 @@ export const setup = {
   "setup.style.warm": { mm: "Warm & Friendly", en: "Warm & Friendly" },
   "setup.style.none": { mm: "—", en: "—" },
   "setup.qrLabel": { mm: "{style} Style", en: "{style} Style" },
+  "setup.skipContact": { mm: "အချက်အလက် မဖြည့်ဘဲ ဆက်လုပ်မယ် (Demo)", en: "Continue without contact details (Demo)" },
+  "setup.contactOptional": { mm: "ဆက်သွယ်ရမယ့် အချက်အလက်တွေက optional ပါ — နောက်မှ ထည့်လို့ရပါတယ်။", en: "Contact details are optional — you can add them later." },
 } satisfies Record<string, L>;
