@@ -309,3 +309,13 @@ button:not(:disabled):active, a:active { transform: scale(.97); }
   body { animation: none; }
   *, *::before, *::after { transition: none !important; animation-duration: .01ms !important; }
 }
+
+/* --- Consultation backdrop glows --- */
+@keyframes ms-glow-drift {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(2.5%, 4%, 0) scale(1.09); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+.ms-glow { animation: ms-glow-drift 22s ease-in-out infinite; }
+.ms-glow-2 { animation-duration: 28s; animation-delay: -6s; }
+.ms-glow-3 { animation-duration: 34s; animation-delay: -13s; }
