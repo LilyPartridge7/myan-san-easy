@@ -22,7 +22,7 @@ export const landing = {
     mm: "Starting...",
     en: "Starting...",
   },
-  "landing.exploreExperience": { mm: "သင့် Setup ကို ကြည့်မယ်", en: "Explore Your Setup" },
+  "landing.exploreExperience": { mm: "မြန်ဆန် ကို လေ့လာမယ်", en: "Explore မြန်ဆန်" },
   "landing.trustLine": {
     mm: "✓ Easy to understand\u00a0\u00a0 ✓ Burmese + English\u00a0\u00a0 ✓ No technical knowledge needed",
     en: "✓ Easy to understand\u00a0\u00a0 ✓ Burmese + English\u00a0\u00a0 ✓ No technical knowledge needed",

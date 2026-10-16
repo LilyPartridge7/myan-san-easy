@@ -126,13 +126,13 @@ function Landing() {
               >
                 {leaving ? t("landing.starting") : t("landing.startConsult")}
               </button>
-              <Link
-                to="/preview/shwe-hotpot"
-                search={{ from: undefined }}
+              <a
+                href="#explore"
+                onClick={(e) => { e.preventDefault(); document.getElementById("explore")?.scrollIntoView({ behavior: "smooth" }); }}
                 className="min-h-12 rounded-full border border-white/50 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10 sm:min-h-13 sm:px-7 sm:text-[15px]"
               >
                 {t("landing.exploreExperience")}
-              </Link>
+              </a>
             </div>
             <HeroFlow />
           </div>
@@ -140,7 +140,7 @@ function Landing() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="relative mx-auto max-w-[1100px] bg-background px-5 py-16 sm:px-6 sm:py-20 2xl:max-w-[1400px]">
+      <section id="explore" className="scroll-mt-4 relative mx-auto max-w-[1100px] bg-background px-5 py-16 sm:px-6 sm:py-20 2xl:max-w-[1400px]">
         <p className="text-[11px] tracking-[0.35em] text-muted-foreground">{t("landing.howItWorks")}</p>
         <div className="mt-10">
           {STEPS.map((s) => (
