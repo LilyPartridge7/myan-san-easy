@@ -9,11 +9,7 @@ import { IMAGES } from "@/data/images";
 const fmt = (n: number) => `${n.toLocaleString("en-US")} MMK`;
 
 function Sample() {
-  return (
-    <span className="rounded-full bg-muted px-2.5 py-0.5 text-[10px] font-semibold tracking-wider text-muted-foreground">
-      Sample Data
-    </span>
-  );
+  return null;
 }
 
 function Head({ title, sub }: { title: string; sub: string }) {
@@ -43,7 +39,7 @@ function ResetDemo() {
   const { p } = useT();
   return (
     <button onClick={resetDemoOrder} className="mt-4 text-xs text-muted-foreground underline underline-offset-4">
-      {p({ en: "Reset Demo", mm: "Demo ပြန်စမယ်" })}
+      {p({ en: "Start Over", mm: "ပြန်စမယ်" })}
     </button>
   );
 }
@@ -77,7 +73,7 @@ export function KitchenPreview() {
           </div>
         ))}
       </div>
-      {!order && <p className="mt-3 text-xs text-muted-foreground">{p({ en: "Place a demo order in QR Ordering first.", mm: "QR Ordering မှာ Demo Order အရင်တင်ပါ။" })}</p>}
+      {!order && <p className="mt-3 text-xs text-muted-foreground">{p({ en: "Place an order in QR Ordering first.", mm: "QR Ordering မှာ Order အရင်တင်ပါ။" })}</p>}
       <ResetDemo />
     </div>
   );
@@ -212,10 +208,10 @@ export function QRPreview() {
         <p className="mb-3 text-center text-xs text-muted-foreground">Table 07</p>
         {placed ? (
           <div className="py-8 text-center">
-            <p className="text-lg font-semibold">Demo Order #A104</p>
+            <p className="text-lg font-semibold">Order #A104</p>
             <p className="text-sm">{p({ en: "Order received", mm: "Order လက်ခံပြီးပါပြီ" })} · {fmt(order!.total)}</p>
             <p className="mt-1 text-sm text-muted-foreground">Status: {order!.status.toUpperCase()}</p>
-            <p className="mt-3 text-xs text-muted-foreground">{p({ en: "This is a sample order for demonstration only.", mm: "ဒီ Order က Demo အတွက်သာဖြစ်ပါတယ်။" })}</p>
+            <p className="mt-3 text-xs text-muted-foreground">{p({ en: "Sent to POS and Kitchen instantly.", mm: "POS နဲ့ Kitchen ကို ချက်ချင်းရောက်သွားပါပြီ။" })}</p>
           </div>
         ) : (
           <>
@@ -237,7 +233,7 @@ export function QRPreview() {
             </div>
             <button disabled={!count} onClick={place}
               className="mt-3 w-full rounded-xl bg-primary py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-40">
-              {p({ en: "Place Demo Order", mm: "Demo Order တင်မယ်" })}
+              {p({ en: "Place Order", mm: "Order တင်မယ်" })}
             </button>
           </>
         )}
