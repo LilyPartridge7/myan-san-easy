@@ -324,6 +324,30 @@ button:not(:disabled):active, a:active { transform: scale(.97); }
 .ms-logo-loader { animation: ms-logo-float 1.6s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .ms-logo-loader { animation: none; } }
 
+/* --- Desktop typography scale ---
+   Bigger, proportionally scaled text on desktop (≥1024px). Phones and
+   tablets keep the original sizes. Root font-size bump scales every
+   rem-based size (text-sm/text-3xl, paddings, buttons); the pixel-size
+   overrides step up the fixed text-[Npx] labels used across pages. */
+@media (min-width: 1024px) {
+  html { font-size: 17px; }
+  .text-\[11px\] { font-size: 12px; }
+  .text-\[13px\] { font-size: 14px; }
+  .text-\[14px\] { font-size: 15px; }
+  .text-\[15px\] { font-size: 17px; }
+  .text-\[16px\] { font-size: 18px; }
+}
+@media (min-width: 1280px) {
+  html { font-size: 18px; }
+  .text-\[15px\] { font-size: 18px; }
+  .text-\[16px\] { font-size: 19px; }
+}
+@media (min-width: 1536px) {
+  html { font-size: 19.5px; }
+  .text-\[15px\] { font-size: 19px; }
+  .text-\[16px\] { font-size: 20px; }
+}
+
 /* Scroll reveal for page sections (progressive enhancement). */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
