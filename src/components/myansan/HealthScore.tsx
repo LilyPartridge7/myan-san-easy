@@ -35,14 +35,16 @@ export function HealthScore({ health, sample, compact, onImprove }: { health: He
           </li>
         ))}
       </ul>
-      <ul className={cn("border-t border-border", compact ? "mt-3 space-y-1.5 pt-3" : "mt-4 space-y-2 pt-4")}>
-        {health.insights.map((i) => (
-          <li key={i.kind} className={compact ? "text-[13px]" : "text-sm"}>
-            <span className={cn("mr-2 text-[10px] font-bold tracking-widest", KIND[i.kind].cls)}>{p(KIND[i.kind])}</span>
-            {p(i.text)}
-          </li>
-        ))}
-      </ul>
+      {!compact ? (
+        <ul className="mt-4 space-y-2 border-t border-border pt-4">
+          {health.insights.map((i) => (
+            <li key={i.kind} className="text-sm">
+              <span className={cn("mr-2 text-[10px] font-bold tracking-widest", KIND[i.kind].cls)}>{p(KIND[i.kind])}</span>
+              {p(i.text)}
+            </li>
+          ))}
+        </ul>
+      ) : null}
       {!sample && (
         <p className="mt-3 text-[11px] text-muted-foreground">
           {p({ mm: "လက်ရှိ Setup အကဲဖြတ်ချက်ပေါ် အခြေခံထားပါတယ်။ မြန်ဆန် System တွေ ချိတ်ပြီးသုံးလာရင် Score ပိုတိကျလာပါမယ်။", en: "Based on your current setup assessment. Your score becomes more accurate as your restaurant starts using connected MyanSan systems." })}
