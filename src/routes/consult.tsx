@@ -279,16 +279,16 @@ function Consult() {
                 </AIMessage>
                 <HealthScore health={health} compact className="flex h-full flex-col" onImprove={() => navigate({ to: "/preview/shwe-hotpot", search: { from: undefined } })} />
               </div>
-              <div className="pl-0 sm:pl-11">
-                <div className="flex flex-wrap gap-3">
+              <div>
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   <button
                     onClick={() => { update({ previewReturnStage: "recommendation" } as never); navigate({ to: "/preview/shwe-hotpot", search: { from: undefined } }); }}
-                    className="min-h-12 rounded-full bg-primary px-6 text-[15px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+                    className="min-h-12 rounded-full bg-primary px-4 text-[14px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover sm:px-3 sm:text-[13px] lg:px-6 lg:text-[15px]"
                   >
                     {p({ mm: "ကျွန်တော့် Setup ကို Preview ကြည့်မယ်", en: "Preview My Setup" })}
                   </button>
-                  <ContactButton variant="outline" />
-                  <button onClick={() => setShowWhy((v) => !v)} className="min-h-12 rounded-full border border-border bg-card px-6 text-[15px] font-medium hover:bg-muted">
+                  <ContactButton variant="outline" className="px-4 text-[14px] sm:px-3 sm:text-[13px] lg:px-6 lg:text-[15px]" />
+                  <button onClick={() => setShowWhy((v) => !v)} className="min-h-12 rounded-full border border-border bg-card px-4 text-[14px] font-medium hover:bg-muted sm:px-3 sm:text-[13px] lg:px-6 lg:text-[15px]">
                     {p({ mm: "ဘာကြောင့် ဒါကို အကြံပြုတာလဲ?", en: "Why this recommendation?" })}
                   </button>
                 </div>
