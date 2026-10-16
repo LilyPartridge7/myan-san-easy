@@ -19,6 +19,7 @@ import {
 } from "@/state/setupStore";
 import { useState } from "react";
 import { useT } from "@/i18n";
+import { LocationPicker, mapsUrl } from "@/components/myansan/LocationPicker";
 
 export const Route = createFileRoute("/setup")({
   head: () => ({
@@ -116,21 +117,10 @@ function SetupPage() {
   const activePackage = state.selectedPackage ?? recommendedId;
   const price = quote(activePackage, state.helpServices);
 
-  const submitDetails = () => {
-    const e: Record<string, string> = {};
-    if (!state.restaurantName.trim()) e['restaurantName'] = t("setup.error.restaurantName");
-    if (!state.address.trim()) e['address'] = t("setup.error.address");
-    if (!state.township.trim()) e['township'] = t("setup.error.township");
-    if (!state.city.trim()) e['city'] = t("setup.error.city");
-    if (!state.contactName.trim()) e['contactName'] = t("setup.error.contactName");
-    if (!state.phone.trim()) e['phone'] = t("setup.error.phone");
-    setErrors(e);
-    if (Object.keys(e).length === 0) goToStage("summary");
-  };
+  const submitDetails = () => { setErrors({}); goToStage("location"); };
 
   const payNow = () => {
     setProcessing(true);
-    // DEMO PAYMENT FLOW — replace with real payment provider later
     setTimeout(() => {
       setProcessing(false);
       update({
@@ -141,6 +131,9 @@ function SetupPage() {
       goToStage("success");
     }, 1400);
   };
+
+  const tc = state.consultTurns.find((x) => x.stage === "tableCount")?.value ?? state.tableCount ?? "";
+  const setupDays = tc === "21-40" || tc === "40+" || tc === "multiBranch" ? 7 : tc === "11-20" ? 5 : 3;
 
   const back = () => (canGoBack ? goBack() : navigate({ to: "/consult" }));
 
@@ -487,7 +480,27 @@ function SetupPage() {
             </section>
 
             <SetupNavigation onBack={back} onContinue={submitDetails} continueLabel={t("setup.continue")}
-              extra={<button onClick={() => goToStage("summary")} className="min-h-12 px-3 text-[15px] font-medium text-primary underline-offset-4 hover:underline">{p({ en: "Continue without contact details", mm: "ဆက်သွယ်ရန်အချက်အလက် မပါဘဲ ဆက်မယ်" })}</button>} />
+              extra={<button onClick={() => goToStage("location")} className="min-h-12 px-3 text-[15px] font-medium text-primary underline-offset-4 hover:underline">{p({ en: "Continue without contact details", mm: "ဆက်သွယ်ရန်အချက်အလက် မပါဘဲ ဆက်မယ်" })}</button>} />
+          </div>
+        ) : null}
+
+        {stage === "location" ? (
+          <div key="location" className="fade-up mt-6 space-y-5">
+            <div>
+              <h2 className="text-2xl font-semibold tracking-tight">{p({ en: "Where is your restaurant?", mm: "သင့်ဆိုင် ဘယ်မှာလဲ?" })}</h2>
+              <p className="mt-1 text-[15px] text-muted-foreground">{p({ en: "Choose your restaurant location so we can prepare your setup accurately.", mm: "Setup ကို တိကျစွာ ပြင်ဆင်နိုင်ဖို့ ဆိုင်တည်နေရာကို ရွေးပေးပါ။" })}</p>
+            </div>
+            <LocationPicker
+              name={state.restaurantName}
+              value={state.lat != null && state.lng != null ? { lat: state.lat, lng: state.lng } : null}
+              onConfirm={(q) => update({ lat: q.lat, lng: q.lng, mapLink: mapsUrl(q) })}
+              onClear={() => update({ lat: null, lng: null })}
+              mapLink={state.mapLink}
+              onMapLink={(v) => update({ mapLink: v })}
+              onContinue={() => goToStage("summary")}
+            />
+            <SetupNavigation onBack={back} onContinue={() => goToStage("summary")} continueLabel={t("setup.continue")}
+              extra={<button onClick={() => goToStage("summary")} className="min-h-12 px-3 text-[15px] font-medium text-primary underline-offset-4 hover:underline">{p({ en: "Add location later", mm: "တည်နေရာ နောက်မှထည့်မယ်" })}</button>} />
           </div>
         ) : null}
 
@@ -672,6 +685,7 @@ function SetupPage() {
                 value={state.setupStatus === "waitingForContact" ? t("setup.status.waitingForContact") : t("setup.status.paid")}
               />
             </dl>
+            <SetupTimeline days={setupDays} />
             <p className="mx-auto max-w-md text-[15px] leading-relaxed text-muted-foreground">
               {t("setup.success.followUp")}
             </p>
@@ -850,3 +864,32 @@ const styleLabel = (t: (k: any, v?: any) => string, s: string | null) =>
 
 const qrLabel = (t: (k: any, v?: any) => string, s: string | null) =>
   s ? t("setup.qrLabel", { style: `${s.charAt(0).toUpperCase()}${s.slice(1)}` }) : t("setup.style.none");
+function SetupTimeline({ days }: { days: number }) {
+  const { p } = useT();
+  const steps = [
+    { en: "Setup request received", mm: "Setup တောင်းဆိုမှု လက်ခံပြီး" },
+    { en: "Restaurant information reviewed", mm: "ဆိုင်အချက်အလက် စစ်ဆေးခြင်း" },
+    { en: "Website and menu preparation", mm: "Website နဲ့ Menu ပြင်ဆင်ခြင်း" },
+    { en: "QR and system setup", mm: "QR နဲ့ System တပ်ဆင်ခြင်း" },
+    { en: "Staff training", mm: "ဝန်ထမ်း သင်တန်း" },
+    { en: "Ready to launch", mm: "စတင်ဖွင့်လှစ်ရန် အသင့်" },
+  ];
+  return (
+    <div className="mx-auto max-w-md rounded-2xl border border-border bg-card p-5 text-left shadow-sm">
+      <div className="mb-4 flex items-center justify-between rounded-xl bg-secondary px-4 py-3">
+        <span className="text-sm text-muted-foreground">{p({ en: "Estimated setup time", mm: "ခန့်မှန်း Setup ကြာချိန်" })}</span>
+        <span className="text-lg font-semibold text-primary">{p({ en: `About ${days} days`, mm: `ခန့်မှန်း ${days} ရက်` })}</span>
+      </div>
+      <ol className="space-y-3">
+        {steps.map((s, i) => (
+          <li key={s.en} className="flex items-center gap-3">
+            <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${i === 0 ? "bg-success text-primary-foreground" : i === 1 ? "bg-primary text-primary-foreground" : "border border-border text-muted-foreground"}`}>
+              {i === 0 ? <Check className="h-4 w-4" /> : i + 1}
+            </span>
+            <span className={`text-[15px] ${i <= 1 ? "font-medium" : "text-muted-foreground"}`}>{p(s)}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
