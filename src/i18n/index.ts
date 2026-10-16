@@ -32,7 +32,7 @@ export function translate(
 ): string {
   const entry = STRINGS[key] as L | undefined;
   if (!entry) return String(key);
-  return interpolate(entry[lang] ?? entry.mm, vars);
+  return interpolate(entry[lang] || entry.en || entry.mm, vars);
 }
 
 /**
