@@ -137,7 +137,7 @@ export function OrdersPreview() {
   const [open, setOpen] = useState("A104");
   const list = order ? [{ id: "A104", table: "07", total: order.total, status: order.status, items: order.items.map(([n, q]) => `${n} ×${q}`) }, ...ORDERS] : ORDERS;
   const tone = (s: string) =>
-    s === "New" ? "bg-primary/15 text-primary" : s === "Ready" ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400" : "bg-secondary text-secondary-foreground";
+    s === "New" ? "bg-primary/15 text-primary" : s === "Ready" ? "bg-success/15 text-success" : "bg-secondary text-secondary-foreground";
   return (
     <div>
       <Head title="ORDERS" sub={p({ en: "Tap an order to see details.", mm: "Order တစ်ခုကို နှိပ်ပြီး အသေးစိတ်ကြည့်ပါ။" })} />

@@ -103,7 +103,7 @@ function Landing() {
           className="h-full w-full object-cover slow-zoom"
         />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,42,95,0.94)] via-[rgba(15,42,95,0.55)] to-[rgba(8,17,31,0.35)]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/60 to-navy/30" />
         <div className="absolute inset-0 flex flex-col px-5 pt-5 sm:px-10 lg:px-16">
           <div className="flex items-center justify-between gap-3">
             <span className="text-lg font-semibold tracking-tight text-white">မြန်ဆန်</span>

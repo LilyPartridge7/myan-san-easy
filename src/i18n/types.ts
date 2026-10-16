@@ -5,4 +5,4 @@ export type L = { mm: string; en: string };
 
 /** Resolve a bilingual value (or a language-neutral plain string) for a language. */
 export const pick = (lang: Lang, value: string | L): string =>
-  typeof value === "string" ? value : value[lang];
+  typeof value === "string" ? value : value[lang] || value.en || value.mm;
