@@ -1,3 +1,4 @@
+import { HeroFlow } from "@/components/myansan/HeroFlow";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
@@ -133,11 +134,7 @@ function Landing() {
                 {t("landing.exploreExperience")}
               </Link>
             </div>
-            <ul className="mt-6 flex flex-wrap gap-1.5">
-              {["POS", "Kitchen", "QR", "Website", "Health Score", "Growth Coach", "Feedback Intelligence"].map((x) => (
-                <li key={x} className="rounded-full border border-white/30 bg-white/10 px-3 py-1 text-[11px] font-medium text-white/90">{x}</li>
-              ))}
-            </ul>
+            <HeroFlow />
           </div>
         </div>
       </section>
