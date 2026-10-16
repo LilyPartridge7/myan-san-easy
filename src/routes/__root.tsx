@@ -44,6 +44,32 @@ function ThemeMode() {
   return null;
 }
 
+/** Browser-tab title follows the language: MyanSan in English, မြန်ဆန် in Burmese. */
+function BrandTitle() {
+  const { state, hydrated } = useSetup();
+  useEffect(() => {
+    if (!hydrated) return;
+    const MM = "မြန်ဆန်";
+    const EN = "MyanSan";
+    const apply = () => {
+      const cur = document.title;
+      const next =
+        state.language === "en" ? cur.split(MM).join(EN) : cur.split(EN).join(MM);
+      if (next !== cur) document.title = next;
+    };
+    apply();
+    // The router rewrites the title on every navigation — keep the brand in sync.
+    const observer = new MutationObserver(apply);
+    observer.observe(document.head, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
+    return () => observer.disconnect();
+  }, [state.language, hydrated]);
+  return null;
+}
+
 /** Applies the saved theme before first paint so dark mode never flashes light. */
 const THEME_BOOTSTRAP = `(function(){try{var s=JSON.parse(localStorage.getItem("myansan-demo-state")||"{}");var t=s.theme||"system";var d=t==="dark";if(d)document.documentElement.classList.add("dark");if(s.language==="en"){document.documentElement.classList.add("lang-en")}else{document.documentElement.classList.add("lang-mm")}}catch(e){}})();`;
 
@@ -171,6 +197,7 @@ function RootComponent() {
       <SetupProvider>
         <LanguageFontMode />
         <ThemeMode />
+        <BrandTitle />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <div key={pathname} className="page-enter min-h-screen">
           <Outlet />
