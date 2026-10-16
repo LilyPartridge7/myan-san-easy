@@ -4,11 +4,9 @@ import { useT } from "@/i18n";
 const STEPS = [
   { en: "Problem", mm: "အခက်အခဲ", tone: "bg-accent-orange" },
   { en: "Recommendation", mm: "အကြံပြုချက်", tone: "bg-accent-violet" },
-  { en: "QR Order", mm: "QR Order", tone: "bg-accent-cyan" },
-  { en: "POS", mm: "POS", tone: "bg-accent-cyan" },
-  { en: "Kitchen", mm: "Kitchen", tone: "bg-accent-orange" },
+  { en: "မြန်ဆန် Help", mm: "မြန်ဆန် အကူအညီ", tone: "bg-accent-cyan" },
   { en: "Paid", mm: "ငွေရှင်းပြီး", tone: "bg-accent-green" },
-  { en: "Growth Insight", mm: "တိုးတက်မှု", tone: "bg-accent-violet" },
+  { en: "Your Growth", mm: "သင့်ဆိုင် တိုးတက်မှု", tone: "bg-accent-violet" },
 ];
 
 export function HeroFlow() {
