@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
 import { DigitalSetupPreview } from "@/components/myansan/DigitalSetupPreview";
+import { RestaurantPreview } from "@/components/myansan/RestaurantPreview";
 import { IMAGES } from "@/data/images";
 import { answerLabel, questionsFor, recommend, templateFor } from "@/services/mockConsultant";
 import { useSetup } from "@/state/setupStore";
@@ -134,6 +135,27 @@ function PreviewPage() {
   if (!hydrated) return <PreviewLoading />;
 
   const btn = "inline-flex min-h-11 items-center rounded-full border border-border bg-card px-4 text-sm font-medium";
+
+  if (website) {
+    return (
+      <div className="page-enter min-h-screen">
+        <div className="sticky top-0 z-40 flex items-center gap-2 border-b border-border bg-background/90 px-4 py-3 backdrop-blur">
+          <Link to="/" className={btn}>
+            <ChevronLeft className="h-4 w-4" /> {p({ mm: "ပင်မစာမျက်နှာ", en: "Home" })}
+          </Link>
+          <span className="ml-auto text-sm font-semibold text-primary">မြန်ဆန်</span>
+        </div>
+        <RestaurantPreview
+          template={template}
+          name={state.restaurantName}
+          tagline={state.tagline}
+          color={state.restaurantColor}
+          heroImage={IMAGES.heroInterior}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="page-enter min-h-screen">
       <div className="sticky top-0 z-40 flex flex-wrap items-center gap-2 border-b border-border bg-background/90 px-4 py-3 backdrop-blur">
