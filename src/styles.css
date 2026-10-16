@@ -337,27 +337,37 @@ button:not(:disabled):active, a:active { transform: scale(.97); }
   .text-\[15px\] { font-size: 19px; }
   .text-\[16px\] { font-size: 20px; }
   .text-\[17px\] { font-size: 21px; }
+  .sm\:text-\[13px\] { font-size: 15px; }
+  .sm\:text-\[15px\] { font-size: 19px; }
+  .lg\:text-\[15px\] { font-size: 19px; }
+  .lg\:text-\[48px\] { font-size: 54px; }
 }
 @media (min-width: 1280px) {
   html { font-size: 20px; }
   .text-\[15px\] { font-size: 21px; }
   .text-\[16px\] { font-size: 22px; }
-  .text-\[48px\] { font-size: 56px; }
-  .text-\[54px\] { font-size: 62px; }
+  .sm\:text-\[15px\] { font-size: 21px; }
+  .lg\:text-\[15px\] { font-size: 21px; }
+  .lg\:text-\[48px\] { font-size: 60px; }
+  .xl\:text-\[54px\] { font-size: 66px; }
 }
 @media (min-width: 1536px) {
   html { font-size: 21.5px; }
   .text-\[15px\] { font-size: 23px; }
   .text-\[16px\] { font-size: 24px; }
-  .text-\[48px\] { font-size: 64px; }
-  .text-\[54px\] { font-size: 70px; }
+  .sm\:text-\[15px\] { font-size: 23px; }
+  .lg\:text-\[15px\] { font-size: 23px; }
+  .lg\:text-\[48px\] { font-size: 68px; }
+  .xl\:text-\[54px\] { font-size: 74px; }
 }
 @media (min-width: 1800px) {
   html { font-size: 23px; }
   .text-\[15px\] { font-size: 25px; }
   .text-\[16px\] { font-size: 26px; }
-  .text-\[48px\] { font-size: 70px; }
-  .text-\[54px\] { font-size: 78px; }
+  .sm\:text-\[15px\] { font-size: 25px; }
+  .lg\:text-\[15px\] { font-size: 25px; }
+  .lg\:text-\[48px\] { font-size: 74px; }
+  .xl\:text-\[54px\] { font-size: 82px; }
 }
 
 /* --- Desktop page frame ---
