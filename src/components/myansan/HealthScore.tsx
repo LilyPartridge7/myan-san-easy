@@ -51,7 +51,7 @@ export function HealthScore({ health, sample, compact, onImprove, className }: {
         </p>
       )}
       {onImprove && (
-        <button onClick={onImprove} className={cn("rounded-full border border-primary font-medium text-primary hover:bg-primary/5", compact ? "mt-3 min-h-10 px-4 text-[13px]" : "mt-4 min-h-11 px-5 text-sm")}>
+        <button onClick={onImprove} className={cn("rounded-full border border-primary font-medium text-primary hover:bg-primary/5", compact ? "mt-auto min-h-10 px-4 text-[13px]" : "mt-4 min-h-11 px-5 text-sm")}>
           {p({ mm: "ဘယ်လိုပိုကောင်းအောင်လုပ်မလဲ ကြည့်မယ်", en: "See How to Improve" })}
         </button>
       )}

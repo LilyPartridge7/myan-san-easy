@@ -277,7 +277,7 @@ function Consult() {
                     ))}
                   </ul>
                 </AIMessage>
-                <HealthScore health={health} compact onImprove={() => navigate({ to: "/preview/shwe-hotpot", search: { from: undefined } })} />
+                <HealthScore health={health} compact className="flex h-full flex-col" onImprove={() => navigate({ to: "/preview/shwe-hotpot", search: { from: undefined } })} />
               </div>
               <div className="pl-0 sm:pl-11">
                 <div className="flex flex-wrap gap-3">
