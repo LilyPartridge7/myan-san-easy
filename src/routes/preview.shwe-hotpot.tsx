@@ -10,8 +10,9 @@ import { useSetup } from "@/state/setupStore";
 import { useT } from "@/i18n";
 
 export const Route = createFileRoute("/preview/shwe-hotpot")({
-  validateSearch: (search: { from?: string }) => ({
+  validateSearch: (search: { from?: string; website?: string }) => ({
     from: search.from,
+    website: search.website === "1" ? true : undefined,
   }),
   head: () => ({
     meta: [
@@ -98,7 +99,7 @@ function PreviewError() {
 }
 
 function PreviewPage() {
-  const { from } = Route.useSearch();
+  const { from, website } = Route.useSearch();
   const { state, hydrated, goToStage, applyPackage } = useSetup();
   const { t, p, lang } = useT();
   const navigate = useNavigate();
