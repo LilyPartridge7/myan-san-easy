@@ -87,6 +87,10 @@ function SetupPage() {
     if (hydrated && !state.recommendedPackage) {
       update({ recommendedPackage: rec.packageId });
     }
+    if (hydrated && (state.currentStage === "website" || state.currentStage === "qr")) {
+      update({ websiteStyle: state.websiteStyle ?? "modern", qrStyle: state.qrStyle ?? rec.qrStyle });
+      goToStage("services");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hydrated]);
 
