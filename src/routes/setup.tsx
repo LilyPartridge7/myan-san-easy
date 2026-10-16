@@ -132,8 +132,8 @@ function SetupPage() {
     }, 1400);
   };
 
-  const tc = state.tableCount ?? "";
-  const setupDays = /21|30|40|50|branch|multi/.test(tc + (state.consultTurns.map((x) => x.value).join(" "))) ? 7 : /11|20/.test(tc) ? 5 : 3;
+  const tc = state.consultTurns.find((x) => x.stage === "tableCount")?.value ?? state.tableCount ?? "";
+  const setupDays = tc === "21-40" || tc === "40+" || tc === "multiBranch" ? 7 : tc === "11-20" ? 5 : 3;
 
   const back = () => (canGoBack ? goBack() : navigate({ to: "/consult" }));
 
