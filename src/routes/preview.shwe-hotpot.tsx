@@ -12,7 +12,7 @@ import { useT } from "@/i18n";
 
 export const Route = createFileRoute("/preview/shwe-hotpot")({
   validateSearch: (search: { from?: string; website?: boolean | string }) => {
-    const out: { from?: string; website?: boolean } = {};
+    const out: { from?: string | undefined; website?: boolean | undefined } = {};
     if (search.from !== undefined) out.from = search.from;
     if (search.website === true || search.website === "1") out.website = true;
     return out;
