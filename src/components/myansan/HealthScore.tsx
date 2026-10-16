@@ -9,10 +9,10 @@ const KIND = {
 } as const;
 
 /** Restaurant Health Score card — initial (from consultation) or sample (connected systems). */
-export function HealthScore({ health, sample, compact, onImprove }: { health: Health; sample?: boolean; compact?: boolean; onImprove?: () => void }) {
+export function HealthScore({ health, sample, compact, onImprove, className }: { health: Health; sample?: boolean; compact?: boolean; onImprove?: () => void; className?: string }) {
   const { p } = useT();
   return (
-    <div className={cn("rounded-3xl border border-border bg-card", compact ? "p-4" : "p-5 sm:p-6")}>
+    <div className={cn("rounded-3xl border border-border bg-card", compact ? "p-4" : "p-5 sm:p-6", className)}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-[11px] font-semibold tracking-widest text-muted-foreground">
           {sample ? p({ mm: "RESTAURANT HEALTH SCORE", en: "RESTAURANT HEALTH SCORE" }) : p({ mm: "INITIAL RESTAURANT HEALTH SCORE", en: "INITIAL RESTAURANT HEALTH SCORE" })}
@@ -51,7 +51,7 @@ export function HealthScore({ health, sample, compact, onImprove }: { health: He
         </p>
       )}
       {onImprove && (
-        <button onClick={onImprove} className={cn("rounded-full border border-primary font-medium text-primary hover:bg-primary/5", compact ? "mt-3 min-h-10 px-4 text-[13px]" : "mt-4 min-h-11 px-5 text-sm")}>
+        <button onClick={onImprove} className={cn("rounded-full border border-primary font-medium text-primary hover:bg-primary/5", compact ? "mt-auto min-h-10 px-4 text-[13px]" : "mt-4 min-h-11 px-5 text-sm")}>
           {p({ mm: "ဘယ်လိုပိုကောင်းအောင်လုပ်မလဲ ကြည့်မယ်", en: "See How to Improve" })}
         </button>
       )}

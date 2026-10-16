@@ -261,8 +261,8 @@ function Consult() {
           ) : null}
           {!typing && finished && revealed ? (
             <div className="fade-up space-y-4">
-              <div className="grid items-start gap-4 sm:grid-cols-2">
-                <AIMessage bubbleClassName="w-full max-w-none px-4 py-3 text-sm">
+              <div className="grid items-stretch gap-4 sm:grid-cols-2">
+                <AIMessage hideAvatar bubbleClassName="h-full w-full max-w-none px-4 py-3 text-sm">
                   <p className="font-semibold">
                     {t("consult.recPackage", { name: rec.packageId.charAt(0).toUpperCase() + rec.packageId.slice(1) })}
                   </p>
@@ -277,7 +277,7 @@ function Consult() {
                     ))}
                   </ul>
                 </AIMessage>
-                <HealthScore health={health} compact onImprove={() => navigate({ to: "/preview/shwe-hotpot", search: { from: undefined } })} />
+                <HealthScore health={health} compact className="flex h-full flex-col" onImprove={() => navigate({ to: "/preview/shwe-hotpot", search: { from: undefined } })} />
               </div>
               <div className="pl-0 sm:pl-11">
                 <div className="flex flex-wrap gap-3">

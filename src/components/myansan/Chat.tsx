@@ -3,12 +3,14 @@ import { useState, type ReactNode } from "react";
 import { Send } from "lucide-react";
 import { useT } from "@/i18n";
 
-export function AIMessage({ children, className, bubbleClassName }: { children: ReactNode; className?: string; bubbleClassName?: string }) {
+export function AIMessage({ children, className, bubbleClassName, hideAvatar }: { children: ReactNode; className?: string; bubbleClassName?: string; hideAvatar?: boolean }) {
   return (
     <div className={cn("fade-up flex gap-3", className)}>
+      {hideAvatar ? null : (
       <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">
         မြန်
       </div>
+      )}
       <div className={cn("max-w-[85%] whitespace-pre-line rounded-2xl rounded-tl-sm bg-card px-4 py-3 text-[15px] leading-relaxed text-card-foreground shadow-sm ring-1 ring-border", bubbleClassName)}>
         {children}
       </div>
