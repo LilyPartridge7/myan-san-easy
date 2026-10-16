@@ -161,7 +161,7 @@ function PreviewPage() {
         onChoose={() => { applyPackage(packageId); goToStage("website"); navigate({ to: "/setup" }); }}
         onCustomize={() => { goToStage("package"); navigate({ to: "/setup" }); }}
       />
-      <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-3 px-4 py-10">
+      <div className="ms-page mx-auto flex flex-wrap justify-center gap-3 px-4 py-10">
         <Link to="/consult" className={btn}>
           {p({ mm: "အကြံပြုချက်သို့ ပြန်မယ်", en: "Back to Recommendation" })}
         </Link>

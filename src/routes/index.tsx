@@ -104,7 +104,7 @@ function Landing() {
         />
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/60 to-navy/30" />
-        <div className="absolute inset-0 flex flex-col px-5 pt-5 sm:px-10 lg:px-16">
+        <div className="ms-gutter absolute inset-0 flex flex-col px-5 pt-5 sm:px-10 lg:px-16">
           <div className="flex items-center justify-between gap-3">
             <span className="text-lg font-semibold tracking-tight text-white">{t("brand")}</span>
             <LanguageToggle tone="dark" />
@@ -140,7 +140,7 @@ function Landing() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="explore" className="scroll-mt-4 relative mx-auto max-w-[1100px] bg-background px-5 py-16 sm:px-6 sm:py-20 2xl:max-w-[1400px]">
+      <section id="explore" className="ms-page scroll-mt-4 relative bg-background px-5 py-16 sm:px-6 sm:py-20">
         <p className="text-[11px] tracking-[0.35em] text-muted-foreground">{t("landing.howItWorks")}</p>
         <div className="mt-10">
           {STEPS.map((s) => (
@@ -159,7 +159,7 @@ function Landing() {
       </section>
 
       {/* WHAT WE HELP WITH */}
-      <section className="relative grid items-center gap-10 bg-background px-5 py-10 sm:px-6 lg:grid-cols-2 lg:px-16">
+      <section className="ms-gutter relative grid items-center gap-10 bg-background px-5 py-10 sm:px-6 lg:grid-cols-2">
         <img
           src={IMAGES.diningWarm}
           alt="Guests sharing a meal"
@@ -179,7 +179,7 @@ function Landing() {
       </section>
 
       {/* OUR SERVICES — tap a service to reveal details */}
-      <section className="relative mx-auto max-w-[1100px] bg-background px-5 py-16 sm:px-6 sm:py-20 2xl:max-w-[1400px]">
+      <section className="ms-page relative bg-background px-5 py-16 sm:px-6 sm:py-20">
         <p className="text-[11px] tracking-[0.35em] text-muted-foreground">{t("landing.ourServices")}</p>
         <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
           {t("landing.servicesHeading")}
@@ -228,7 +228,7 @@ function Landing() {
           className="h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,42,95,0.9)] to-transparent" />
-        <div className="absolute bottom-10 left-6 max-w-lg sm:left-12 lg:left-16">
+        <div className="absolute bottom-10 left-6 max-w-lg sm:left-12 lg:left-24">
           <p className="text-[11px] tracking-[0.35em] text-white/70">{t("landing.yourWebsite")}</p>
           <h2 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">
             {t("landing.websiteHeading")}
@@ -244,7 +244,7 @@ function Landing() {
       </section>
 
       {/* PACKAGE PREVIEW */}
-      <section className="relative mx-auto max-w-[1100px] bg-background px-5 py-16 sm:px-6 sm:py-20 2xl:max-w-[1400px]">
+      <section className="ms-page relative bg-background px-5 py-16 sm:px-6 sm:py-20">
         <p className="text-[11px] tracking-[0.35em] text-muted-foreground">{t("landing.packages")}</p>
         <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">{t("landing.packagesHeading")}</h2>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
@@ -258,7 +258,7 @@ function Landing() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="relative mx-auto max-w-[1100px] bg-background px-5 pb-24 sm:px-6 2xl:max-w-[1400px]">
+      <section className="ms-page relative bg-background px-5 pb-24 sm:px-6">
         <div className="rounded-3xl bg-card p-8 text-center ring-1 ring-border sm:p-10">
           <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
             {t("landing.finalCtaHeading")}

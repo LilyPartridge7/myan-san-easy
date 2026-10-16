@@ -146,7 +146,7 @@ function SetupPage() {
   return (
     <div className="min-h-screen bg-background">
       <BrandHeader subtitle={t("setup.subtitle")} />
-      <div key={stage} className="page-enter mx-auto max-w-[820px] px-4 py-6 pb-24">
+      <div key={stage} className="ms-page page-enter mx-auto px-4 py-6 pb-24">
         <StageRail active={rail as "Consultation" | "Your Setup" | "Review"} />
 
         {stage === "recommendation" ? (

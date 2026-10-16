@@ -125,7 +125,7 @@ function InclusionBadge({ pkg, systemId }: { pkg: PackageId; systemId: string })
 function Frame({ tab, pkg, children, hint }: { tab: keyof typeof TAB_SYSTEM; pkg: PackageId; children: React.ReactNode; hint: L }) {
   const { p } = useT();
   return (
-    <section className="mx-auto max-w-6xl px-3 py-5 sm:px-4">
+    <section className="ms-page mx-auto px-3 py-5 sm:px-4">
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <h2 className="text-base font-semibold">{p(TAB_LABEL[tab])}</h2>
         <InclusionBadge pkg={pkg} systemId={TAB_SYSTEM[tab]} />
@@ -508,14 +508,14 @@ export function DigitalSetupPreview({
 
   return (
     <div>
-      <header className="mx-auto max-w-6xl px-4 pt-6 text-center">
+      <header className="ms-page mx-auto px-4 pt-6 text-center">
         <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">{p({ mm: "သင့်ဆိုင် Digital Setup ကို ကြည့်မယ်", en: "Preview Your Digital Setup" })}</h1>
         <p className="mt-1 text-xs text-muted-foreground">
           {p({ mm: `${pkgName} Package ထဲပါတဲ့ System တွေကို ကြည့်နေပါတယ်`, en: `You are viewing systems included in ${pkgName}` })}
         </p>
       </header>
       <nav className="sticky top-[61px] z-30 mt-4 border-b border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 py-2.5">
+        <div className="ms-page mx-auto flex gap-2 overflow-x-auto px-4 py-2.5">
           {tabs.map((id) => (
             <button key={id} onClick={() => setActive(id)} className={cn("min-h-10 shrink-0 rounded-full px-4 text-sm font-medium transition-colors", current === id ? "bg-primary text-primary-foreground" : "border border-border bg-card text-muted-foreground")}>
               {p(TAB_LABEL[id])}
