@@ -20,12 +20,12 @@ export function HealthScore({ health, sample, compact, onImprove }: { health: He
         {null}
       </div>
       <div className="mt-2 flex items-end gap-3">
-        <p className="text-4xl font-semibold tracking-tight">{health.total}<span className="text-lg text-muted-foreground"> / 100</span></p>
+        <p className={cn("font-semibold tracking-tight", compact ? "text-3xl" : "text-4xl")}>{health.total}<span className={cn("text-muted-foreground", compact ? "text-base" : "text-lg")}> / 100</span></p>
         <span className={cn("mb-1.5 rounded-full px-3 py-1 text-xs font-bold tracking-wider", health.total >= 75 ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive")}>
           {p(health.status).toUpperCase()}
         </span>
       </div>
-      <ul className="mt-4 space-y-2.5">
+      <ul className={cn(compact ? "mt-3 space-y-2" : "mt-4 space-y-2.5")}>
         {health.dims.map((d) => (
           <li key={d.key}>
             <div className="flex justify-between text-xs"><span>{p(d.label)}</span><span className="font-medium">{d.score} / 20</span></div>
@@ -35,9 +35,9 @@ export function HealthScore({ health, sample, compact, onImprove }: { health: He
           </li>
         ))}
       </ul>
-      <ul className="mt-4 space-y-2 border-t border-border pt-4">
+      <ul className={cn("border-t border-border", compact ? "mt-3 space-y-1.5 pt-3" : "mt-4 space-y-2 pt-4")}>
         {health.insights.map((i) => (
-          <li key={i.kind} className="text-sm">
+          <li key={i.kind} className={compact ? "text-[13px]" : "text-sm"}>
             <span className={cn("mr-2 text-[10px] font-bold tracking-widest", KIND[i.kind].cls)}>{p(KIND[i.kind])}</span>
             {p(i.text)}
           </li>
@@ -49,7 +49,7 @@ export function HealthScore({ health, sample, compact, onImprove }: { health: He
         </p>
       )}
       {onImprove && (
-        <button onClick={onImprove} className="mt-4 min-h-11 rounded-full border border-primary px-5 text-sm font-medium text-primary hover:bg-primary/5">
+        <button onClick={onImprove} className={cn("rounded-full border border-primary font-medium text-primary hover:bg-primary/5", compact ? "mt-3 min-h-10 px-4 text-[13px]" : "mt-4 min-h-11 px-5 text-sm")}>
           {p({ mm: "ဘယ်လိုပိုကောင်းအောင်လုပ်မလဲ ကြည့်မယ်", en: "See How to Improve" })}
         </button>
       )}
