@@ -282,3 +282,30 @@
   --accent-violet: #0B4ACB;
   --accent-green: oklch(0.72 0.16 155);
 }
+
+/* --- Ambient interactive background + smooth motion --- */
+html { scroll-behavior: smooth; }
+body {
+  background-image:
+    radial-gradient(40rem 28rem at 8% -5%, color-mix(in oklab, var(--primary) 9%, transparent), transparent 70%),
+    radial-gradient(36rem 26rem at 100% 30%, color-mix(in oklab, var(--primary) 7%, transparent), transparent 70%),
+    radial-gradient(30rem 22rem at 30% 105%, color-mix(in oklab, var(--primary) 6%, transparent), transparent 70%);
+  background-attachment: fixed;
+  background-size: 140% 140%;
+  animation: ambient-drift 26s ease-in-out infinite alternate;
+}
+@keyframes ambient-drift {
+  0% { background-position: 0% 0%, 100% 0%, 0% 100%; }
+  100% { background-position: 18% 10%, 80% 20%, 12% 80%; }
+}
+button, a { transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, color .2s ease, border-color .2s ease; }
+button:not(:disabled):active, a:active { transform: scale(.97); }
+.rounded-2xl.border, .rounded-xl.border { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+@media (hover: hover) {
+  .rounded-2xl.border:hover { transform: translateY(-2px); box-shadow: 0 12px 30px -14px color-mix(in oklab, var(--primary) 35%, transparent); border-color: color-mix(in oklab, var(--primary) 35%, var(--border)); }
+  .bg-primary:not(:disabled):hover { box-shadow: 0 10px 24px -10px color-mix(in oklab, var(--primary) 60%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body { animation: none; }
+  *, *::before, *::after { transition: none !important; animation-duration: .01ms !important; }
+}

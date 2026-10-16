@@ -106,7 +106,7 @@ const INITIAL: SetupState = {
   tagline: "A warm hotpot experience made for sharing.",
   heroImage: "heroInterior",
   language: "mm",
-  theme: "system",
+  theme: "light",
   qrStyle: null,
   helpServices: [],
   address: "",

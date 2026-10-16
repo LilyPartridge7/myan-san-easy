@@ -19,7 +19,6 @@ import {
 } from "@/state/setupStore";
 import { useState } from "react";
 import { useT } from "@/i18n";
-import { LocationPicker, mapsUrl } from "@/components/myansan/LocationPicker";
 
 export const Route = createFileRoute("/setup")({
   head: () => ({
@@ -117,7 +116,7 @@ function SetupPage() {
   const activePackage = state.selectedPackage ?? recommendedId;
   const price = quote(activePackage, state.helpServices);
 
-  const submitDetails = () => { setErrors({}); goToStage("location"); };
+  const submitDetails = () => { setErrors({}); goToStage("summary"); };
 
   const payNow = () => {
     setProcessing(true);
@@ -480,27 +479,7 @@ function SetupPage() {
             </section>
 
             <SetupNavigation onBack={back} onContinue={submitDetails} continueLabel={t("setup.continue")}
-              extra={<button onClick={() => goToStage("location")} className="min-h-12 px-3 text-[15px] font-medium text-primary underline-offset-4 hover:underline">{p({ en: "Continue without contact details", mm: "ဆက်သွယ်ရန်အချက်အလက် မပါဘဲ ဆက်မယ်" })}</button>} />
-          </div>
-        ) : null}
-
-        {stage === "location" ? (
-          <div key="location" className="fade-up mt-6 space-y-5">
-            <div>
-              <h2 className="text-2xl font-semibold tracking-tight">{p({ en: "Where is your restaurant?", mm: "သင့်ဆိုင် ဘယ်မှာလဲ?" })}</h2>
-              <p className="mt-1 text-[15px] text-muted-foreground">{p({ en: "Choose your restaurant location so we can prepare your setup accurately.", mm: "Setup ကို တိကျစွာ ပြင်ဆင်နိုင်ဖို့ ဆိုင်တည်နေရာကို ရွေးပေးပါ။" })}</p>
-            </div>
-            <LocationPicker
-              name={state.restaurantName}
-              value={state.lat != null && state.lng != null ? { lat: state.lat, lng: state.lng } : null}
-              onConfirm={(q) => update({ lat: q.lat, lng: q.lng, mapLink: mapsUrl(q) })}
-              onClear={() => update({ lat: null, lng: null })}
-              mapLink={state.mapLink}
-              onMapLink={(v) => update({ mapLink: v })}
-              onContinue={() => goToStage("summary")}
-            />
-            <SetupNavigation onBack={back} onContinue={() => goToStage("summary")} continueLabel={t("setup.continue")}
-              extra={<button onClick={() => goToStage("summary")} className="min-h-12 px-3 text-[15px] font-medium text-primary underline-offset-4 hover:underline">{p({ en: "Add location later", mm: "တည်နေရာ နောက်မှထည့်မယ်" })}</button>} />
+              extra={<button onClick={() => goToStage("summary")} className="min-h-12 px-3 text-[15px] font-medium text-primary underline-offset-4 hover:underline">{p({ en: "Continue without contact details", mm: "ဆက်သွယ်ရန်အချက်အလက် မပါဘဲ ဆက်မယ်" })}</button>} />
           </div>
         ) : null}
 
