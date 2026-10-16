@@ -7,6 +7,7 @@ import { ContactButton } from "@/components/myansan/ContactDialog";
 import { PackageCard } from "@/components/myansan/PackageCard";
 import { ackFor, answerLabel, computeHealth, interpretAnswer, questionsFor, recommend, STEP_OF, tablesFromText, typedAck } from "@/services/mockConsultant";
 import { HealthScore } from "@/components/myansan/HealthScore";
+import { ChatBackdrop } from "@/components/myansan/ChatBackdrop";
 import { useSetup, type ConsultTurn } from "@/state/setupStore";
 import { useT } from "@/i18n";
 import { pick, type Lang } from "@/i18n/types";
@@ -173,8 +174,9 @@ function Consult() {
 
   if (!hydrated) {
     return (
-      <div className="flex min-h-screen flex-col bg-background">
-        <BrandHeader subtitle={t("consult.headerSubtitle")} />
+    <div className="relative flex min-h-screen flex-col overflow-hidden bg-background">
+      <ChatBackdrop />
+      <BrandHeader subtitle={t("consult.headerSubtitle")} />
         <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
           <span className="flex h-12 w-12 animate-pulse items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
             မြန်
@@ -186,13 +188,14 @@ function Consult() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="relative flex min-h-screen flex-col overflow-hidden bg-background">
+      <ChatBackdrop />
       <BrandHeader
         subtitle={t("consult.headerSubtitle")}
         status={t("consult.headerStatus")}
         onBack={back}
       />
-      <div className="flex-1 overflow-y-auto px-4 py-6 pb-4">
+      <div className="relative z-10 flex-1 overflow-y-auto px-4 py-6 pb-4">
         <div className="mx-auto flex max-w-[820px] flex-col gap-4">
           {messages.map((m, i) =>
             m.role === "ai" ? (
@@ -258,24 +261,26 @@ function Consult() {
           ) : null}
           {!typing && finished && revealed ? (
             <div className="fade-up space-y-4">
-              <AIMessage>
-                <p className="font-semibold">
-                  {t("consult.recPackage", { name: rec.packageId.charAt(0).toUpperCase() + rec.packageId.slice(1) })}
-                </p>
-                <p className="mt-1">{p(rec.reason).split(". ")[0]}.</p>
-                {showWhy ? <p className="mt-2 text-sm">{p(rec.why)} {p(rec.reason)} {rec.note ? p(rec.note) : ""}</p> : null}
-                <p className="mt-2">{t("consult.recommendSystems")}</p>
-                <ul className="mt-1 space-y-1">
-                  {rec.systems.map((s) => (
-                    <li key={s.id}>
-                      ✓ <span className="font-medium">{p(s.label)}</span> — {p(s.why)}
-                    </li>
-                  ))}
-                </ul>
-              </AIMessage>
+              <div className="grid items-start gap-4 sm:grid-cols-2">
+                <AIMessage bubbleClassName="w-full max-w-none px-4 py-3 text-sm">
+                  <p className="font-semibold">
+                    {t("consult.recPackage", { name: rec.packageId.charAt(0).toUpperCase() + rec.packageId.slice(1) })}
+                  </p>
+                  <p className="mt-1">{p(rec.reason).split(". ")[0]}.</p>
+                  {showWhy ? <p className="mt-2 text-[13px]">{p(rec.why)} {p(rec.reason)} {rec.note ? p(rec.note) : ""}</p> : null}
+                  <p className="mt-2">{t("consult.recommendSystems")}</p>
+                  <ul className="mt-1 space-y-1">
+                    {rec.systems.map((s) => (
+                      <li key={s.id}>
+                        ✓ <span className="font-medium">{p(s.label)}</span> — {p(s.why)}
+                      </li>
+                    ))}
+                  </ul>
+                </AIMessage>
+                <HealthScore health={health} compact onImprove={() => navigate({ to: "/preview/shwe-hotpot", search: { from: undefined } })} />
+              </div>
               <div className="pl-0 sm:pl-11">
-                <HealthScore health={health} onImprove={() => navigate({ to: "/preview/shwe-hotpot", search: { from: undefined } })} />
-                <div className="mt-4 flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-3">
                   <button
                     onClick={() => { update({ previewReturnStage: "recommendation" } as never); navigate({ to: "/preview/shwe-hotpot", search: { from: undefined } }); }}
                     className="min-h-12 rounded-full bg-primary px-6 text-[15px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
