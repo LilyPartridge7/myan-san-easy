@@ -110,7 +110,7 @@ function Landing() {
             <LanguageToggle tone="dark" />
           </div>
           <div className="mt-auto max-w-2xl pb-12 2xl:max-w-3xl">
-            <h1 className="text-[clamp(1.5rem,5.2vw,2.25rem)] leading-[1.25] font-semibold text-white sm:text-4xl lg:text-[44px]">
+            <h1 className="text-[clamp(1.5rem,5.2vw,2.25rem)] leading-[1.25] font-semibold text-white sm:text-4xl lg:text-[48px] xl:text-[54px]">
               {t("landing.heroTitleLine1")}
               <br />
               {t("landing.heroTitleLine2")}
