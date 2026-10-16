@@ -39,18 +39,6 @@ const HELP_ITEM_KEYS: StringKey[] = [
   "landing.help6",
 ];
 
-const COCKPIT: { labelKey: StringKey; statusKey: StringKey; dot: string }[] = [
-  { labelKey: "landing.ck1", statusKey: "landing.ck1s", dot: "bg-acc-cyan" },
-  { labelKey: "landing.ck2", statusKey: "landing.ck2s", dot: "bg-acc-orange" },
-  { labelKey: "landing.ck3", statusKey: "landing.ck3s", dot: "bg-acc-orange" },
-  { labelKey: "landing.ck4", statusKey: "landing.ck4s", dot: "bg-acc-lime" },
-  { labelKey: "landing.ck5", statusKey: "landing.ck5s", dot: "bg-acc-violet" },
-  { labelKey: "landing.ck6", statusKey: "landing.ck6s", dot: "bg-acc-lime" },
-];
-
-const STORY_KEYS: StringKey[] = ["landing.story1", "landing.story2", "landing.story3", "landing.story4", "landing.story5"];
-const OUTCOME_KEYS: StringKey[] = ["landing.outcome1", "landing.outcome2", "landing.outcome3", "landing.outcome4"];
-
 const STEPS: { n: string; tKey: StringKey; dKey: StringKey }[] = [
   { n: "01", tKey: "landing.step1Title", dKey: "landing.step1Desc" },
   { n: "02", tKey: "landing.step2Title", dKey: "landing.step2Desc" },
@@ -139,10 +127,10 @@ function Landing() {
               </button>
               <Link
                 to="/preview/shwe-hotpot"
-                search={{ from: undefined, demo: "1" }}
+                search={{ from: undefined }}
                 className="min-h-12 rounded-full border border-white/50 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10 sm:min-h-13 sm:px-7 sm:text-[15px]"
               >
-                {t("landing.tryDemo")}
+                {t("landing.exploreExperience")}
               </Link>
             </div>
             <ul className="mt-6 flex flex-wrap gap-1.5">
@@ -150,21 +138,6 @@ function Landing() {
                 <li key={x} className="rounded-full border border-white/30 bg-white/10 px-3 py-1 text-[11px] font-medium text-white/90">{x}</li>
               ))}
             </ul>
-            {/* Live cockpit strip — sample data */}
-            <div className="mt-6 max-w-2xl">
-              <p className="text-[10px] font-semibold tracking-[0.25em] text-white/50">{t("landing.cockpitTitle")}</p>
-              <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {COCKPIT.map((c) => (
-                  <div key={c.labelKey} className="rounded-xl border border-white/15 bg-white/10 px-3 py-2 backdrop-blur-sm">
-                    <p className="flex items-center gap-1.5 text-[11px] font-semibold text-white">
-                      <span className={`h-1.5 w-1.5 rounded-full ${c.dot}`} />
-                      {t(c.labelKey)}
-                    </p>
-                    <p className="mt-0.5 text-[11px] text-white/70">{t(c.statusKey)}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -186,24 +159,6 @@ function Landing() {
             </div>
           ))}
         </div>
-      </section>
-
-      {/* STORY STRIP — Problem → Recommendation → Preview → Setup → Growth */}
-      <section className="relative mx-auto max-w-[1100px] bg-background px-5 pb-4 sm:px-6 2xl:max-w-[1400px]">
-        <p className="text-[11px] tracking-[0.35em] text-muted-foreground">{t("landing.storyTitle")}</p>
-        <ol className="mt-4 flex flex-wrap items-center gap-2">
-          {STORY_KEYS.map((k, i) => (
-            <li key={k} className="flex items-center gap-2">
-              <span className="rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary">{t(k)}</span>
-              {i < STORY_KEYS.length - 1 ? <span className="text-muted-foreground">→</span> : null}
-            </li>
-          ))}
-        </ol>
-        <ul className="mt-4 flex flex-wrap gap-1.5">
-          {OUTCOME_KEYS.map((k) => (
-            <li key={k} className="rounded-full bg-muted px-3 py-1 text-[11px] font-medium text-muted-foreground">{t(k)}</li>
-          ))}
-        </ul>
       </section>
 
       {/* WHAT WE HELP WITH */}
@@ -283,7 +238,7 @@ function Landing() {
           </h2>
           <Link
             to="/preview/shwe-hotpot"
-            search={{ from: undefined, demo: undefined }}
+            search={{ from: undefined }}
             className="mt-6 inline-flex min-h-12 items-center rounded-full border border-white/60 px-6 text-sm font-medium text-white transition-colors hover:bg-white/10 sm:text-[15px]"
           >
             {t("landing.viewSampleWebsite")}

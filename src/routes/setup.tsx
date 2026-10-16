@@ -303,7 +303,7 @@ function SetupPage() {
               extra={
                 <Link
                   to="/preview/shwe-hotpot"
-                  search={{ from: undefined, demo: undefined }}
+                  search={{ from: undefined }}
                   preload="intent"
                   onClick={() => {
                     setOpeningPreview(true);
@@ -487,20 +487,6 @@ function SetupPage() {
             </section>
 
             <SetupNavigation onBack={back} onContinue={submitDetails} continueLabel={t("setup.continue")} />
-            <div className="text-center">
-              <button
-                type="button"
-                onClick={() => {
-                  if (!state.restaurantName.trim()) update({ restaurantName: "Shwe Hotpot" });
-                  setErrors({});
-                  goToStage("summary");
-                }}
-                className="min-h-11 rounded-full border border-border px-5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
-              >
-                {t("setup.skipContact")}
-              </button>
-              <p className="mt-2 text-xs text-muted-foreground">{t("setup.contactOptional")}</p>
-            </div>
           </div>
         ) : null}
 

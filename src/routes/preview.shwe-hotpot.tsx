@@ -1,6 +1,6 @@
 import { ContactButton } from "@/components/myansan/ContactDialog";
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
 import { DigitalSetupPreview } from "@/components/myansan/DigitalSetupPreview";
@@ -10,9 +10,8 @@ import { useSetup } from "@/state/setupStore";
 import { useT } from "@/i18n";
 
 export const Route = createFileRoute("/preview/shwe-hotpot")({
-  validateSearch: (search: { from?: string; demo?: string }) => ({
+  validateSearch: (search: { from?: string }) => ({
     from: search.from,
-    demo: search.demo,
   }),
   head: () => ({
     meta: [
@@ -98,26 +97,11 @@ function PreviewError() {
   );
 }
 
-const DEMO_STEPS: { tab: string; labelKey: "demo.step1" | "demo.step2" | "demo.step3" | "demo.step4" | "demo.step5" }[] = [
-  { tab: "qr", labelKey: "demo.step1" },
-  { tab: "pos", labelKey: "demo.step2" },
-  { tab: "kitchen", labelKey: "demo.step3" },
-  { tab: "pos", labelKey: "demo.step4" },
-  { tab: "health", labelKey: "demo.step5" },
-];
-
 function PreviewPage() {
-  const { from, demo } = Route.useSearch();
+  const { from } = Route.useSearch();
   const { state, hydrated, goToStage, applyPackage } = useSetup();
   const { t, p, lang } = useT();
   const navigate = useNavigate();
-  const demoActive = demo === "1";
-  const [demoStep, setDemoStep] = useState(0);
-  const [demoTab, setDemoTab] = useState<string | undefined>(demoActive ? DEMO_STEPS[0]!.tab : undefined);
-  const exitDemo = () => {
-    setDemoTab(undefined);
-    void navigate({ to: "/preview/shwe-hotpot", search: { from, demo: undefined }, replace: true });
-  };
   const template = templateFor(state.websiteStyle ?? "luxury");
   const returnStage = state.previewReturnStage ?? "website";
   const rec = useMemo(() => {
@@ -165,33 +149,6 @@ function PreviewPage() {
           {t("preview.continueSetup")}
         </Link>
       </div>
-      {demoActive && demoTab ? (
-        <div className="border-b border-border bg-primary/5">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-3">
-            <span className="rounded-full bg-primary px-3 py-1 text-[10px] font-bold tracking-widest text-primary-foreground">{t("demo.badge")}</span>
-            <div className="min-w-0 flex-1">
-              <p className="text-[11px] font-medium text-muted-foreground">{t("demo.stepOf", { n: demoStep + 1, total: DEMO_STEPS.length })}</p>
-              <p className="truncate text-sm font-semibold">{t(DEMO_STEPS[demoStep]!.labelKey)}</p>
-            </div>
-            <button onClick={exitDemo} className="min-h-10 rounded-full border border-border bg-card px-4 text-sm font-medium">{t("demo.skip")}</button>
-            {demoStep < DEMO_STEPS.length - 1 ? (
-              <button
-                onClick={() => { const n = demoStep + 1; setDemoStep(n); setDemoTab(DEMO_STEPS[n]!.tab); }}
-                className="min-h-10 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground"
-              >
-                {t("demo.next")}
-              </button>
-            ) : (
-              <Link to="/setup" onClick={() => goToStage("qr")} className="inline-flex min-h-10 items-center rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground">
-                {t("preview.continueSetup")}
-              </Link>
-            )}
-          </div>
-          <div className="h-1 bg-muted">
-            <div className="h-full bg-primary transition-all duration-300" style={{ width: `${((demoStep + 1) / DEMO_STEPS.length) * 100}%` }} />
-          </div>
-        </div>
-      ) : null}
       <DigitalSetupPreview
         systems={systems}
         template={template}
@@ -201,8 +158,6 @@ function PreviewPage() {
         packageId={packageId}
         basedOn={basedOn}
         branches={branches}
-        activeTab={demoTab}
-        onTabChange={demoActive ? (tab) => setDemoTab(tab) : undefined}
         onChoose={() => { applyPackage(packageId); goToStage("website"); navigate({ to: "/setup" }); }}
         onCustomize={() => { goToStage("package"); navigate({ to: "/setup" }); }}
       />
