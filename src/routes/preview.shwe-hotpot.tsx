@@ -11,9 +11,9 @@ import { useSetup } from "@/state/setupStore";
 import { useT } from "@/i18n";
 
 export const Route = createFileRoute("/preview/shwe-hotpot")({
-  validateSearch: (search: { from?: string; website?: string }) => ({
+  validateSearch: (search: { from?: string; website?: boolean | string }) => ({
     from: search.from,
-    website: search.website === "1" ? true : undefined,
+    website: search.website === true || search.website === "1" ? true : undefined,
   }),
   head: () => ({
     meta: [
