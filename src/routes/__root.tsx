@@ -35,7 +35,7 @@ function ThemeMode() {
     const apply = () =>
       root.classList.toggle(
         "dark",
-        state.theme === "dark" || (state.theme === "system" && media.matches),
+        state.theme === "dark",
       );
     apply();
     media.addEventListener("change", apply);
@@ -45,7 +45,7 @@ function ThemeMode() {
 }
 
 /** Applies the saved theme before first paint so dark mode never flashes light. */
-const THEME_BOOTSTRAP = `(function(){try{var s=JSON.parse(localStorage.getItem("myansan-demo-state")||"{}");var t=s.theme||"system";var d=t==="dark"||(t==="system"&&window.matchMedia("(prefers-color-scheme: dark)").matches);if(d)document.documentElement.classList.add("dark");if(s.language==="en"){document.documentElement.classList.add("lang-en")}else{document.documentElement.classList.add("lang-mm")}}catch(e){}})();`;
+const THEME_BOOTSTRAP = `(function(){try{var s=JSON.parse(localStorage.getItem("myansan-demo-state")||"{}");var t=s.theme||"system";var d=t==="dark";if(d)document.documentElement.classList.add("dark");if(s.language==="en"){document.documentElement.classList.add("lang-en")}else{document.documentElement.classList.add("lang-mm")}}catch(e){}})();`;
 
 function NotFoundComponent() {
   return (
