@@ -226,9 +226,14 @@ export function SetupProvider({ children }: { children: ReactNode }) {
 
   const goBack = useCallback(() => {
     setState((s) => {
-      if (s.stageHistory.length === 0) return s;
+      // Skip removed pages (website/qr now live in the preview) and repeats of the current page.
       const history = [...s.stageHistory];
-      const prev = history.pop()!;
+      let prev: SetupStage | undefined;
+      while (history.length) {
+        const c = history.pop()!;
+        if (c !== s.currentStage && c !== "website" && c !== "qr") { prev = c; break; }
+      }
+      if (!prev) return { ...s, stageHistory: [] };
       return { ...s, currentStage: prev, stageHistory: history };
     });
   }, []);
@@ -302,7 +307,7 @@ export function SetupProvider({ children }: { children: ReactNode }) {
       undoConsult,
       goToStage,
       goBack,
-      canGoBack: state.stageHistory.length > 0,
+      canGoBack: state.stageHistory.some((c) => c !== state.currentStage && c !== "website" && c !== "qr"),
       toggleService,
       toggleHelp,
       applyPackage,
