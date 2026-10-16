@@ -10,6 +10,9 @@ import type { Template } from "@/state/setupStore";
 import type { L } from "@/i18n/types";
 import { useT } from "@/i18n";
 import { cn } from "@/lib/utils";
+import { QRPreview } from "@/components/myansan/QRPreview";
+import { WebsiteStyleSelector } from "@/components/myansan/WebsiteStyleSelector";
+import { useSetupOptional } from "@/state/setupStore";
 import { CoachTab, FeedbackTab, HealthTab } from "@/components/myansan/ImproveTabs";
 
 type TabId = "overview" | "pos" | "kitchen" | "website" | "qr" | "owner" | "integration" | "training" | "health" | "coach" | "feedback";
@@ -486,6 +489,7 @@ export function DigitalSetupPreview({
   onCustomize: () => void;
 }) {
   const { p, lang } = useT();
+  const setup = useSetupOptional();
   const tabs = useMemo(() => tabsFor(systems), [systems]);
   const [active, setActive] = useState<TabId>("overview");
   const current = tabs.includes(active) ? active : "overview";
