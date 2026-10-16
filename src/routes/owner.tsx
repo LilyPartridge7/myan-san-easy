@@ -46,7 +46,7 @@ function OwnerHome() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-[820px] px-5">
+      <div className="ms-page mx-auto px-5">
         <p className="mt-8 text-[11px] tracking-[0.3em] text-muted-foreground">{t("owner.today")}</p>
         <div className="mt-3 grid grid-cols-3 gap-3">
           {[

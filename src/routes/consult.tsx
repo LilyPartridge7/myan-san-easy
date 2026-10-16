@@ -196,7 +196,7 @@ function Consult() {
         onBack={back}
       />
       <div className="relative z-10 flex-1 overflow-y-auto px-4 py-6 pb-4">
-        <div className="mx-auto flex max-w-[820px] flex-col gap-4">
+        <div className="ms-page mx-auto flex flex-col gap-4">
           {messages.map((m, i) =>
             m.role === "ai" ? (
               <AIMessage key={i}>{m.text}</AIMessage>

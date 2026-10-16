@@ -330,22 +330,45 @@ button:not(:disabled):active, a:active { transform: scale(.97); }
    rem-based size (text-sm/text-3xl, paddings, buttons); the pixel-size
    overrides step up the fixed text-[Npx] labels used across pages. */
 @media (min-width: 1024px) {
-  html { font-size: 17px; }
-  .text-\[11px\] { font-size: 12px; }
-  .text-\[13px\] { font-size: 14px; }
-  .text-\[14px\] { font-size: 15px; }
-  .text-\[15px\] { font-size: 17px; }
-  .text-\[16px\] { font-size: 18px; }
-}
-@media (min-width: 1280px) {
   html { font-size: 18px; }
-  .text-\[15px\] { font-size: 18px; }
-  .text-\[16px\] { font-size: 19px; }
-}
-@media (min-width: 1536px) {
-  html { font-size: 19.5px; }
+  .text-\[11px\] { font-size: 13px; }
+  .text-\[13px\] { font-size: 15px; }
+  .text-\[14px\] { font-size: 16px; }
   .text-\[15px\] { font-size: 19px; }
   .text-\[16px\] { font-size: 20px; }
+  .text-\[17px\] { font-size: 21px; }
+}
+@media (min-width: 1280px) {
+  html { font-size: 20px; }
+  .text-\[15px\] { font-size: 21px; }
+  .text-\[16px\] { font-size: 22px; }
+  .text-\[48px\] { font-size: 56px; }
+  .text-\[54px\] { font-size: 62px; }
+}
+@media (min-width: 1536px) {
+  html { font-size: 21.5px; }
+  .text-\[15px\] { font-size: 23px; }
+  .text-\[16px\] { font-size: 24px; }
+  .text-\[48px\] { font-size: 64px; }
+  .text-\[54px\] { font-size: 70px; }
+}
+@media (min-width: 1800px) {
+  html { font-size: 23px; }
+  .text-\[15px\] { font-size: 25px; }
+  .text-\[16px\] { font-size: 26px; }
+  .text-\[48px\] { font-size: 70px; }
+  .text-\[54px\] { font-size: 78px; }
+}
+
+/* --- Desktop page frame ---
+   On desktop the pages span the whole window with a 1" (96px) gutter on
+   each side. These unlayered rules beat Tailwind's layered max-w-* and
+   px-* utilities, so they replace the old centered columns. Chat bubbles
+   stay capped so long messages keep a readable line length. */
+@media (min-width: 1024px) {
+  .ms-page { max-width: 100%; }
+  .ms-page, .ms-gutter { padding-left: 96px; padding-right: 96px; }
+  .max-w-\[85\%\] { max-width: min(85%, 44rem); }
 }
 
 /* Scroll reveal for page sections (progressive enhancement). */
