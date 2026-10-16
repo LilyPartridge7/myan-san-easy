@@ -279,8 +279,8 @@ function Consult() {
                 </AIMessage>
                 <HealthScore health={health} compact className="flex h-full flex-col" onImprove={() => navigate({ to: "/preview/shwe-hotpot", search: { from: undefined } })} />
               </div>
-              <div className="pl-0 sm:pl-11">
-                <div className="flex flex-wrap gap-3">
+              <div>
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   <button
                     onClick={() => { update({ previewReturnStage: "recommendation" } as never); navigate({ to: "/preview/shwe-hotpot", search: { from: undefined } }); }}
                     className="min-h-12 rounded-full bg-primary px-6 text-[15px] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
