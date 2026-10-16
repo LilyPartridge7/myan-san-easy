@@ -235,7 +235,7 @@ function Landing() {
           </h2>
           <Link
             to="/preview/shwe-hotpot"
-            search={{ website: "1" }}
+            search={{ website: true }}
             className="mt-6 inline-flex min-h-12 items-center rounded-full border border-white/60 px-6 text-sm font-medium text-white transition-colors hover:bg-white/10 sm:text-[15px]"
           >
             {t("landing.viewSampleWebsite")}

@@ -11,10 +11,12 @@ import { useSetup } from "@/state/setupStore";
 import { useT } from "@/i18n";
 
 export const Route = createFileRoute("/preview/shwe-hotpot")({
-  validateSearch: (search: { from?: string; website?: boolean | string }) => ({
-    from: search.from,
-    website: search.website === true || search.website === "1" ? true : undefined,
-  }),
+  validateSearch: (search: { from?: string; website?: boolean | string }) => {
+    const out: { from?: string; website?: boolean } = {};
+    if (search.from !== undefined) out.from = search.from;
+    if (search.website === true || search.website === "1") out.website = true;
+    return out;
+  },
   head: () => ({
     meta: [
       { title: "Shwe Hotpot — Website Preview by မြန်ဆန်" },
