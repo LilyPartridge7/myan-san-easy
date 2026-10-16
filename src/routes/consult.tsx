@@ -261,8 +261,8 @@ function Consult() {
           ) : null}
           {!typing && finished && revealed ? (
             <div className="fade-up space-y-4">
-              <div className="grid items-start gap-4 sm:grid-cols-2">
-                <AIMessage bubbleClassName="w-full max-w-none px-4 py-3 text-sm">
+              <div className="grid items-stretch gap-4 sm:grid-cols-2">
+                <AIMessage bubbleClassName="h-full w-full max-w-none px-4 py-3 text-sm">
                   <p className="font-semibold">
                     {t("consult.recPackage", { name: rec.packageId.charAt(0).toUpperCase() + rec.packageId.slice(1) })}
                   </p>
