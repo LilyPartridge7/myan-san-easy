@@ -213,7 +213,7 @@ export function RestaurantPreview({
           {name.toUpperCase()}
         </p>
         <p className="mt-3 text-xs" style={{ color: th.muted }}>
-          Powered by မြန်ဆန်
+          Powered by {t("brand")}
         </p>
       </footer>
     </div>

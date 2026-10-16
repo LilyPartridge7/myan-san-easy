@@ -199,7 +199,7 @@ const Q_GOAL: Question = {
     c("seeBusiness", "See my business more clearly", "ဆိုင်အခြေအနေကို ပိုရှင်းရှင်းမြင်ချင်တယ်", ["see", "report", "sales", "မြင်"]),
     c("professionalOnline", "Look more professional online", "Online မှာ ပို Professional ဖြစ်ချင်တယ်", ["online", "website", "professional"]),
     c("manageGrowth", "Grow more easily", "ဆိုင်ကြီးလာရင် စီမံရပိုလွယ်ချင်တယ်", ["growth", "branch", "ကြီးလာ"]),
-    c("letMyansan", "Let မြန်ဆန် recommend", "မြန်ဆန်က အကြံပြုပေးပါ", ["recommend", "you decide", "မသိ", "အကြံပြု"]),
+    c("letMyansan", "Let MyanSan recommend", "မြန်ဆန်က အကြံပြုပေးပါ", ["recommend", "you decide", "မသိ", "အကြံပြု"]),
   ],
 };
 
