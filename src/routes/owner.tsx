@@ -64,7 +64,7 @@ function OwnerHome() {
         <div className="mt-8 rounded-2xl border border-border bg-card p-4">
           <input
             readOnly
-            placeholder="မြန်ဆန်ကို ဘာကူညီပေးခိုင်းချင်ပါသလဲ?"
+            placeholder={p({ en: "What can မြန်ဆန် help you with?", mm: "မြန်ဆန်ကို ဘာကူညီပေးခိုင်းချင်ပါသလဲ?" })}
             className="min-h-14 w-full bg-transparent text-[16px] outline-none placeholder:text-muted-foreground"
           />
         </div>

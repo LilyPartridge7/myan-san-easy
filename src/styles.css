@@ -52,6 +52,9 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-soft-background: var(--soft-background);
+  --color-navy: var(--navy);
+  --color-success: var(--success);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -64,26 +67,26 @@
 
 :root {
   --radius: 0.75rem;
-  --background: oklch(0.987 0.006 255.5);
-  --foreground: oklch(0.208 0.040 265.8);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.208 0.040 265.8);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.208 0.040 265.8);
-  --primary: oklch(0.546 0.215 262.9);
+  --background: #FFFFFF;
+  --foreground: #0B1F3A;
+  --card: #FFFFFF;
+  --card-foreground: #0B1F3A;
+  --popover: #FFFFFF;
+  --popover-foreground: #0B1F3A;
+  --primary: #155EEF;
   --primary-foreground: oklch(1 0 0);
-  --primary-hover: oklch(0.488 0.217 264.4);
-  --secondary: oklch(0.97 0.014 254.6);
-  --secondary-foreground: oklch(0.300 0.100 262);
-  --muted: oklch(0.97 0.014 254.6);
-  --muted-foreground: oklch(0.554 0.041 257.4);
-  --accent: oklch(0.714 0.143 254.6);
-  --accent-foreground: oklch(0.208 0.040 265.8);
+  --primary-hover: #0B4ACB;
+  --secondary: #EAF2FF;
+  --secondary-foreground: #0B1F3A;
+  --muted: #F7FAFF;
+  --muted-foreground: #54708F;
+  --accent: #EAF2FF;
+  --accent-foreground: #155EEF;
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.921 0.020 252.9);
-  --input: oklch(0.921 0.020 252.9);
-  --ring: oklch(0.546 0.215 262.9);
+  --border: #D6E4F5;
+  --input: #D6E4F5;
+  --ring: #155EEF;
   --chart-1: oklch(0.546 0.215 262.9);
   --chart-2: oklch(0.714 0.143 254.6);
   --chart-3: oklch(0.32 0.09 264);
@@ -97,6 +100,9 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+  --soft-background: #F7FAFF;
+  --navy: #0B1F3A;
+  --success: oklch(0.62 0.15 155);
 }
 
 .dark {
@@ -271,8 +277,8 @@
   --color-accent-green: var(--accent-green);
 }
 :root {
-  --accent-cyan: oklch(0.80 0.10 245);
-  --accent-orange: oklch(0.70 0.15 255);
-  --accent-violet: oklch(0.62 0.19 262);
+  --accent-cyan: #6FA0F7;
+  --accent-orange: #155EEF;
+  --accent-violet: #0B4ACB;
   --accent-green: oklch(0.72 0.16 155);
 }
