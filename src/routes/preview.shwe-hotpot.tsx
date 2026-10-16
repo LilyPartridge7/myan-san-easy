@@ -10,8 +10,9 @@ import { useSetup } from "@/state/setupStore";
 import { useT } from "@/i18n";
 
 export const Route = createFileRoute("/preview/shwe-hotpot")({
-  validateSearch: (search: { from?: string }) => ({
+  validateSearch: (search: { from?: string; demo?: string }) => ({
     from: search.from,
+    demo: search.demo,
   }),
   head: () => ({
     meta: [
@@ -97,11 +98,26 @@ function PreviewError() {
   );
 }
 
+const DEMO_STEPS: { tab: string; labelKey: "demo.step1" | "demo.step2" | "demo.step3" | "demo.step4" | "demo.step5" }[] = [
+  { tab: "qr", labelKey: "demo.step1" },
+  { tab: "pos", labelKey: "demo.step2" },
+  { tab: "kitchen", labelKey: "demo.step3" },
+  { tab: "pos", labelKey: "demo.step4" },
+  { tab: "health", labelKey: "demo.step5" },
+];
+
 function PreviewPage() {
-  const { from } = Route.useSearch();
+  const { from, demo } = Route.useSearch();
   const { state, hydrated, goToStage, applyPackage } = useSetup();
   const { t, p, lang } = useT();
   const navigate = useNavigate();
+  const demoActive = demo === "1";
+  const [demoStep, setDemoStep] = useState(0);
+  const [demoTab, setDemoTab] = useState<string | undefined>(demoActive ? DEMO_STEPS[0].tab : undefined);
+  const exitDemo = () => {
+    setDemoTab(undefined);
+    void navigate({ to: "/preview/shwe-hotpot", search: { from, demo: undefined }, replace: true });
+  };
   const template = templateFor(state.websiteStyle ?? "luxury");
   const returnStage = state.previewReturnStage ?? "website";
   const rec = useMemo(() => {
