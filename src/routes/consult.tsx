@@ -225,7 +225,7 @@ function Consult() {
           {!typing && question ? (
             <div className="pl-0 sm:pl-11">
               <button
-                onClick={() => { const c = question.choices[0]; answer(c.value, p(c.label)); }}
+                onClick={() => { const c = question.choices[0]; if (c) answer(c.value, p(c.label)); }}
                 className="text-sm font-medium text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
               >
                 {p({ en: "Skip this question →", mm: "ဒီမေးခွန်း ကျော်မယ် →" })}
