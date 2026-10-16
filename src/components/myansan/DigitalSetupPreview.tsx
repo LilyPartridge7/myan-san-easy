@@ -419,7 +419,7 @@ function OwnerTab({ pkg, branches }: { pkg: PackageId; branches: boolean }) {
     [{ mm: "Sold Out", en: "Sold Out" }, "2 items"],
   ];
   return (
-    <Frame tab="owner" pkg={pkg} hint={{ mm: "ဆိုင်ရှင် ဖုန်းကနေ ကြည့်မယ့် ယနေ့အခြေအနေ။ နမူနာ ကိန်းဂဏန်းများသာ။", en: "Today at a glance, from the owner's phone. Sample numbers only." }}>
+    <Frame tab="owner" pkg={pkg} hint={{ mm: "ဆိုင်ရှင် ဖုန်းကနေ ကြည့်မယ့် ယနေ့အခြေအနေ။", en: "Today at a glance, from the owner's phone." }}>
       <div className="grid grid-cols-2 gap-2 md:grid-cols-6">
         {stats.map(([l, v], i) => (
           <div key={i} className="rounded-xl border border-border bg-card p-3">

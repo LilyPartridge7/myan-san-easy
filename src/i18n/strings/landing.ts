@@ -90,7 +90,7 @@ export const landing = {
     mm: "ဆိုင်အတွက် လှပတဲ့ website တစ်ခု ရပါမယ်",
     en: "You'll get a beautiful website for your restaurant",
   },
-  "landing.viewSampleWebsite": { mm: "နမူနာ website ကြည့်မယ်", en: "View Sample Website" },
+  "landing.viewSampleWebsite": { mm: "Website ကြည့်မယ်", en: "View Website" },
   "landing.packages": { mm: "PACKAGES", en: "PACKAGES" },
   "landing.packagesHeading": {
     mm: "ရိုးရှင်းတဲ့ ရွေးချယ်မှု ၃ မျိုး",

@@ -486,7 +486,8 @@ function SetupPage() {
               </div>
             </section>
 
-            <SetupNavigation onBack={back} onContinue={submitDetails} continueLabel={t("setup.continue")} />
+            <SetupNavigation onBack={back} onContinue={submitDetails} continueLabel={t("setup.continue")}
+              extra={<button onClick={() => goToStage("summary")} className="min-h-12 px-3 text-[15px] font-medium text-primary underline-offset-4 hover:underline">{p({ en: "Continue without contact details", mm: "ဆက်သွယ်ရန်အချက်အလက် မပါဘဲ ဆက်မယ်" })}</button>} />
           </div>
         ) : null}
 
